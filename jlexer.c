@@ -22,17 +22,6 @@ buffer buffer_new_str(char *str) {
         return buff;
 }
 
-V buffer_grow(buffer buff, I size) {
-        buff->size += size;
-        buff->data = (C *)jrealloc(buff->data, C, buff->size);
-}
-
-V buffer_append(buffer buff, I ch) {
-        buffer_grow(buff, 1);
-        buff->data[buff->size - 2] = ch;
-        buff->data[buff->size - 1] = '\0';
-}
-
 V buffer_inspect(buffer buff) {
         if (buff == NULL) {
                 printf("NULL\n");
@@ -44,6 +33,24 @@ V buffer_inspect(buffer buff) {
         }
 }
 
+V buffer_free(buffer buff) {
+        if (buff->size > 0) {
+                free(buff->data);
+        }
+        free(buff);
+}
+
+V buffer_grow(buffer buff, I size) {
+        buff->size += size;
+        buff->data = (C *)jrealloc(buff->data, C, buff->size);
+}
+
+V buffer_append(buffer buff, I ch) {
+        buffer_grow(buff, 1);
+        buff->data[buff->size - 2] = ch;
+        buff->data[buff->size - 1] = '\0';
+}
+
 jlexer jlexer_new(C *str) {
         I len;
         jlexer lex;
@@ -53,6 +60,20 @@ jlexer jlexer_new(C *str) {
         lex->src = buffer_new_str(str);
         lex->saved = buffer_new_str("");
         return lex;
+}
+
+V jlexer_free(jlexer lex) {
+        buffer_free(lex->saved);
+        buffer_free(lex->src);
+        free(lex);
+}
+
+V jlexer_inspect(jlexer lex) {
+        printf("current: %c\n", lex->c);
+        printf("source=>\n");
+        buffer_inspect(lex->src);
+        printf("saved=> \n");
+        buffer_inspect(lex->saved);
 }
 
 I jlexer_next_char(jlexer lex) {
@@ -71,14 +92,6 @@ V jlexer_save_char(jlexer lex, I ch) {
 
 V jlexer_save_curr(jlexer lex) {
         jlexer_save_char(lex, lex->c);
-}
-
-V jlexer_inspect(jlexer lex) {
-        printf("current: %c\n", lex->c);
-        printf("source=>\n");
-        buffer_inspect(lex->src);
-        printf("saved=> \n");
-        buffer_inspect(lex->saved);
 }
 
 I jlexer_next_token(jlexer lex) {

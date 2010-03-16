@@ -1,9 +1,9 @@
 #ifndef _JLEXER_H
 #define _JLEXER_H
 
-#define BUFF_POS(b)  ((b)->pos)
-#define BUFF_SIZE(b) ((b)->size)
-#define BUFF_DATA(b) ((b)->data)
+#define BPOS(b)  ((b)->pos)
+#define BSIZ(b) ((b)->size)
+#define BDAT(b) ((b)->data)
 
 typedef struct buffer {
         I pos;
@@ -11,9 +11,16 @@ typedef struct buffer {
         C *data;
 } *buffer;
 
-#define LEX_CURR(b)  ((b)->c)
-#define LEX_SRC(b)   ((b)->src)
-#define LEX_SAVED(b) ((b)->saved)
+#define LXC(b)  ((b)->c)
+#define LXSRC(b)   ((b)->src)
+#define LXSAV(b) ((b)->saved)
+
+typedef struct jtoken {
+        I t;
+        union val {
+                A a;
+        } val;
+} jtoken;
 
 typedef struct jlexer {
         I c;
@@ -23,9 +30,11 @@ typedef struct jlexer {
 
 buffer buffer_new(I);
 buffer buffer_new_str(C *);
+V      buffer_inspect(buffer);
+V      buffer_free(buffer);
 V      buffer_grow(buffer, I);
 V      buffer_append(buffer, I);
-V      buffer_inspect(buffer);
+
 
 jlexer jlexer_new(C *);
 I      jlexer_next_char(jlexer);
