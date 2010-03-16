@@ -60,6 +60,9 @@ V print(A a) {
 }
 
 I main() {
-        type_size(18);
+        jlexer lex;
+        lex = jlexer_new("123");
+        jlexer_next_token(lex);
+        printf("%d %s\n", LXT(lex), LXSV_D(lex));
         return 0;
 }

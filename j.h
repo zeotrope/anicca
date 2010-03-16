@@ -3,15 +3,10 @@
 
 #define DO(n,body) {         \
         int t = n, i = 0;    \
-        for (; i < n; i++) { \
+        for (; i < t; i++) { \
                 body;        \
         }                    \
 }
-
-#define jmalloc(type,elems)        j_malloc(sizeof(type)*elems)
-#define jrealloc(ptr, type, elems) j_realloc(ptr, sizeof(type)*elems)
-#define jerror(func, msg) \
-        fprintf(stderr, "Error ! Function(%s): %s !\n", func, msg)
 
 #define MONAD(name) A name(A y)
 #define DYAD(name)  A name(A x, A y)
@@ -65,6 +60,11 @@ typedef struct array {
 #define NOUN    (NUMERIC | CHAR | BOX | BOXK)
 #define FUNC    (VERB | ADV | CONJ)
 #define RHS     (NOUN | FUNC)
+
+#define jmalloc(type,elems)        j_malloc(sizeof(type)*elems)
+#define jrealloc(ptr, type, elems) j_realloc(ptr, sizeof(type)*elems)
+#define jerror(func, msg) \
+        fprintf(stderr, "Error ! Function(%s): %s !\n", func, msg)
 
 V *j_malloc(I);
 V *j_realloc(V *, I);
