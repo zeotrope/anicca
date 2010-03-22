@@ -8,6 +8,12 @@
         }                    \
 }
 
+#define DOW(c,body) {        \
+        while (c) {          \
+            body;            \
+        }                    \
+}
+
 #define MONAD(name) A name(A y)
 #define DYAD(name)  A name(A x, A y)
 
@@ -33,11 +39,11 @@ typedef struct complex {
 #define AV(a) ((a)->v)
 
 typedef struct array {
-        I t;    /* Type */
-        I r;    /* Rank */
-        I n;    /* Elements */
-        I *s;   /* Shape */
-        V *v;   /* Value */
+        I  t; /* Type */
+        I  r; /* Rank */
+        I  n; /* Elements */
+        I* s; /* Shape */
+        V* v; /* Value */
 } *A;
 
 #define BOOL    (1 << 1)
@@ -61,12 +67,16 @@ typedef struct array {
 #define FUNC    (VERB | ADV | CONJ)
 #define RHS     (NOUN | FUNC)
 
-#define jmalloc(type,elems)        j_malloc(sizeof(type)*elems)
-#define jrealloc(ptr, type, elems) j_realloc(ptr, sizeof(type)*elems)
+#define jmalloc(type, cast, elems) \
+        (cast)j_malloc(sizeof(type)*elems)
+
+#define jrealloc(ptr, type, cast, elems) \
+        (cast)j_realloc(ptr, sizeof(type)*elems)
+
 #define jerror(func, msg) \
         fprintf(stderr, "Error ! Function(%s): %s !\n", func, msg)
 
-V *j_malloc(I);
-V *j_realloc(V *, I);
+V* j_malloc(I);
+V* j_realloc(V *, I);
 
 #endif

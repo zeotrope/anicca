@@ -1,0 +1,23 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{fancyvrb}
+\usepackage{color}
+
+\newcommand\highlRed[1]{\textcolor[rgb]{1,0,0}{\textbf{#1}}}
+\newcommand\highlGreen[1]{\textcolor[rgb]{0,1,0}{\textbf{#1}}}
+\newcommand\highlBlue[1]{\textcolor[rgb]{0,0,1}{\textbf{#1}}}
+
+\begin{document}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\highlBlue{factorial}=: 3 : 0
+\highlRed{if.} y <: 0 \highlRed{do.}
+  1
+\highlRed{else.}
+  y * factorial <:y
+\highlRed{end.}
+\highlBlue{)}
+
+
+\end{Verbatim}
+\end{document} 

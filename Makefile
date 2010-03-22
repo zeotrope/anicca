@@ -10,5 +10,8 @@ main.o: main.c j.h
 jlexer.o: jlexer.c j.h
 	$(CC) -c -o $@ $<
 
-.PHONY clean:
+clean-doc:
+	rm -rf ./doc/lang.pdf ./doc/lang.aux ./doc/lang.log
+
+clean: clean-doc
 	rm -rf *.o *~ j

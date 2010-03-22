@@ -4,7 +4,7 @@
 #include "j.h"
 #include "jlexer.h"
 
-V *j_malloc(I size) {
+V* j_malloc(I size) {
         V *mem;
         mem = malloc(size);
         if (mem == NULL) {
@@ -14,7 +14,7 @@ V *j_malloc(I size) {
         }
 }
 
-V *j_realloc(V *ptr, I size) {
+V* j_realloc(V *ptr, I size) {
         V *mem;
         mem = realloc(ptr, size);
         if (mem == NULL) {
@@ -37,12 +37,12 @@ I type_size(I type) {
 }
 
 A gen_array(I type, I rank, I elems, I *shape) {
-        A a = (A)jmalloc(struct array, 1);
+        A a = jmalloc(struct array, A, 1);
         a->t = type;
         a->r = rank;
         a->n = elems;
         a->s = shape;
-        a->v = (V *)jmalloc(type_size(type), elems);
+        a->v = jmalloc(type_size(type), V*, elems);
         return a;
 }
 
@@ -60,9 +60,5 @@ V print(A a) {
 }
 
 I main() {
-        jlexer lex;
-        lex = jlexer_new("123");
-        jlexer_next_token(lex);
-        printf("%d %s\n", LXT(lex), LXSV_D(lex));
         return 0;
 }

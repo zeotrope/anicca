@@ -7,10 +7,10 @@
 
 buffer buffer_new(I size) {
         buffer buff;
-        buff = (buffer)jmalloc(struct buffer, 1);
+        buff = jmalloc(struct buffer, buffer, 1);
         BP(buff) = 0;
         BS(buff) = size;
-        BD(buff) = (C *)jmalloc(char, size);
+        BD(buff) = jmalloc(C, C*, size);
         return buff;
 }
 
@@ -31,12 +31,13 @@ V buffer_inspect(buffer buff) {
 V buffer_free(buffer buff) {
         if (BS(buff) > 0) {
                 free(BD(buff));
+                BS(buff) = 0;
         }
 }
 
 V buffer_grow(buffer buff, I size) {
         BS(buff) += size;
-        BD(buff) = (C *)jrealloc(BD(buff), C, BS(buff));
+        BD(buff) = jrealloc(BD(buff), C, C*, BS(buff));
 }
 
 V buffer_append(buffer buff, I ch) {
@@ -49,7 +50,7 @@ jlexer jlexer_new(C *str) {
         I len;
         jlexer lex;
         len = strlen(str);
-        lex = (jlexer)jmalloc(struct jlexer, 1);
+        lex = jmalloc(struct jlexer, jlexer, 1);
         LXC(lex) = *str;
         LXSC(lex) = buffer_new_str(str);
         LXSV(lex) = buffer_new_str("");
@@ -88,16 +89,8 @@ V jlexer_save_curr(jlexer lex) {
         jlexer_save_char(lex, LXC(lex));
 }
 
+/* Check graphivz diagram for DFA */
 I jlexer_next_token(jlexer lex) {
-        while (isspace(LXC(lex))) {
-                jlexer_next_char(lex);
-        }
-
-        if (isdigit(LXC(lex))) {
-                LXT(lex) = INT;
-                do {
-                        jlexer_save_curr_next(lex);
-                } while (isdigit(LXC(lex)));
-        }
-        return LXT(lex);
+        DOW(isspace(LXC(lex)), jlexer_next_char(lex));
+        
 }
