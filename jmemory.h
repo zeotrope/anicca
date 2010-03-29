@@ -1,5 +1,5 @@
-#ifndef _JMEM_H
-#define _JMEM_H
+#ifndef _JMEMORY_H
+#define _JMEMORY_H
 
 #define jmalloc(type, cast, elems) \
         (cast)j_malloc(sizeof(type)*elems)

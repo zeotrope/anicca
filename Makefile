@@ -5,8 +5,8 @@ CFLAGS=-lm
 
 all: j
 
-j: main.o jlexer.o jmem.o buffer.o
-	$(CC) main.o jlexer.o jmem.o buffer.o -o $@ $(CFLAGS)
+j: main.o jlexer.o jmemory.o buffer.o
+	$(CC) main.o jlexer.o jmemory.o buffer.o -o $@ $(CFLAGS)
 
 main.o: main.c j.h
 	$(CC) -c -o $@ $<
@@ -14,7 +14,7 @@ main.o: main.c j.h
 jlexer.o: jlexer.c jlexer.h buffer.h j.h
 	$(CC) -c -o $@ $<
 
-jmem.o: jmem.c jmem.h
+jmemory.o: jmemory.c jmemory.h
 	$(CC) -c -o $@ $<
 
 buffer.o: buffer.c buffer.h j.h
