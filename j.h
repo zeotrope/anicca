@@ -2,8 +2,8 @@
 #define _J_H
 
 #define DO(n,body) {         \
-        int t = n, i = 0;    \
-        for (; i < t; i++) { \
+        int _t = n, i = 0;    \
+        for (; i < _t; i++) { \
                 body;        \
         }                    \
 }
@@ -32,19 +32,22 @@ typedef struct complex {
         D re; /* Real */
 } Z;
 
+#define AH    3L
 #define AT(a) ((a)->t)
 #define AR(a) ((a)->r)
 #define AN(a) ((a)->n)
 #define AS(a) ((a)->s)
-#define AV(a) ((a)->v)
+#define AV(a) ((I*)a+AH+AR(a))
 
 typedef struct array {
-        I  t; /* Type */
-        I  r; /* Rank */
-        I  n; /* Elements */
-        I* s; /* Shape */
-        V* v; /* Value */
+        I  t;    /* Type */
+        I  r;    /* Rank */
+        I  n;    /* Elements */
+        I  s[1]; /* Shape */
+                 /* Value */
 } *A;
+
+#define ASIZE(t,r,n) (((r+AH)*sizeof(I))+(type_size(t)*n))
 
 #define BOOL    (1 << 1)
 #define CHAR    (1 << 2)
@@ -67,16 +70,7 @@ typedef struct array {
 #define FUNC    (VERB | ADV | CONJ)
 #define RHS     (NOUN | FUNC)
 
-#define jmalloc(type, cast, elems) \
-        (cast)j_malloc(sizeof(type)*elems)
-
-#define jrealloc(ptr, type, cast, elems) \
-        (cast)j_realloc(ptr, sizeof(type)*elems)
-
 #define jerror(func, msg) \
         fprintf(stderr, "Error ! Function(%s): %s !\n", func, msg)
-
-V* j_malloc(I);
-V* j_realloc(V *, I);
 
 #endif
