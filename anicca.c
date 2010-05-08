@@ -6,8 +6,12 @@
 
 int main() {
      A x, y;
-     x = array_str("1.23+2");
+     I *v;
+
+     x = array_str("1.23+2*-3j4;:'345'");
      y = token_index(x);
-     array_inspect(y);
+     v = (I *)AV(y);
+     DO(AN(y), printf("%d ", v[i])); printf("\n");
+
      return 0;
 }

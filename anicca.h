@@ -2,22 +2,23 @@
 #define _ANICCA_H
 
 #define DO(n, body) {               \
-          int i = 0;                \
+          I i = 0;                \
           for (i = 0; i < n; i++) { \
                body;                \
           }                         \
 }
 
-typedef int  I;
-typedef char C;
-typedef void V;
+typedef int    I;
+typedef char   C;
+typedef double D;
+typedef void   V;
 
 #define ZR(z) ((z)->real)
 #define ZI(z) ((z)->imaginary)
 
 typedef struct _complex {
-     double real;
-     double imaginary;
+     D real;
+     D imaginary;
 } Z;
 
 #define AT(a) ((a)->type)

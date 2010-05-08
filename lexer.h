@@ -23,13 +23,14 @@ typedef enum {
      C9, /* Num   */
      CD, /* "."   */
      CC, /* ":"   */
-     CQ  /* "'"   */
+     CQ,  /* "'"   */
+     END = -1
 } CHARTYPE;
 
 typedef enum {
      EO, /* No effect */
-     EI, /* Word start index = index */
-     EN  /* Emit word start index and length, word start index = index */
+     EI, /* Emit word start index and length, word start index = index */
+     EN  /* Word start index = index */
 } ACTION;
 
 typedef struct _state {
@@ -51,7 +52,7 @@ static ST dfa[NROW][NCOL] = {
 /*SQ*/ {{SQ,EO},{SQ,EO},{SQ,EO},{SQ,EO},{SQ,EO},{SQ,EO},{SQ,EO},{SQ,EO},{SC,EO}},
 /*SC*/ {{SX,EI},{SS,EI},{SA,EI},{SN,EI},{SA,EI},{S9,EI},{SX,EI},{SX,EI},{SQ,EO}},
 /*SZ*/ {{SZ,EO},{SZ,EO},{SZ,EO},{SZ,EO},{SZ,EO},{SZ,EO},{SZ,EO},{SZ,EO},{SZ,EO}}
-       /*  CX      CS      CA      CN      CB     C9       CD      CC      CQ  */ 
+       /* CX      CS      CA      CN      CB     C9       CD      CC      CQ   */
 };
 
 CHARTYPE char_type(C );

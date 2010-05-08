@@ -48,10 +48,15 @@ CHARTYPE char_type(C c) {
 */
 A array_str(C *str) {
      A z;
-     I n = strlen(str);
+     I n = strlen(str)+1;
      z = gen_array(CHAR, 1, n, NULL);
      memcpy(AV(z), str, n);
      return z;
+}
+
+V emit(I *v, I j, I i) {
+     *v++ = j;
+     *v++ = i;
 }
 
 /*
@@ -67,22 +72,30 @@ MONAD(token_index) {
 
      z = gen_array(INT, 1, n+n, NULL);
      v = (I *)AV(z);
-        
+
      for (i = 0; i < n; i++) {
           t = char_type(str[i]);
           pr = dfa[s][t];
           e = pr.effect;
-          printf("%d %d - %d %d %d\n", s, t, e, i, j);
-          if (e == EI) {
-               j = i;
-          }
-          else if (e == EN) {
-               *v++ = j;
-               *v++ = (i-1) - j;
-               j = i;
-          }
           s = pr.new;
-     }
 
+          if (e == EN) { j = i; }
+          if (e == EI) { 
+               *v++ = j; *v++ = i - 1;
+               j = i;
+          }
+     }
+     *v = END;
+     return z;
+}
+
+/*
+  tokens
+  input: x: token indicies, start and length.
+         y: characters to be tokenized.
+  output: List of tokens.
+ */
+DYAD(tokens) {
+     A z;
      return z;
 }
