@@ -5,18 +5,26 @@ typedef int  I;
 typedef char C;
 typedef void V;
 
-#define AT(a) ((a)->t)
-#define AR(a) ((a)->r)
-#define AN(a) ((a)->n)
-#define AS(a) ((a)->s)
-#define AV(a) ((a)->v)
+#define ZR(z) ((z)->real)
+#define ZI(z) ((z)->imaginary)
+
+typedef struct _complex {
+        double real;
+        double imaginary;
+} Z;
+
+#define AT(a) ((a)->type)
+#define AR(a) ((a)->rank)
+#define AN(a) ((a)->num)
+#define AS(a) ((a)->shape)
+#define AV(a) ((a)->value)
 
 typedef struct _array {
-        I t;
-        I r;
-        I n;
-        I *s;
-        V *v;
+        I type;
+        I rank;
+        I num;
+        I *shape;
+        V *value;
 } *A;
 
 
@@ -37,5 +45,8 @@ typedef struct _array {
 #define NUMERIC (BOOL | INT | FLT | CMP)
 #define NOUN    (NUMERIC | CHAR | BOX)
 #define FUNC    (VERB | CONJ | ADV)
+
+#define MONAD(name) A name(A y)
+#define DYAD(name)  A name(A x, A y)
 
 #endif
