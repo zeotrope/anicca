@@ -8,7 +8,7 @@ int main() {
      A x, y;
      I *v;
 
-     x = array_str("1.23+2*-3j4;:'345'");
+     x = array_str("1.23 2j4+34");
      y = token_index(x);
      v = (I *)AV(y);
      DO(AN(y), printf("%d ", v[i])); printf("\n");

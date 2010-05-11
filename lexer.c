@@ -54,19 +54,66 @@ A array_str(C *str) {
      return z;
 }
 
-V emit(I *v, I j, I i) {
-     *v++ = j;
-     *v++ = i;
+/* 
+   word_start
+   input:  String of noun.
+   output: List of start indicies of individual nouns within string.
+*/
+A word_start(I n, C *s) {
+     A z;
+     I a;
+
+     
+
+     return z;
+}
+
+/* 
+   Generation functions
+   input:  Length of word, string to be converted.
+   output: Array corresponding to the type of word.
+*/
+GENERATE(bool) {
+     A z;
+     C *v;
+     I j, wl = n-(n/2);
+     z = gen_array(BOOL, 1, wl, NULL);
+     v = (C *)AV(z);
+     DO(wl, j=i+i; v[i] = s[j]);
+     return z;
+}
+
+GENERATE(char) {
+     A z;
+     C *v;
+     I j, wl = n-2;
+     z = gen_array(CHAR, 1, wl, NULL);
+     v = (C *)AV(z);
+     s++; /* skip "'" */
+     DO(wl, v[i] = s[i]);
+     return z;
+}
+
+GENERATE(int) {
+     A z; return z;
+}
+
+GENERATE(flt) {
+     A z; return z;
+}
+
+GENERATE(cmp) {
+     A z; return z;
 }
 
 /*
   token_index
   input:  Boxed string to be lexed.
-  output: Array of pairs representing start and length of tokens.
+  output: Array of pairs representing start and end of tokens.
 */
 MONAD(token_index) {
      A z; 
-     C e, t, s = SS, *str = (C *)AV(y);
+     C vec = 0, e, t, s = SS, *str = (C *)AV(y);
      I i, j = 0, n = AN(y), *v;
      ST pr;
 
@@ -77,15 +124,33 @@ MONAD(token_index) {
           t = char_type(str[i]);
           pr = dfa[s][t];
           e = pr.effect;
-          s = pr.new;
 
-          if (e == EN) { j = i; }
-          if (e == EI) { 
-               *v++ = j; *v++ = i - 1;
+          switch (e) {
+          case EO:  break;
+          case EN:  { j = i; break; }
+          case EW:  { *v++ = j; *v++ = i-1; j = i; break; }
+          case EWR: { *v++ = j; *v++ = i-1; j = -1; break; }
+          case EV:  {
+               if (!vec) { *v++ = j; *v = i-1; }
+               else      { *v = i-1; }
                j = i;
+               vec = 1;
+               break;
           }
+          case EVR: {
+               if (!vec) { *v++ = j; *v = i-1; }
+               else      { *v = i-1; }
+               j = -1;
+               vec = 1;
+               break;
+          }
+          case ES:  goto end; break;
+          }
+
+          s = pr.new;
      }
-     *v = END;
+end:
+     *++v = END;
      return z;
 }
 
@@ -97,5 +162,7 @@ MONAD(token_index) {
  */
 DYAD(tokens) {
      A z;
+     C *s = (C *)AV(y);
+     I *v = (I *)AV(x);
      return z;
 }
