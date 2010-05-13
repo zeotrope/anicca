@@ -29,12 +29,13 @@ V a_init(V) {
 
 int main() {
      I *v;
-     A x, y, z, p;
+     A x, y, z, q, p;
      a_init();
-     y = array_str("'1234'");
+     y = array_str("'1'");
      x = token_index(y);
      z = tokens(x, y);
-     p = shape(*(A*)AV(z));
+     q = *(A*)AV(z);
+     p = shape(q);
      print(p);
      return 0;
 }

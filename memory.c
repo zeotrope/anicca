@@ -27,8 +27,8 @@ I type_size(I type) {
      switch (type) {
      case BOOL:
      case CHAR: return sizeof(char);          break;
-     case INT:  return sizeof(int);           break;
-     case FLT:  return sizeof(double);        break;
+     case INT:   return sizeof(int);           break;
+     case FLT:   return sizeof(double);        break;
      case CMP:  return sizeof(Z);             break;
      case BOX:  return sizeof(struct _array); break;
      }
