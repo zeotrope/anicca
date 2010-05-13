@@ -62,9 +62,6 @@ A array_str(C *str) {
 A word_start(I n, C *s) {
      A z;
      I a;
-
-     
-
      return z;
 }
 
@@ -113,7 +110,7 @@ GENERATE(cmp) {
 */
 MONAD(token_index) {
      A z; 
-     C vec = 0, e, t, s = SS, *str = (C *)AV(y);
+     C vec = 0, e, t, s = SS, sn, *str = (C *)AV(y);
      I i, j = 0, n = AN(y), *v;
      ST pr;
 
@@ -124,6 +121,7 @@ MONAD(token_index) {
           t = char_type(str[i]);
           pr = dfa[s][t];
           e = pr.effect;
+          sn = pr.new;
 
           switch (e) {
           case EO:  break;
@@ -147,10 +145,14 @@ MONAD(token_index) {
           case ES:  goto end; break;
           }
 
-          s = pr.new;
+          if (vec && sn != S9 && sn != SS) {
+               vec = 0; v++;
+          }
+
+          s = sn;
      }
 end:
-     *++v = END;
+     *v = END;
      return z;
 }
 
