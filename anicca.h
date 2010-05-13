@@ -57,4 +57,6 @@ typedef struct _array {
 #define MONAD(name) A name(A y)
 #define DYAD(name)  A name(A x, A y)
 
+A mark;
+
 #endif

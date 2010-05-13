@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "anicca.h"
 #include "memory.h"
 
@@ -10,6 +11,16 @@ V *a_malloc(I size) {
           fprintf(stderr, "Alloc Error\n");
      }
      return m;
+}
+
+V a_free(A y) {
+     if (AN(y) > 0) {
+          free(AV(y));
+          if (AR(y) > 1) {
+               free(AS(y));
+          }
+     }
+     free(y);
 }
 
 I type_size(I type) {
@@ -31,7 +42,22 @@ A gen_array(I t, I r, I n, I *s) {
      AR(z) = r;
      AN(z) = n;
      AS(z) = s;
-     AV(z) = a_malloc(type_size(t)*n);
+     if (n > 0) {
+          AV(z) = a_malloc(type_size(t)*n);
+     }
+     return z;
+}
+
+/*
+  array_str
+  input: String
+  output: Boxed String
+*/
+A array_str(C *str) {
+     A z;
+     I n = strlen(str)+1;
+     z = gen_array(CHAR, 1, n, NULL);
+     memcpy(AV(z), str, n);
      return z;
 }
 

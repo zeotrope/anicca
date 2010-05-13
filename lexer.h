@@ -64,5 +64,6 @@ static ST dfa[NROW][NCOL] = {
 CHARTYPE char_type(C);
 A array_str(C *);
 MONAD(token_index);
+DYAD(tokens);
 
 #endif

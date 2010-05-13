@@ -41,53 +41,22 @@ CHARTYPE char_type(C c) {
      }
 }
 
-/*
-  array_str
-  input: String
-  output: Boxed String
-*/
-A array_str(C *str) {
-     A z;
-     I n = strlen(str)+1;
-     z = gen_array(CHAR, 1, n, NULL);
-     memcpy(AV(z), str, n);
-     return z;
-}
-
-/* 
-   word_start
-   input:  String of noun.
-   output: List of start indicies of individual nouns within string.
-*/
-A word_start(I n, C *s) {
-     A z;
-     I a;
-     return z;
-}
-
 /* 
    Generation functions
    input:  Length of word, string to be converted.
    output: Array corresponding to the type of word.
 */
 GENERATE(bool) {
-     A z;
-     C *v;
-     I j, wl = n-(n/2);
-     z = gen_array(BOOL, 1, wl, NULL);
-     v = (C *)AV(z);
-     DO(wl, j=i+i; v[i] = s[j]);
-     return z;
+     A z; return z;
 }
 
 GENERATE(char) {
      A z;
      C *v;
-     I j, wl = n-2;
-     z = gen_array(CHAR, 1, wl, NULL);
+     s++; n-=2;
+     z = gen_array(CHAR, 1, n, NULL);
      v = (C *)AV(z);
-     s++; /* skip "'" */
-     DO(wl, v[i] = s[i]);
+     strncpy(v, s, n);
      return z;
 }
 
@@ -103,15 +72,19 @@ GENERATE(cmp) {
      A z; return z;
 }
 
+GENERATE(num) {
+     A z; return z;
+}
+
 /*
   token_index
   input:  Boxed string to be lexed.
-  output: Array of pairs representing start and end of tokens.
+  output: Number of pairs ; Array of pairs, start and length of tokens.
 */
 MONAD(token_index) {
      A z; 
      C vec = 0, e, t, s = SS, sn, *str = (C *)AV(y);
-     I i, j = 0, n = AN(y), *v;
+     I i, jv, j = 0, k = 1, n = AN(y), *v;
      ST pr;
 
      z = gen_array(INT, 1, n+n, NULL);
@@ -126,33 +99,44 @@ MONAD(token_index) {
           switch (e) {
           case EO:  break;
           case EN:  { j = i; break; }
-          case EW:  { *v++ = j; *v++ = i-1; j = i; break; }
-          case EWR: { *v++ = j; *v++ = i-1; j = -1; break; }
+          case EW:  { v[k++] = j; v[k++] = i-j; j = i; break; }
+          case EWR: { v[k++] = j; v[k++] = i-j; j = -1; break; }
           case EV:  {
-               if (!vec) { *v++ = j; *v = i-1; }
-               else      { *v = i-1; }
+               if (!vec) { v[k++] = j; v[k] = i-1; jv = j; }
+               else      { v[k] = i-jv; }
                j = i;
                vec = 1;
                break;
           }
           case EVR: {
-               if (!vec) { *v++ = j; *v = i-1; }
-               else      { *v = i-1; }
+               if (!vec) { v[k++] = j; v[k] = i-1; jv = j; }
+               else      { v[k] = i-jv; }
                j = -1;
                vec = 1;
                break;
           }
-          case ES:  goto end; break;
+          case ES: goto end; break;
           }
 
           if (vec && sn != S9 && sn != SS) {
-               vec = 0; v++;
+               vec = 0; k++;
           }
 
           s = sn;
      }
 end:
-     *v = END;
+     v[0] = k-1;
+     return z;
+}
+
+/* 
+   word_start
+   input:  String of noun.
+   output: List of start indicies of individual nouns within string.
+*/
+A word_start(I n, C *s) {
+     A z;
+     I a;
      return z;
 }
 
@@ -163,8 +147,33 @@ end:
   output: List of tokens.
  */
 DYAD(tokens) {
-     A z;
-     C *s = (C *)AV(y);
-     I *v = (I *)AV(x);
+     A z, *av;
+     C *s, *str = (C *)AV(y);
+     I i, ws, wl, n, t, *v = (I *)AV(x);
+     
+     n = v[0];
+     z = gen_array(BOX, 1, n+5, NULL);
+     av = (A *)AV(z);
+
+     for (i = 1; i < n; i++) {
+        ws = v[i];
+        wl = v[i+1];
+        s = &str[ws];
+        t = char_type(*s);
+
+        switch (t) {
+        case C9: {
+             *av++ = gen_num(wl, s);
+
+             break;
+        }
+        case CQ: {
+             *av++ = gen_char(wl, s);
+             break;
+        }
+        }
+     }
+
+     DO(5, *av++ = mark);
      return z;
 }
