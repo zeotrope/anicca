@@ -6,54 +6,49 @@
 #include "memory.h"
 #include "lexer.h"
 
-/*
-  char_type
-  input:  A character
-  output: Type of the character as specified in enum CHARTYPE
-*/
-CHARTYPE char_type(C c) {
-     if (isspace(c)) {
-          return CS;
-     }
-     else if (isalpha(c)) {
-          return CA;
-     }
-     else if (isdigit(c) || c == '_') {
-          return C9;
-     }
-     else if (c == 'N') {
-          return CN;
-     }
-     else if (c == 'B') {
-          return CB;
-     }
-     else if (c == '.') {
-          return CD;
-     }
-     else if (c == ':') {
-          return CC;
-     }
-     else if (c == '\'') {
-          return CQ;
-     }
-     else {
-          return CX;
-     }
-}
-
 /* 
    Generation functions
    input:  Length of word, string to be converted.
    output: Array corresponding to the type of word.
 */
-GENERATE(bool) {
-     A z, y = noun_start(n, s);
+GENPRIM(bool) {
+     A z;
      B *v;
      I *indx = (I *)AV(y), m = *indx++;
-
+     
      z = gen_array(BOOL, 1, m, NULL);
      v = (B *)AV(z);
-     DO(m, v[i] = (s[indx[i]]=='_') ? -(s[indx[i]+1]-'0') : s[indx[i]]-'0');
+     DO(m, v[i] = (s[indx[i]]=='_') ? -(s[indx[i]+1]-'0'):s[indx[i]]-'0');
+
+     return z;
+}
+
+
+
+GENPRIM(int) {
+     A z;
+     I si, *v, *indx = (I *)AV(y), m = *indx++;
+     
+     z = gen_array(INT, 1, m, NULL);
+     v = (I *)AV(z);
+     DO(m,
+        if ((si = (s[v[i]]=='_'))) { v[i]++; }
+        
+          );
+
+     return z;
+}
+
+GENPRIM(flt) {
+     A z; return z;
+}
+
+GENPRIM(cmp) {
+     A z; return z;
+}
+
+GENERATE(num) {
+     A y, z;
 
      return z;
 }
@@ -72,22 +67,6 @@ GENERATE(char) {
      return z;
 }
 
-GENERATE(int) {
-     A z; return z;
-}
-
-GENERATE(flt) {
-     A z; return z;
-}
-
-GENERATE(cmp) {
-     A z; return z;
-}
-
-GENERATE(num) {
-     A z; return z;
-}
-
 /*
   token_index
   input:  Boxed string to be lexed.
@@ -103,7 +82,7 @@ MONAD(token_index) {
      v = (I *)AV(z);
 
      for (i = 0; i < n; i++) {
-          t = char_type(str[i]);
+          t = chartype[str[i]];
           pr = dfa[s][t];
           e = pr.effect;
           sn = pr.new;
@@ -188,7 +167,7 @@ DYAD(tokens) {
         ws = v[i];
         wl = v[i+1];
         s = &str[ws];
-        t = char_type(*s);
+        t = chartype[*s];
 
         switch (t) {
         case C9: {

@@ -33,10 +33,6 @@ V a_init(V) {
 }
 
 int main() {
-     I *v;
-     A x, y, z, q, p;
-     a_init();
-     y = gen_bool(6, "_1 0 1");
-     print(y);
+     printf("%d\n", chartype['.']);
      return 0;
 }
