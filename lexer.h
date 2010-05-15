@@ -63,6 +63,12 @@ static ST dfa[NROW][NCOL] = {
 
 CHARTYPE char_type(C);
 A array_str(C *);
+A noun_start(I, C *);
+
+GENERATE(bool);
+GENERATE(num);
+GENERATE(char);
+
 MONAD(token_index);
 DYAD(tokens);
 

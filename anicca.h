@@ -10,6 +10,7 @@
 
 typedef int    I;
 typedef char   C;
+typedef char   B;
 typedef double D;
 typedef void   V;
 

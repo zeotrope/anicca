@@ -47,16 +47,28 @@ CHARTYPE char_type(C c) {
    output: Array corresponding to the type of word.
 */
 GENERATE(bool) {
-     A z; return z;
+     A z, y = noun_start(n, s);
+     B *v;
+     I *indx = (I *)AV(y), m = *indx++;
+
+     z = gen_array(BOOL, 1, m, NULL);
+     v = (B *)AV(z);
+     DO(m, v[i] = (s[indx[i]]=='_') ? -(s[indx[i]+1]-'0') : s[indx[i]]-'0');
+
+     return z;
 }
 
 GENERATE(char) {
      A z;
      C *v;
+
      s++; n-=2;
      z = gen_array(CHAR, 1, n, NULL);
      v = (C *)AV(z);
-     strncpy(v, s, n);
+
+     if (n > 0) {
+          strncpy(v, s, n);
+     }
      return z;
 }
 
@@ -130,13 +142,30 @@ end:
 }
 
 /* 
-   word_start
+   noun_start
    input:  String of noun.
-   output: List of start indicies of individual nouns within string.
+   output: Number of nouns ; Start indicies of atomic nouns within string.
 */
-A word_start(I n, C *s) {
+A noun_start(I n, C *s) {
      A z;
-     I a;
+     I m = 1+(n/2), k = 0, al = 0, sp, ws = 1, i, *v;
+
+     z = gen_array(INT, 1, n, NULL);
+     v = (I *)AV(z);
+     k++;
+     
+     for (i = 0; i < n; i++) {
+          sp = isspace(*s++);
+          if (ws && !sp) {
+               v[k++] = i;
+               al++;
+               ws = 0;
+          }
+          else if (sp && !ws) {
+               ws = 1;
+          }
+     }
+     v[0] = al;
      return z;
 }
 
