@@ -23,17 +23,16 @@ GENPRIM(bool) {
      return z;
 }
 
-
-
 GENPRIM(int) {
      A z;
-     I si, *v, *indx = (I *)AV(y), m = *indx++;
+     I si, num, *v, *indx = (I *)AV(y), m = *indx++;
      
      z = gen_array(INT, 1, m, NULL);
-     v = (I *)AV(z);
+     printf("%d\n", m);
      DO(m,
-        if ((si = (s[v[i]]=='_'))) { v[i]++; }
-        
+        //s[indx[i]] = (s[indx[i]]=='_' ? '-' : s[indx[i]]);
+        printf("%d %d %d\n", i, indx[i], indx[i+1]);
+        v[i] = strtol(s+indx[i], NULL, 10);
           );
 
      return z;
@@ -49,7 +48,7 @@ GENPRIM(cmp) {
 
 GENERATE(num) {
      A y, z;
-
+     y = noun_start(n, s);
      return z;
 }
 
@@ -127,24 +126,29 @@ end:
 */
 A noun_start(I n, C *s) {
      A z;
-     I m = 1+(n/2), k = 0, al = 0, sp, ws = 1, i, *v;
+     C st = SS, e, t;
+     I m = 1+n, k = 1, j = 1, i, *v;
+     ST pr;
 
-     z = gen_array(INT, 1, n, NULL);
+     z = gen_array(INT, 1, m, NULL);
      v = (I *)AV(z);
-     k++;
-     
+
      for (i = 0; i < n; i++) {
-          sp = isspace(*s++);
-          if (ws && !sp) {
-               v[k++] = i;
-               al++;
-               ws = 0;
+          t = chartype[s[i]];
+          t = (t!=CS && t!=CX);
+          pr = noun[st][t];
+          e = pr.effect;
+          
+          switch (e) {
+          case EO: break;
+          case EN: j = i; break;
+          case EW: v[k++] = j; v[k++] = i-j; break;
           }
-          else if (sp && !ws) {
-               ws = 1;
-          }
+
+          st = pr.new;
      }
-     v[0] = al;
+     
+     v[0] = k/2;
      return z;
 }
 
@@ -159,11 +163,11 @@ DYAD(tokens) {
      C *s, *str = (C *)AV(y);
      I i, ws, wl, n, t, *v = (I *)AV(x);
      
-     n = v[0];
+     n = *v++;
      z = gen_array(BOX, 1, n+5, NULL);
      av = (A *)AV(z);
 
-     for (i = 1; i < n; i++) {
+     for (i = 0; i < n; i++) {
         ws = v[i];
         wl = v[i+1];
         s = &str[ws];
@@ -172,7 +176,6 @@ DYAD(tokens) {
         switch (t) {
         case C9: {
              *av++ = gen_num(wl, s);
-
              break;
         }
         case CQ: {

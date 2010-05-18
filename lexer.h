@@ -30,6 +30,25 @@ typedef enum {
      END = -1
 } CHARTYPE;
 
+static C chartype[256] = {
+/*0*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CS,CX,CX,CX,CX,CX,CX,
+/*1*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+/*2*/ CS,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CD,CX, /* !"#$%&'()*+,-./*/
+/*3*/ C9,C9,C9,C9,C9,C9,C9,C9,C9,C9,CC,CX,CX,CX,CX,CX, /*0123456789:;<=>?*/
+/*4*/ CX,CA,CB,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CN,CA, /*@ABCDEFGHIJKLMNO*/
+/*5*/ CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CX,CX,CX,CX,C9, /*PQRSTUVWXYZ[\]^_*/
+/*6*/ CX,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA, /*`abcdefghijklmno*/
+/*7*/ CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CX,CX,CX,CX,CX, /*pqrstuvwxyz{|}~ */
+/*8*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+/*9*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+/*a*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+/*b*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+/*c*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+/*d*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+/*e*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX
+     /*0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f*/
+};
+
 typedef enum {
      EO,  /* No effect */
      EN,  /* Word start index = index,   j =. i  */
@@ -45,29 +64,19 @@ typedef struct _state {
      C effect;
 } ST;
 
-#define NCOL 9
-#define NROW 10
+#define NCOL 2
+#define NROW 2
 
-static C chartype[256] = {
-/*0*/ CX, CX, CX, CX, CX, CX, CX, CX, CX, CS, CX, CX, CX, CX, CX, CX,
-/*1*/ CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX,
-/*2*/ CS, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CD, CX, /* !"#$%&'()*+,-./*/
-/*3*/ C9, C9, C9, C9, C9, C9, C9, C9, C9, C9, CC, CX, CX, CX, CX, CX, /*0123456789:;<=>?*/
-/*4*/ CX, CA, CB, CA, CA, CA, CA, CA, CA, CA, CA, CA, CA, CA, CN, CA, /*@ABCDEFGHIJKLMNO*/
-/*5*/ CA, CA, CA, CA, CA, CA, CA, CA, CA, CA, CA, CX, CX, CX, CX, C9, /*PQRSTUVWXYZ[\]^_*/
-/*6*/ CX, CA, CA, CA, CA, CA, CA, CA, CA, CA, CA, CA, CA, CA, CA, CA, /*`abcdefghijklmno*/
-/*7*/ CA, CA, CA, CA, CA, CA, CA, CA, CA, CA, CA, CX, CX, CX, CX, CX, /*pqrstuvwxyz{|}~ */
-/*8*/ CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX,
-/*9*/ CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX,
-/*a*/ CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX,
-/*b*/ CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX,
-/*c*/ CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX,
-/*d*/ CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX,
-/*e*/ CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX, CX
-     /*0   1   2   3   4   5   6   7   8   9   a   b   c   d   e   f*/
+static ST noun[NROW][NCOL] = {
+/* SS */ {{SS, EO},{SX, EN}},
+/* SX */ {{SS, EW},{SX, EO}}
+         /*  CS       CX  */
 };
 
-static ST dfa[NROW][NCOL] = {
+#define DCOL 9
+#define DROW 10
+
+static ST dfa[DROW][DCOL] = {
 /*SS*/ {{SX,EN},{SS,EO} ,{SA,EN},{SN,EN},{SA,EN} ,{S9,EN},{SX,EN} ,{SX,EN},{SQ,EN}},
 /*SX*/ {{SX,EW},{SS,EWR},{SA,EW},{SN,EW},{SA,EW} ,{S9,EW},{SX,EO} ,{SX,EO},{SQ,EW}},
 /*SA*/ {{SX,EW},{SS,EWR},{SA,EO},{SA,EO},{SA,EO} ,{SA,EO},{SX,EO} ,{SX,EO},{SQ,EW}},
@@ -83,8 +92,10 @@ static ST dfa[NROW][NCOL] = {
 
 A array_str(C *);
 A noun_start(I, C *);
+A noun_start2(I, C *);
 
 GENPRIM(bool);
+GENPRIM(int);
 GENERATE(num);
 GENERATE(char);
 
