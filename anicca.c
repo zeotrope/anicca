@@ -34,7 +34,7 @@ V a_init(V) {
 
 int main() {
      A y, z;
-     char *s = "12 23";
+     char *s = "1 1 0";
      y = noun_start(6, s);
      //z = gen_int(y, s);
      print(y);

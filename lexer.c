@@ -48,7 +48,8 @@ GENPRIM(cmp) {
 
 GENERATE(num) {
      A y, z;
-     y = noun_start(n, s);
+     y = noun_start(n+1, s);
+
      return z;
 }
 
@@ -90,7 +91,7 @@ MONAD(token_index) {
           case EO:  break;
           case EN:  { j = i; break; }
           case EW:  { v[k++] = j; v[k++] = i-j; j = i; break; }
-          case EWR: { v[k++] = j; v[k++] = i-j; j = -1; break; }
+          case EY: { v[k++] = j; v[k++] = i-j; j = -1; break; }
           case EV:  {
                if (!vec) { v[k++] = j; v[k] = i-1; jv = j; }
                else      { v[k] = i-jv; }
@@ -98,7 +99,7 @@ MONAD(token_index) {
                vec = 1;
                break;
           }
-          case EVR: {
+          case EZ: {
                if (!vec) { v[k++] = j; v[k] = i-1; jv = j; }
                else      { v[k] = i-jv; }
                j = -1;
@@ -134,8 +135,7 @@ A noun_start(I n, C *s) {
      v = (I *)AV(z);
 
      for (i = 0; i < n; i++) {
-          t = chartype[s[i]];
-          t = (t!=CS && t!=CX);
+          t = nountype[s[i]];
           pr = noun[st][t];
           e = pr.effect;
           
@@ -143,11 +143,12 @@ A noun_start(I n, C *s) {
           case EO: break;
           case EN: j = i; break;
           case EW: v[k++] = j; v[k++] = i-j; break;
+          case ES: goto end_noun;
           }
 
           st = pr.new;
      }
-     
+end_noun:    
      v[0] = k/2;
      return z;
 }
