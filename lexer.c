@@ -8,48 +8,50 @@
 
 /* 
    Generation functions
-   input:  Length of word, string to be converted.
-   output: Array corresponding to the type of word.
+   input:  Boxed token indicies, string to be converted.
+   output: Noun with corresponding value and type.
 */
 GENPRIM(bool) {
-     A z;
-     B *v;
-     I *indx = (I *)AV(y), m = *indx++;
-     
-     z = gen_array(BOOL, 1, m, NULL);
-     v = (B *)AV(z);
-     DO(m, v[i] = (s[indx[i]]=='_') ? -(s[indx[i]+1]-'0'):s[indx[i]]-'0');
-
-     return z;
+     A z; return z;
 }
 
 GENPRIM(int) {
      A z;
-     I si, num, *v, *indx = (I *)AV(y), m = *indx++;
-     
-     z = gen_array(INT, 1, m, NULL);
-     printf("%d\n", m);
-     DO(m,
-        //s[indx[i]] = (s[indx[i]]=='_' ? '-' : s[indx[i]]);
-        printf("%d %d %d\n", i, indx[i], indx[i+1]);
-        v[i] = strtol(s+indx[i], NULL, 10);
-          );
+     C *e;
+     I *indx = (I *)AV(y), m = *indx++, j = 0, *v;
 
+     z = gen_array(INT, 1, m, NULL);
+     v = (I *)AV(z);
+     DO(m, j=i+i; v[i] = strtol(s+indx[j], &e, 10));
+     
      return z;
 }
 
 GENPRIM(flt) {
-     A z; return z;
+     A z;
+     C *e;
+     I *indx = (I *)AV(y), m = *indx++, j = 0;
+     D *v;
+
+     z = gen_array(FLT, 1, m, NULL);
+     v = (D *)AV(z);
+     DO(m, j=i+i; v[i] = strtod(s+indx[j], &e));
+     
+     return z;
 }
 
-GENPRIM(cmp) {
+GENPRIM(cmpx) {
      A z; return z;
 }
 
 GENERATE(num) {
      A y, z;
-     y = noun_start(n+1, s);
-
+     C c, *v = s;
+     y = noun_index(n+1, s);
+     DO(n, if (v[i]=='_') { v[i]='-'; });
+     z = gen_flt(y, s);
+     /* free noun_index? */
+     a_free(y);
      return z;
 }
 
@@ -60,17 +62,14 @@ GENERATE(char) {
      s++; n-=2;
      z = gen_array(CHAR, 1, n, NULL);
      v = (C *)AV(z);
-
-     if (n > 0) {
-          strncpy(v, s, n);
-     }
+     if (n > 0) { strncpy(v, s, n); }
      return z;
 }
 
 /*
   token_index
   input:  Boxed string to be lexed.
-  output: Number of pairs ; Array of pairs, start and length of tokens.
+  output: Number of tokens ; Array of pairs, start and length of tokens.
 */
 MONAD(token_index) {
      A z; 
@@ -88,11 +87,11 @@ MONAD(token_index) {
           sn = pr.new;
 
           switch (e) {
-          case EO:  break;
-          case EN:  { j = i; break; }
-          case EW:  { v[k++] = j; v[k++] = i-j; j = i; break; }
+          case EO: break;
+          case EN: { j = i; break; }
+          case EW: { v[k++] = j; v[k++] = i-j; j = i; break; }
           case EY: { v[k++] = j; v[k++] = i-j; j = -1; break; }
-          case EV:  {
+          case EV: {
                if (!vec) { v[k++] = j; v[k] = i-1; jv = j; }
                else      { v[k] = i-jv; }
                j = i;
@@ -123,9 +122,9 @@ end:
 /* 
    noun_start
    input:  String of noun.
-   output: Number of nouns ; Start indicies of atomic nouns within string.
+   output: Number of nouns ; Start indicies and length of atomic nouns.
 */
-A noun_start(I n, C *s) {
+A noun_index(I n, C *s) {
      A z;
      C st = SS, e, t;
      I m = 1+n, k = 1, j = 1, i, *v;
@@ -138,7 +137,7 @@ A noun_start(I n, C *s) {
           t = nountype[s[i]];
           pr = noun[st][t];
           e = pr.effect;
-          
+
           switch (e) {
           case EO: break;
           case EN: j = i; break;
@@ -156,14 +155,14 @@ end_noun:
 /*
   tokens
   input: x: token indicies, start and length.
-         y: characters to be tokenized.
+         y: Boxed string to be tokenized.
   output: List of tokens.
  */
 DYAD(tokens) {
      A z, *av;
      C *s, *str = (C *)AV(y);
      I i, ws, wl, n, t, *v = (I *)AV(x);
-     
+
      n = *v++;
      z = gen_array(BOX, 1, n+5, NULL);
      av = (A *)AV(z);

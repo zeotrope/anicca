@@ -8,6 +8,7 @@
 V print(A y) {
      C *cv;
      I *iv;
+     D *fv;
      switch (AT(y)) {
      case BOOL: {
           cv = (B *)AV(y);
@@ -24,6 +25,11 @@ V print(A y) {
           DO(AN(y), printf("%d ", iv[i]));
           break;
      }
+     case FLT: {
+          fv = (D *)AV(y);
+          DO(AN(y), printf("%lf ", fv[i]));
+          break;
+     }
      }
      printf("\n");
 }
@@ -33,10 +39,11 @@ V a_init(V) {
 }
 
 int main() {
-     A y, z;
-     char *s = "1 1 0";
-     y = noun_start(6, s);
-     //z = gen_int(y, s);
-     print(y);
+     A x, y, z;
+     char *s = "1.3 _2 3.5 4.3";
+     x = array_str(strlen(s)+1, s);
+     y = token_index(x);
+     z = tokens(y, x);
+     print(*(A *)AV(z));
      return 0;
 }

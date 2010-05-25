@@ -2,7 +2,7 @@
 #define _ANICCA_H
 
 #define DO(n, body) {               \
-          I i = 0;                \
+          I i = 0;                  \
           for (i = 0; i < n; i++) { \
                body;                \
           }                         \
@@ -37,21 +37,23 @@ typedef struct _array {
 } *A;
 
 
+#define ANY  -1
 #define BOOL (1<<1)
 #define CHAR (1<<2)
 #define INT  (1<<3)
 #define FLT  (1<<4)
-#define CMP  (1<<5)
+#define CMPX (1<<5)
 #define BOX  (1<<6)
 #define VERB (1<<7)
-#define CONJ (1<<8)
-#define ADV  (1<<9)
-#define LPAR (1<<10)
-#define RPAR (1<<11)
-#define ASGN (1<<12)
-#define MARK (1<<13)
+#define ADV  (1<<8)
+#define CONJ (1<<9)
+#define NAME (1<<10)
+#define LPAR (1<<11)
+#define RPAR (1<<12)
+#define ASGN (1<<13)
+#define MARK (1<<14)
 
-#define NUMERIC (BOOL | INT | FLT | CMP)
+#define NUMERIC (BOOL | INT | FLT | CMPX)
 #define NOUN    (NUMERIC | CHAR | BOX)
 #define FUNC    (VERB | CONJ | ADV)
 

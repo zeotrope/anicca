@@ -5,16 +5,16 @@
 #define GENERATE(type) A gen_ ## type(I n, C *s)
 
 typedef enum {
-     SS,  /* Space            */
-     SX,  /* Unknown          */
-     SA,  /* Alphanumeric     */
-     SN,  /* N                */
+     SS, /* Space            */
+     SX, /* Unknown          */
+     SA, /* Alphanumeric     */
+     SN, /* N                */
      SM, /* NB               */
      SO, /* NB.              */
-     S9,  /* Number           */
-     SQ,  /* Quote            */
-     SC,  /* Even Quote       */
-     SZ   /* Trailing Comment */
+     S9, /* Number           */
+     SQ, /* Quote            */
+     SC, /* Even Quote       */
+     SZ  /* Trailing Comment */
 } STATE;
 
 typedef enum {
@@ -29,7 +29,6 @@ typedef enum {
      CQ, /* "'"   */
      END = -1
 } CHARTYPE;
-
 
 typedef enum {
      EO, /* No effect */
@@ -121,16 +120,18 @@ static ST dfa[DROW][DCOL] = {
 
 /*-----------------------------------------------------------------------------*/
 
-A array_str(C *);
-A noun_start(I, C *);
-A noun_start2(I, C *);
-
 GENPRIM(bool);
 GENPRIM(int);
+GENPRIM(flt);
+GENPRIM(cmpx);
+GENPRIM(ext);
+GENPRIM(rat);
+
 GENERATE(num);
 GENERATE(char);
 
 MONAD(token_index);
+A noun_index(I, C *);
 DYAD(tokens);
 
 #endif

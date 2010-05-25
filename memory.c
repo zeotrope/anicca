@@ -29,7 +29,7 @@ I type_size(I type) {
      case CHAR: return sizeof(char);          break;
      case INT:  return sizeof(int);           break;
      case FLT:  return sizeof(double);        break;
-     case CMP:  return sizeof(Z);             break;
+     case CMPX: return sizeof(Z);             break;
      case BOX:  return sizeof(struct _array); break;
      }
      return sizeof(int);
@@ -53,9 +53,8 @@ A gen_array(I t, I r, I n, I *s) {
   input: String
   output: Boxed String
 */
-A array_str(C *str) {
+A array_str(I n, C *str) {
      A z;
-     I n = strlen(str)+1;
      z = gen_array(CHAR, 1, n, NULL);
      memcpy(AV(z), str, n);
      return z;

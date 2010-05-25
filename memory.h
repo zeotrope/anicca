@@ -5,6 +5,7 @@ V *a_malloc(I);
 V a_free(A);
 I type_size(I);
 A gen_array(I, I, I, I *);
+A array_str(I n, C *);
 V array_inspect(A);
 
 #endif

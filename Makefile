@@ -1,5 +1,5 @@
 
-OBJS=  memory.o lexer.o verb.o anicca.o
+OBJS=  memory.o lexer.o parser.o verb.o anicca.o
 
 all: anicca
 
@@ -10,6 +10,9 @@ anicca.o: anicca.c anicca.h
 	$(CC) -c -o $@ $<
 
 verb.o: verb.c verb.h
+	$(CC) -c -o $@ $<
+
+parser.o: parser.c parser.h
 	$(CC) -c -o $@ $<
 
 lexer.o: lexer.c lexer.h
