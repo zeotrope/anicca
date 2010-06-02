@@ -40,10 +40,9 @@ V a_init(V) {
 
 int main() {
      A x, y, z;
-     char *s = "1.3 _2 3.5 4.3";
+     char *s = "1 2 3";
      x = array_str(strlen(s)+1, s);
      y = token_index(x);
-     z = tokens(y, x);
-     print(*(A *)AV(z));
+     print(y);
      return 0;
 }

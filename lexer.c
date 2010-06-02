@@ -11,6 +11,35 @@
    input:  Boxed token indicies, string to be converted.
    output: Noun with corresponding value and type.
 */
+
+/*
+  LL(1) Numeric Constants Grammar
+ 
+  E0 -> E$
+  
+  E  -> E2 E'
+  E' ->  epsilon | b E2
+  
+  E2  -> E3 E2'
+  E2' -> epsilon | p E3 | x E3
+  
+  E3  -> E4 E3'
+  E3' -> epsilon | ad E4 | ar E4 | j E4
+  
+  E4  -> E5 E4'
+  E4' -> epsilon | e E5
+  
+  E5  -> E6 E5'
+  E5' -> epsilon | r E6
+  
+  E6 -> _ E7
+  
+  E7  -> E8 E7'
+  E7' -> epsilon | . E8
+  
+  E8 -> num
+*/
+
 GENPRIM(bool) {
      A z; return z;
 }
@@ -47,11 +76,13 @@ GENPRIM(cmpx) {
 GENERATE(num) {
      A y, z;
      C c, *v = s;
+
      y = noun_index(n+1, s);
      DO(n, if (v[i]=='_') { v[i]='-'; });
      z = gen_flt(y, s);
      /* free noun_index? */
      a_free(y);
+
      return z;
 }
 
@@ -63,6 +94,7 @@ GENERATE(char) {
      z = gen_array(CHAR, 1, n, NULL);
      v = (C *)AV(z);
      if (n > 0) { strncpy(v, s, n); }
+
      return z;
 }
 
@@ -115,7 +147,7 @@ MONAD(token_index) {
           s = sn;
      }
 end:
-     v[0] = k-1;
+     v[0] = k/2;
      return z;
 }
 

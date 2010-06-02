@@ -34,3 +34,7 @@ ACTION(is) {
 ACTION(paren) {
      A z; return z;
 }
+
+A parse(A tokens) {
+     A z; return z;
+}
