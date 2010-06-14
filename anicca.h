@@ -1,12 +1,12 @@
 #ifndef _ANICCA_H
 #define _ANICCA_H
 
-#define DO(n, body) {               \
-          I i = 0;                  \
-          for (i = 0; i < n; i++) { \
-               body;                \
-          }                         \
-}
+#define DO(n, body) {                           \
+        I i = 0;                                \
+        for (i = 0; i < n; i++) {               \
+            body;                               \
+        }                                       \
+    }
 
 typedef int    I;
 typedef char   C;
@@ -18,8 +18,8 @@ typedef void   V;
 #define ZI(z) ((z)->imaginary)
 
 typedef struct _complex {
-     D real;
-     D imaginary;
+    D real;
+    D imaginary;
 } Z;
 
 #define AT(a) ((a)->type)
@@ -29,11 +29,11 @@ typedef struct _complex {
 #define AV(a) ((a)->value)
 
 typedef struct _array {
-     I type;
-     I rank;
-     I num;
-     I *shape;
-     V *value;
+    I type;
+    I rank;
+    I num;
+    I *shape;
+    V *value;
 } *A;
 
 
