@@ -1,1 +1,7 @@
 Prototype J interpreter.
+
+Objectives:
+
+- Implement a J engine, an interpreter capable of executing expression as
+  specified in the J Dictionary by Roger K W Hui and Kenneth E Iverson.
+  http://www.jsoftware.com/help/dictionary/contents.htm

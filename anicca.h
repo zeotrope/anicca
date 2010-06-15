@@ -1,11 +1,11 @@
 #ifndef _ANICCA_H
 #define _ANICCA_H
 
-#define DO(n, body) {                           \
-        I i = 0;                                \
-        for (i = 0; i < n; i++) {               \
-            body;                               \
-        }                                       \
+#define DO(n, body) {             \
+        I i = 0;                  \
+        for (i = 0; i < n; i++) { \
+            body;                 \
+        }                         \
     }
 
 typedef int    I;
