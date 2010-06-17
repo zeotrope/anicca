@@ -4,14 +4,14 @@
 typedef struct _noun {
     I t;
     union val {
-        C b;
+        B b;
         I i;
         D d;
         Z z;
     } val;
 } N;
 
-#define ATOMFUNC(name) static N a ## name(N *a, N b)
+#define ATOMFUNC(name) static B a ## name(N *a, N b)
 #define PARSE(name)    static B parse_ ## name(I n, C *s, N *a)
 
 ATOMFUNC(base);

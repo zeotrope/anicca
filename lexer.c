@@ -12,7 +12,6 @@
    input:  Output of noun_index, string to be converted.
    output: Noun with corresponding value and type.
 */
-
 GENERATE(char) {
     A z;
     C *v;

@@ -6,13 +6,33 @@
 #include "noun.h"
 #include "util.h"
 
-ATOMFUNC(base) { }
-ATOMFUNC(pitime) { }
-ATOMFUNC(euler) { }
-ATOMFUNC(cmpx) { }
-ATOMFUNC(angr) { }
-ATOMFUNC(angd) { }
-ATOMFUNC(exp) { }
+ATOMFUNC(base) {
+    return 1;
+}
+
+ATOMFUNC(pitime) {
+    return 1;
+}
+
+ATOMFUNC(euler) {
+    return 1;
+}
+
+ATOMFUNC(cmpx) {
+    return 1;
+}
+
+ATOMFUNC(angr) {
+    return 1;
+}
+
+ATOMFUNC(angd) {
+    return 1;
+}
+
+ATOMFUNC(exp) {
+    return 1;
+}
 
 PARSE(atom) {
     N res;
@@ -24,11 +44,15 @@ PARSE(atom) {
 }
 
 PARSE(base) {
+    C *c;
     N b;
 
-    parse_pi(n, s, a);
-    if (s[0] == 'b') {
-        parse_pi(n, s, &b);
+    c = memchr(s, 'b', n);
+    parse_pi(c?c-s:n, s, a);
+
+    if (c) {
+        c++;
+        parse_pi(n+s-c, c, &b);
         abase(a, b);
     }
 
@@ -36,15 +60,21 @@ PARSE(base) {
 }
 
 PARSE(pi) {
+    C *p, *x;
     N b;
 
-    parse_pi(n, s, a);
-    if (s[0] == 'p') {
-        parse_pi(n, s, &b);
+    p = memchr(s, 'p', n);
+    x = memchr(s, 'x', n);
+    parse_cmpx(p?p-s:x?x-s:n, s, a);
+
+    if (p) {
+        p++;
+        parse_cmpx(n+s-p, p, &b);
         apitime(a, b);
     }
-    else if (s[0] == 'x') {
-        parse_pi(n, s, &b);
+    else if (x) {
+        x++;
+        parse_cmpx(n+s-x, x, &b);
         aeuler(a, b);
     }
 
@@ -52,20 +82,27 @@ PARSE(pi) {
 }
 
 PARSE(cmpx) {
+    C *j, *r;
     N b;
 
-    parse_exp(n, s, a);
-    if (s[0] == 'j') {
-        parse_exp(n, s, &b);
+    j = memchr(s, 'j', n);
+    r = memchr(s, 'a', n);
+    parse_exp(j?j-s:r?r-s:n, s, a);
+
+    if (j) {
+        j++;
+        parse_exp(n+s-j, j, &b);
         acmpx(a, b);
     }
-    else if (s[0] == 'a') {
-        if (s[1] == 'd') {
-            parse_exp(n, s, &b);
+    else if (r) {
+        if (*r == 'd') {
+            r++;
+            parse_exp(n+s-r, r, &b);
             aangd(a, b);
         }
-        else if (s[1] == 'r') {
-            parse_exp(n, s, &b);
+        else if (*r == 'r') {
+            r++;
+            parse_exp(n+s-r, r, &b);
             aangr(a, b);
         }
     }
@@ -74,18 +111,27 @@ PARSE(cmpx) {
 }
 
 PARSE(exp) {
+    C *e;
     N b;
 
-    parse_num(n, s, a);
-    if (s[0] == 'e') {
-        parse_num(n, s, &b);
+    e = memchr(s, 'e', n);
+    if (!e) { e = memchr(s, 'E', n); }
+    parse_num(e?e-s:n, s, a);
+
+    if (e) {
+        e++;
+        parse_num(n+s-e, e, &b);
         aexp(a, b);
     }
+
+    return 1;
 }
 
 PARSE(num) {
-    C *e;
-    if (memchr(s, '.', n)) {
+    C *d, *e;
+
+    d = memchr(s, '.', n);
+    if (d) {
         a->val.d = strtod(s, &e);
     }
     else {
