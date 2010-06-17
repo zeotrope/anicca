@@ -5,86 +5,13 @@
 #include "anicca.h"
 #include "memory.h"
 #include "lexer.h"
+#include "noun.h"
 
 /* 
    Generation functions
-   input:  Boxed token indicies, string to be converted.
+   input:  Output of noun_index, string to be converted.
    output: Noun with corresponding value and type.
 */
-
-/*
-  LL(1) Numeric Constants Grammar
- 
-  E0 -> E$
-  
-  E  -> E2 E'
-  E' ->  epsilon | b E2
-  
-  E2  -> E3 E2'
-  E2' -> epsilon | p E3 | x E3
-  
-  E3  -> E4 E3'
-  E3' -> epsilon | ad E4 | ar E4 | j E4
-  
-  E4  -> E5 E4'
-  E4' -> epsilon | e E5
-  
-  E5  -> E6 E5'
-  E5' -> epsilon | r E6
-  
-  E6 -> _ E7
-  
-  E7  -> E8 E7'
-  E7' -> epsilon | . E8
-  
-  E8 -> num
-*/
-
-GENPRIM(bool) {
-    A z; return z;
-}
-
-GENPRIM(int) {
-    A z;
-    C *e;
-    I *indx = (I *)AV(y), m = *indx++, j = 0, *v;
-
-    z = gen_array(INT, 1, m, NULL);
-    v = (I *)AV(z);
-    DO(m, j=i+i; v[i] = strtol(s+indx[j], &e, 10));
-     
-    return z;
-}
-
-GENPRIM(flt) {
-    A z;
-    C *e;
-    I *indx = (I *)AV(y), m = *indx++, j = 0;
-    D *v;
-
-    z = gen_array(FLT, 1, m, NULL);
-    v = (D *)AV(z);
-    DO(m, j=i+i; v[i] = strtod(s+indx[j], &e));
-     
-    return z;
-}
-
-GENPRIM(cmpx) {
-    A z; return z;
-}
-
-GENERATE(num) {
-    A y, z;
-    C c, *v = s;
-
-    y = noun_index(n+1, s);
-    DO(n, if (v[i]=='_') { v[i]='-'; });
-    z = gen_flt(y, s);
-    /* free noun_index? */
-    a_free(y);
-
-    return z;
-}
 
 GENERATE(char) {
     A z;
@@ -153,12 +80,12 @@ MONAD(token_index) {
     return z;
 }
 
-/* 
-   noun_start
-   input:  String of noun.
-   output: Array in the form:
-   [number of tokens, start index token 1, length token 1, start index token 2,
-   length token 2, ..., start index token n, length token n].
+/*
+  noun_start
+  input:  String of noun.
+  output: Array in the form:
+  [number of tokens, start index token 1, length token 1, start index token 2,
+  length token 2, ..., start index token n, length token n].
 */
 A noun_index(I n, C *s) {
     A z;
@@ -173,15 +100,14 @@ A noun_index(I n, C *s) {
         t = nountype[s[i]];
         pr = noun[st][t];
         e = pr.effect;
+        st = pr.new;
 
         switch (e) {
         case EO: break;
         case EN: j = i; break;
         case EW: v[k++] = j; v[k++] = i-j; break;
-        case ES: goto end_noun;
+        case ES: goto end_noun; break;
         }
-
-        st = pr.new;
     }
   end_noun:    
     v[0] = k/2;
@@ -190,8 +116,9 @@ A noun_index(I n, C *s) {
 
 /*
   tokens
-  input: x: token indicies, start and length.
-  y: Boxed string to be tokenized.
+  input:
+    x: Output of token_index.
+    y: Boxed string to be tokenized.
   output: List of tokens.
 */
 DYAD(tokens) {
@@ -211,7 +138,7 @@ DYAD(tokens) {
 
         switch (t) {
         case C9: {
-            *av++ = gen_num(wl, s);
+            *av++ = parse_noun(wl, s);
             break;
         }
         case CQ: {
