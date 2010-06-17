@@ -1,6 +1,6 @@
 
 OBJS=  memory.o lexer.o noun.o parser.o verb.o anicca.o
-CFLAGS=-ansi -pedantic
+CFLAGS=-ansi -pedantic -g3
 
 all: anicca
 

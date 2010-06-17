@@ -11,6 +11,11 @@ typedef struct _noun {
     } val;
 } N;
 
+B noun_bval(const N *n);
+I noun_ival(const N *n);
+D noun_dval(const N *n);
+Z noun_zval(const N *n);
+
 #define ATOMFUNC(name) static N a ## name(N *a, N b)
 #define PARSE(name)    static B parse_ ## name(I n, C *s, N *a)
 
