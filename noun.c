@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "anicca.h"
@@ -49,75 +50,99 @@ ATOMFUNC(euler) { }
 ATOMFUNC(cmpx) { }
 ATOMFUNC(angr) { }
 ATOMFUNC(angd) { }
-ATOMFUNC(exp) { }
+ATOMFUNC(exp) {
+    D d;
+
+    /* TODO: it could be an integer */
+    d = noun_dval(a);
+    /* TODO: negative exponents */
+    DO(noun_ival(&b), d *= 10);
+    a->t = FLT;
+    a->val.d = d;
+    return *a;
+}
 
 PARSE(atom) {
     N res;
+    C *se;
 
-    parse_num(n, s, &res);
+    se = parse_exp(n, s, &res);
     *a = res;
 
-    return 1;
+    return se;
 }
 
 PARSE(base) {
+    C *se;
     N b;
 
-    parse_pi(n, s, a);
-    if (s[0] == 'b') {
-        parse_pi(n, s, &b);
+    se = parse_pi(n, s, a);
+    n -= (se+1) - s;
+    if (se[0] == 'b') {
+        se = parse_pi(n, se+1, &b);
         abase(a, b);
     }
 
-    return 1;
+    return se;
 }
 
 PARSE(pi) {
     N b;
+    C *se;
 
-    parse_pi(n, s, a);
-    if (s[0] == 'p') {
-        parse_pi(n, s, &b);
+    se = parse_pi(n, s, a);
+    n -= (se+1) - s;
+    if (se[0] == 'p') {
+        se = parse_pi(n, se+1, &b);
         apitime(a, b);
     }
-    else if (s[0] == 'x') {
-        parse_pi(n, s, &b);
+    else if (se[0] == 'x') {
+        se = parse_pi(n, se+1, &b);
         aeuler(a, b);
     }
 
-    return 1;
+    return se;
 }
 
 PARSE(cmpx) {
     N b;
+    C *se;
 
-    parse_exp(n, s, a);
+    se = parse_exp(n, s, a);
+    n -= se - s;
     if (s[0] == 'j') {
-        parse_exp(n, s, &b);
+        parse_exp(n-1, se+1, &b);
         acmpx(a, b);
     }
     else if (s[0] == 'a') {
         if (s[1] == 'd') {
-            parse_exp(n, s, &b);
+            se = parse_exp(n-2, se+2, &b);
             aangd(a, b);
         }
         else if (s[1] == 'r') {
-            parse_exp(n, s, &b);
+            se = parse_exp(n-2, se+2, &b);
             aangr(a, b);
         }
     }
 
-    return 1;
+    return se;
 }
 
 PARSE(exp) {
+    C *se;
     N b;
 
-    parse_num(n, s, a);
-    if (s[0] == 'e') {
-        parse_num(n, s, &b);
-        aexp(a, b);
+    se = parse_num(n, s, a);
+    n -= se - s;
+    if (se[0] == 'e') {
+        se = parse_num(n-1, se+1, &b);
+        if (b.t > INT) {
+            fprintf(stderr, "ill-formed number");
+            return NULL;
+        }
+        *a = aexp(a, b);
     }
+    return se;
 }
 
 PARSE(num) {
@@ -131,7 +156,7 @@ PARSE(num) {
         a->t = INT;
     }
 
-    return 1;
+    return e;
 }
 
 A parse_noun(I n, C *s) {
@@ -141,7 +166,7 @@ A parse_noun(I n, C *s) {
     D *dv;
     Z *zv;
     N *atm, *nouns;
-    
+
     y = noun_index(n+1, s);
     indx = (I *)AV(y);
     m = *indx++;

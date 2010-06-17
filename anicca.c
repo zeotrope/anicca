@@ -64,7 +64,7 @@ V a_init(V) {
 
 int main() {
     A x, y, z;
-    char *s = "1.5 9 3";
+    char *s = "1.5 9e2 3";
 
     a_init();
 
