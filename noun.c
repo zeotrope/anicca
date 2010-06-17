@@ -7,6 +7,7 @@
 #include "noun.h"
 #include "util.h"
 
+
 B noun_bval(const N *n) {
     switch (n->t) {
     case BOOL:return n->val.b;
@@ -44,12 +45,6 @@ Z noun_zval(const N *n) {
 }
 
 
-ATOMFUNC(base) { }
-ATOMFUNC(pitime) { }
-ATOMFUNC(euler) { }
-ATOMFUNC(cmpx) { }
-ATOMFUNC(angr) { }
-ATOMFUNC(angd) { }
 ATOMFUNC(exp) {
     D d;
 
@@ -59,8 +54,33 @@ ATOMFUNC(exp) {
     DO(noun_ival(&b), d *= 10);
     a->t = FLT;
     a->val.d = d;
-    return *a;
+    return 1;
 }
+
+ATOMFUNC(base) {
+    return 0;
+}
+
+ATOMFUNC(pitime) {
+    return 0;
+}
+
+ATOMFUNC(euler) {
+    return 0;
+}
+
+ATOMFUNC(cmpx) {
+    return 0;
+}
+
+ATOMFUNC(angr) {
+    return 0;
+}
+
+ATOMFUNC(angd) {
+    return 0;
+}
+
 
 PARSE(atom) {
     N res;
@@ -75,64 +95,80 @@ PARSE(atom) {
 PARSE(base) {
     C *se;
     N b;
+    B good;
 
     se = parse_pi(n, s, a);
+    if (!se) return NULL;
     n -= (se+1) - s;
     if (se[0] == 'b') {
         se = parse_pi(n, se+1, &b);
-        abase(a, b);
+        if (!se) return NULL;
+        good = abase(a, b);
     }
 
-    return se;
+    return good? se : NULL;
 }
 
 PARSE(pi) {
+    C *p, *x;
     N b;
     C *se;
+    B good;
 
     se = parse_pi(n, s, a);
+    if (!se) return NULL;
     n -= (se+1) - s;
     if (se[0] == 'p') {
         se = parse_pi(n, se+1, &b);
-        apitime(a, b);
+        if (!se) return NULL;
+        good = apitime(a, b);
     }
     else if (se[0] == 'x') {
         se = parse_pi(n, se+1, &b);
-        aeuler(a, b);
+        if (!se) return NULL;
+        good = aeuler(a, b);
     }
 
-    return se;
+    return good? se : NULL;
 }
 
 PARSE(cmpx) {
+    C *j, *r;
     N b;
     C *se;
+    B good;
 
     se = parse_exp(n, s, a);
+    if (!se) return NULL;
     n -= se - s;
     if (s[0] == 'j') {
-        parse_exp(n-1, se+1, &b);
-        acmpx(a, b);
+        se = parse_exp(n-1, se+1, &b);
+        if (!se) return NULL;
+        good = acmpx(a, b);
     }
     else if (s[0] == 'a') {
         if (s[1] == 'd') {
             se = parse_exp(n-2, se+2, &b);
-            aangd(a, b);
+            if (!se) return NULL;
+            good = aangd(a, b);
         }
         else if (s[1] == 'r') {
             se = parse_exp(n-2, se+2, &b);
-            aangr(a, b);
+            if (!se) return NULL;
+            good = aangr(a, b);
         }
     }
 
-    return se;
+    return good? se : NULL;
 }
 
 PARSE(exp) {
     C *se;
     N b;
+    B good;
 
     se = parse_num(n, s, a);
+    if (!se) return NULL;
     n -= se - s;
     if (se[0] == 'e') {
         se = parse_num(n-1, se+1, &b);
@@ -140,14 +176,16 @@ PARSE(exp) {
             fprintf(stderr, "ill-formed number");
             return NULL;
         }
-        *a = aexp(a, b);
+        good = aexp(a, b);
     }
-    return se;
+    return good? se : NULL;
 }
 
 PARSE(num) {
-    C *e;
-    if (memchr(s, '.', n)) {
+    C *d, *e;
+
+    d = memchr(s, '.', n);
+    if (d) {
         a->val.d = strtod(s, &e);
         a->t = FLT;
     }

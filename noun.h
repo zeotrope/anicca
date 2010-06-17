@@ -4,7 +4,7 @@
 typedef struct _noun {
     I t;
     union val {
-        C b;
+        B b;
         I i;
         D d;
         Z z;
@@ -15,8 +15,6 @@ B noun_bval(const N *n);
 I noun_ival(const N *n);
 D noun_dval(const N *n);
 Z noun_zval(const N *n);
-
-#define ATOMFUNC(name) static N a ## name(N *a, N b)
 
 /*
   parse_*() functions
@@ -29,6 +27,17 @@ Z noun_zval(const N *n);
    or NULL if parsing fails.
  */
 #define PARSE(name)    static C* parse_ ## name(I n, C *s, N *a)
+
+/*
+  atom functions
+  input:
+    a: left parameter
+    b: right parameter
+  output:
+    a: resulting noun
+    returns 1 on success
+ */
+#define ATOMFUNC(name) static B a ## name(N *a, N b)
 
 ATOMFUNC(base);
 ATOMFUNC(pitime);
