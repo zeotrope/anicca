@@ -5,6 +5,7 @@
 #include "memory.h"
 #include "lexer.h"
 #include "noun.h"
+#include "atom.h"
 #include "util.h"
 
 
@@ -43,44 +44,6 @@ Z noun_zval(const N *n) {
     }
     return z;
 }
-
-
-ATOMFUNC(exp) {
-    D d;
-
-    /* TODO: it could be an integer */
-    d = noun_dval(a);
-    /* TODO: negative exponents */
-    DO(noun_ival(&b), d *= 10);
-    a->t = FLT;
-    a->val.d = d;
-    return 1;
-}
-
-ATOMFUNC(base) {
-    return 0;
-}
-
-ATOMFUNC(pitime) {
-    return 0;
-}
-
-ATOMFUNC(euler) {
-    return 0;
-}
-
-ATOMFUNC(cmpx) {
-    return 0;
-}
-
-ATOMFUNC(angr) {
-    return 0;
-}
-
-ATOMFUNC(angd) {
-    return 0;
-}
-
 
 PARSE(atom) {
     N res;
