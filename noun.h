@@ -11,16 +11,8 @@ typedef struct _noun {
     } val;
 } N;
 
-#define ATOMFUNC(name) static B a ## name(N *a, N b)
-#define PARSE(name)    static B parse_ ## name(I n, C *s, N *a)
 
-ATOMFUNC(base);
-ATOMFUNC(pitime);
-ATOMFUNC(euler);
-ATOMFUNC(cmpx);
-ATOMFUNC(ngr);
-ATOMFUNC(ngd);
-ATOMFUNC(exp);
+#define PARSE(name) static B parse_ ## name(I n, C *s, N *a)
 
 PARSE(atom);
 PARSE(base);

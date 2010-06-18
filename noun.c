@@ -4,35 +4,9 @@
 #include "memory.h"
 #include "lexer.h"
 #include "noun.h"
+#include "atom.h"
 #include "util.h"
 
-ATOMFUNC(base) {
-    return 1;
-}
-
-ATOMFUNC(pitime) {
-    return 1;
-}
-
-ATOMFUNC(euler) {
-    return 1;
-}
-
-ATOMFUNC(cmpx) {
-    return 1;
-}
-
-ATOMFUNC(angr) {
-    return 1;
-}
-
-ATOMFUNC(angd) {
-    return 1;
-}
-
-ATOMFUNC(exp) {
-    return 1;
-}
 
 PARSE(atom) {
     N res;
