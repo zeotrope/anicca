@@ -11,10 +11,11 @@ typedef struct _noun {
     } val;
 } N;
 
-B noun_bval(const N *n);
-I noun_ival(const N *n);
-D noun_dval(const N *n);
-Z noun_zval(const N *n);
+#define NVAL(name, t) t noun_ ## name(const N *a)
+NVAL(bval, B);
+NVAL(ival, I);
+NVAL(dval, D);
+NVAL(zval, Z);
 
 /*
   parse_*() functions

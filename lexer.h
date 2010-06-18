@@ -64,7 +64,7 @@ static C nountype[256] = {
     /*c*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
     /*d*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
     /*e*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX
-    /*0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f*/
+         /*0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f*/
 };
 
 #define NCOL 3
@@ -77,7 +77,7 @@ static ST noun[NROW][NCOL] = {
     /*SA*/ {{SM,EW},{SN,EW},{SA,EO}},
     /*SN*/ {{SM,ES},{SS,EO},{SX,EN}},
     /*SM*/ {{SS,ES},{SS,ES},{SS,ES}}
-    /*  CX      CS      CA  */
+           /*  CX      CS      CA  */
 };
 
 /* General Lexer---------------------------------------------------------------*/
@@ -98,7 +98,7 @@ static C chartype[256] = {
     /*c*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
     /*d*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
     /*e*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX
-    /*0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f*/
+         /*0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f*/
 };
 
 #define DCOL 9

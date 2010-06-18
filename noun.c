@@ -8,40 +8,48 @@
 #include "atom.h"
 #include "util.h"
 
-
-B noun_bval(const N *n) {
-    switch (n->t) {
-    case BOOL:return n->val.b;
-    case INT: return (n->val.i != 0);
+NVAL(bval, B) {
+    NUMERIC_SWITCH(
+        a->t,
+        return a->val.b,
+        return (B)(a->val.i != 0),
         /* FIXME: floating point tolerance */
-    case FLT: return (n->val.d != 0);
-    case CMPX:return (n->val.z.real != 0);
-    }
+        return (B)(a->val.d != 0),
+        return (B)(a->val.z.real != 0)
+    );
 }
-I noun_ival(const N *n) {
-    switch (n->t) {
-    case BOOL:return n->val.b;
-    case INT: return n->val.i;
-    case FLT: return (I) n->val.d;
-    case CMPX:return (I) n->val.z.real;
-    }
+
+NVAL(ival, I) {
+    NUMERIC_SWITCH(
+        a->t,
+        return (I)a->val.b,
+        return a->val.i,
+        return (I)a->val.d,
+        return (I)a->val.z.real
+    );
 }
-D noun_dval(const N *n) {
-    switch (n->t) {
-    case BOOL:return n->val.b;
-    case INT: return n->val.i;
-    case FLT: return n->val.d;
-    case CMPX:return n->val.z.real;
-    }
+
+NVAL(dval, D) {
+    NUMERIC_SWITCH(
+        a->t,
+        return (D)a->val.b,
+        return (D)a->val.i,
+        return a->val.d,
+        return a->val.z.real
+    );
 }
-Z noun_zval(const N *n) {
-    Z z = { 0, 0 };
-    switch (n->t) {
-    case BOOL:z.real = n->val.b; break;
-    case INT: z.real = n->val.i; break;
-    case FLT: z.real = n->val.d; break;
-    case CMPX:return n->val.z;
-    }
+
+NVAL(zval, Z) {
+    Z z = {0, 0};
+
+    NUMERIC_SWITCH(
+        a->t,
+        z.real = (D)a->val.b; break,
+        z.real = (D)a->val.i; break,
+        z.real = a->val.d;    break,
+        return a->val.z
+    );
+
     return z;
 }
 
@@ -163,7 +171,7 @@ PARSE(num) {
 A parse_noun(I n, C *s) {
     A y, z;
     B *bv;
-    I j, al, as, m, t = 0, *indx, *iv;
+    I j, al, as, m, k=0, t = 0, *indx, *iv;
     D *dv;
     Z *zv;
     N *atm, *nouns;
@@ -182,31 +190,28 @@ A parse_noun(I n, C *s) {
        t = MAX(t, atm->t);
     );
 
+    k = type_size(t);
     z = gen_array(t, 1, m, NULL);
 
-    switch (t) {
-    case BOOL: {
+    NUMERIC_SWITCH(
+        t
+        ,
         bv = (B *)AV(z);
         DO(m, bv[i] = noun_bval(&nouns[i]));
-        break;
-    }
-    case INT: {
+        break
+        ,
         iv = (I *)AV(z);
         DO(m, iv[i] = noun_ival(&nouns[i]));
-        break;
-    }
-    case FLT: {
+        break
+        ,
         dv = (D *)AV(z);
         DO(m, dv[i] = noun_dval(&nouns[i]));
-        break;
-    }
-    case CMPX: {
+        break
+        ,
         zv = (Z *)AV(z);
         DO(m, zv[i] = noun_zval(&nouns[i]));
-        break;
-    }
-    }
-
+        break
+    );
     return z;
 }
 
