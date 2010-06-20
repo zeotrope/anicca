@@ -1,7 +1,6 @@
 #ifndef _LEXER_H
 #define _LEXER_H
 
-#define GENPRIM(type)  A gen_ ## type(A y, C *s)
 #define GENERATE(type) A gen_ ## type(I n, C *s)
 
 typedef enum {
@@ -120,14 +119,6 @@ static ST dfa[DROW][DCOL] = {
 
 /*-----------------------------------------------------------------------------*/
 
-GENPRIM(bool);
-GENPRIM(int);
-GENPRIM(flt);
-GENPRIM(cmpx);
-GENPRIM(ext);
-GENPRIM(rat);
-
-GENERATE(num);
 GENERATE(char);
 
 MONAD(token_index);

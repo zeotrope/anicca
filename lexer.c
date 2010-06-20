@@ -9,7 +9,7 @@
 
 /* 
    Generation functions
-   input:  Output of noun_index, string to be converted.
+   input:  Length of string, String to be converted.
    output: Noun with corresponding value and type.
 */
 GENERATE(char) {
@@ -21,6 +21,41 @@ GENERATE(char) {
     v = (C *)AV(z);
     if (n > 0) { strncpy(v, s, n); }
 
+    return z;
+}
+
+
+/*
+  noun_start
+  input:  Length of noun, String of noun.
+  output: Array in the form:
+  [number of tokens, start index token 1, length token 1, start index token 2,
+  length token 2, ..., start index token n, length token n].
+*/
+A noun_index(I n, C *s) {
+    A z;
+    C st = SS, e, t;
+    I m = 1+n, k = 1, j = 1, i, *v;
+    ST pr;
+
+    z = gen_array(INT, 1, m, NULL);
+    v = (I *)AV(z);
+
+    for (i = 0; i < n; i++) {
+        t = nountype[s[i]];
+        pr = noun[st][t];
+        e = pr.effect;
+        st = pr.new;
+
+        switch (e) {
+        case EO: break;
+        case EN: j = i; break;
+        case EW: v[k++] = j; v[k++] = i-j; break;
+        case ES: goto end_noun; break;
+        }
+    }
+  end_noun:    
+    v[0] = k/2;
     return z;
 }
 
@@ -75,40 +110,6 @@ MONAD(token_index) {
         s = sn;
     }
   end:
-    v[0] = k/2;
-    return z;
-}
-
-/*
-  noun_start
-  input:  String of noun.
-  output: Array in the form:
-  [number of tokens, start index token 1, length token 1, start index token 2,
-  length token 2, ..., start index token n, length token n].
-*/
-A noun_index(I n, C *s) {
-    A z;
-    C st = SS, e, t;
-    I m = 1+n, k = 1, j = 1, i, *v;
-    ST pr;
-
-    z = gen_array(INT, 1, m, NULL);
-    v = (I *)AV(z);
-
-    for (i = 0; i < n; i++) {
-        t = nountype[s[i]];
-        pr = noun[st][t];
-        e = pr.effect;
-        st = pr.new;
-
-        switch (e) {
-        case EO: break;
-        case EN: j = i; break;
-        case EW: v[k++] = j; v[k++] = i-j; break;
-        case ES: goto end_noun; break;
-        }
-    }
-  end_noun:    
     v[0] = k/2;
     return z;
 }

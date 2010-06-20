@@ -10,32 +10,32 @@
 
 NVAL(bval, B) {
     NUMERIC_SWITCH(
-        a->t,
-        return a->val.b,
-        return (B)(a->val.i != 0),
+        NT(a),
+        return NB(a),
+        return (B)(NI(a) != 0),
         /* FIXME: floating point tolerance */
-        return (B)(a->val.d != 0),
-        return (B)(a->val.z.real != 0)
+        return (B)(ND(a) != 0),
+        return (B)(NZ(a).real != 0)
     );
 }
 
 NVAL(ival, I) {
     NUMERIC_SWITCH(
-        a->t,
-        return (I)a->val.b,
-        return a->val.i,
-        return (I)a->val.d,
-        return (I)a->val.z.real
+        NT(a),
+        return (I)NB(a),
+        return NI(a),
+        return (I)ND(a),
+        return (I)NZ(a).real
     );
 }
 
 NVAL(dval, D) {
     NUMERIC_SWITCH(
-        a->t,
-        return (D)a->val.b,
-        return (D)a->val.i,
-        return a->val.d,
-        return a->val.z.real
+        NT(a),
+        return (D)NB(a),
+        return (D)NI(a),
+        return ND(a),
+        return NZ(a).real
     );
 }
 
@@ -44,10 +44,10 @@ NVAL(zval, Z) {
 
     NUMERIC_SWITCH(
         a->t,
-        z.real = (D)a->val.b; break,
-        z.real = (D)a->val.i; break,
-        z.real = a->val.d;    break,
-        return a->val.z
+        z.real = (D)NB(a); break,
+        z.real = (D)NI(a); break,
+        z.real = ND(a);    break,
+        return NZ(a)
     );
 
     return z;
@@ -66,29 +66,31 @@ PARSE(atom) {
 PARSE(base) {
     C *se;
     N b;
-    B good;
+    B good = 1;
 
     se = parse_pi(n, s, a);
     if (!se) return NULL;
     n -= (se+1) - s;
+
     if (se[0] == 'b') {
         se = parse_pi(n, se+1, &b);
         if (!se) return NULL;
         good = abase(a, b);
     }
 
-    return good? se : NULL;
+    return good ? se : NULL;
 }
 
 PARSE(pi) {
     C *p, *x;
     N b;
     C *se;
-    B good;
+    B good = 1;
 
     se = parse_pi(n, s, a);
     if (!se) return NULL;
     n -= (se+1) - s;
+
     if (se[0] == 'p') {
         se = parse_pi(n, se+1, &b);
         if (!se) return NULL;
@@ -100,18 +102,19 @@ PARSE(pi) {
         good = aeuler(a, b);
     }
 
-    return good? se : NULL;
+    return good ? se : NULL;
 }
 
 PARSE(cmpx) {
     C *j, *r;
     N b;
     C *se;
-    B good;
+    B good = 1;
 
     se = parse_exp(n, s, a);
     if (!se) return NULL;
     n -= se - s;
+
     if (s[0] == 'j') {
         se = parse_exp(n-1, se+1, &b);
         if (!se) return NULL;
@@ -130,17 +133,18 @@ PARSE(cmpx) {
         }
     }
 
-    return good? se : NULL;
+    return good ? se : NULL;
 }
 
 PARSE(exp) {
     C *se;
     N b;
-    B good;
+    B good = 1;
 
     se = parse_num(n, s, a);
     if (!se) return NULL;
     n -= se - s;
+
     if (se[0] == 'e') {
         se = parse_num(n-1, se+1, &b);
         if (b.t > INT) {
@@ -149,20 +153,21 @@ PARSE(exp) {
         }
         good = aexp(a, b);
     }
-    return good? se : NULL;
+    return good ? se : NULL;
 }
 
 PARSE(num) {
     C *d, *e;
 
     d = memchr(s, '.', n);
+
     if (d) {
-        a->val.d = strtod(s, &e);
-        a->t = FLT;
+        ND(a) = strtod(s, &e);
+        NT(a) = FLT;
     }
     else {
-        a->val.i = strtol(s, &e, 10);
-        a->t = INT;
+        NI(a) = strtol(s, &e, 10);
+        NT(a) = INT;
     }
 
     return e;
@@ -179,7 +184,7 @@ A parse_noun(I n, C *s) {
     y = noun_index(n+1, s);
     indx = (I *)AV(y);
     m = *indx++;
-    nouns = (N *)malloc(sizeof(N)*m);
+    nouns = (N *)a_malloc(sizeof(N)*m);
 
     DO(m,
        j  = i+i;
@@ -187,7 +192,7 @@ A parse_noun(I n, C *s) {
        al = indx[j+1];
        atm = &nouns[i];
        parse_atom(al, &s[as], atm); /* check error */
-       t = MAX(t, atm->t);
+       t = MAX(t, NT(atm));
     );
 
     k = type_size(t);
@@ -214,4 +219,3 @@ A parse_noun(I n, C *s) {
     );
     return z;
 }
-

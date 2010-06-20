@@ -11,7 +11,15 @@ typedef struct _noun {
     } val;
 } N;
 
+#define NT(n) (n->t)
+#define NV(n) (n->val)
+#define NB(n) (NV(n).b)
+#define NI(n) (NV(n).i)
+#define ND(n) (NV(n).d)
+#define NZ(n) (NV(n).z)
+
 #define NVAL(name, t) t noun_ ## name(const N *a)
+
 NVAL(bval, B);
 NVAL(ival, I);
 NVAL(dval, D);
@@ -26,8 +34,8 @@ NVAL(zval, Z);
    a: noun result of parsing
    returns pointer to character after last used in parsing,
    or NULL if parsing fails.
- */
-#define PARSE(name)    static C* parse_ ## name(I n, C *s, N *a)
+*/
+#define PARSE(name) static C* parse_ ## name(I n, C *s, N *a)
 
 PARSE(atom);
 PARSE(base);
