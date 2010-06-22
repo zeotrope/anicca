@@ -87,14 +87,14 @@ MONAD(token_index) {
         case EW: { v[k++] = j; v[k++] = i-j; j = i; break; }
         case EY: { v[k++] = j; v[k++] = i-j; j = -1; break; }
         case EV: {
-            if (!vec) { v[k++] = j; v[k] = i-1; jv = j; }
+            if (!vec) { v[k++] = j; v[k] = i-j; jv = j; }
             else      { v[k] = i-jv; }
             j = i;
             vec = 1;
             break;
         }
         case EZ: {
-            if (!vec) { v[k++] = j; v[k] = i-1; jv = j; }
+            if (!vec) { v[k++] = j; v[k] = i-j; jv = j; }
             else      { v[k] = i-jv; }
             j = -1;
             vec = 1;
