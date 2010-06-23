@@ -48,6 +48,11 @@ A gen_array(I t, I r, I n, I *s) {
     return z;
 }
 
+V resize_array(A y, I t, I n) {
+    AN(y) = n;
+    AV(y) = realloc(AV(y), type_size(t)*n);
+}
+
 /*
   array_str
   input: String

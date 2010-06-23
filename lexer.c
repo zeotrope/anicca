@@ -24,18 +24,17 @@ GENERATE(char) {
     return z;
 }
 
-
 /*
   noun_start
   input:  Length of noun, String of noun.
-  output: Array in the form:
-  [number of tokens, start index token 1, length token 1, start index token 2,
+  output: Array of size 2n, in the form:
+  [start index token 1, length token 1, start index token 2,
   length token 2, ..., start index token n, length token n].
 */
 A noun_index(I n, C *s) {
     A z;
     C st = SS, e, t;
-    I m = 1+n, k = 1, j = 1, i, *v;
+    I m = 1+n,  j = 0, k = 0, i, *v;
     ST pr;
 
     z = gen_array(INT, 1, m, NULL);
@@ -55,21 +54,22 @@ A noun_index(I n, C *s) {
         }
     }
   end_noun:    
-    v[0] = k/2;
+    resize_array(z, INT, k);
+    AN(z) = k;
     return z;
 }
 
 /*
   token_index
   input:  Boxed string to be lexed.
-  output: Array in the form:
-  [number of tokens, start index token 1, length token 1, start index token 2,
+  output: Array of size 2n, in the form:
+  [start index token 1, length token 1, start index token 2,
   length token 2, ..., start index token n, length token n].
 */
 MONAD(token_index) {
     A z; 
     C vec = 0, e, t, s = SS, sn, *str = (C *)AV(y);
-    I i, jv, j = 0, k = 1, n = AN(y), *v;
+    I i, jv, j = 0, k = 0, n = AN(y), *v;
     ST pr;
 
     z = gen_array(INT, 1, n+n, NULL);
@@ -110,7 +110,8 @@ MONAD(token_index) {
         s = sn;
     }
   end:
-    v[0] = k/2;
+    resize_array(z, INT, k);
+    AN(z) = k;
     return z;
 }
 
@@ -124,30 +125,31 @@ MONAD(token_index) {
 DYAD(tokens) {
     A z, *av;
     C *s, *str = (C *)AV(y);
-    I i, ws, wl, n, t, *v = (I *)AV(x);
+    I j, ws, wl, n, t, *indx = (I *)AV(x);
 
-    n = *v++;
-    z = gen_array(BOX, 1, n+5, NULL);
+    n = AN(x)/2;
+    z = gen_array(BOX, 1, n+4, NULL);
     av = (A *)AV(z);
 
-    for (i = 0; i < n; i++) {
-        ws = v[i];
-        wl = v[i+1];
-        s = &str[ws];
-        t = chartype[*s];
+    DO(n,
+       j = i+i;
+       ws = indx[j];
+       wl = indx[j+1];
+       s = &str[ws];
+       t = chartype[*s];
+       
+       switch (t) {
+       case C9: {
+           *av++ = parse_noun(wl, s);
+           break;
+       }
+       case CQ: {
+           *av++ = gen_char(wl, s);
+           break;
+       }
+       }
+    );       
 
-        switch (t) {
-        case C9: {
-            *av++ = parse_noun(wl, s);
-            break;
-        }
-        case CQ: {
-            *av++ = gen_char(wl, s);
-            break;
-        }
-        }
-    }
-
-    DO(5, *av++ = mark);
+    DO(4, *av++ = mark);
     return z;
 }

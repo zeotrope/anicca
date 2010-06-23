@@ -43,7 +43,7 @@ NVAL(zval, Z) {
     Z z = {0, 0};
 
     NUMERIC_SWITCH(
-        a->t,
+        NT(a),
         z.real = (D)NB(a); break,
         z.real = (D)NI(a); break,
         z.real = ND(a);    break,
@@ -87,17 +87,17 @@ PARSE(pi) {
     C *se;
     B good = 1;
 
-    se = parse_pi(n, s, a);
+    se = parse_cmpx(n, s, a);
     if (!se) return NULL;
     n -= (se+1) - s;
 
     if (se[0] == 'p') {
-        se = parse_pi(n, se+1, &b);
+        se = parse_cmpx(n, se+1, &b);
         if (!se) return NULL;
         good = apitime(a, b);
     }
     else if (se[0] == 'x') {
-        se = parse_pi(n, se+1, &b);
+        se = parse_cmpx(n, se+1, &b);
         if (!se) return NULL;
         good = aeuler(a, b);
     }
@@ -176,14 +176,14 @@ PARSE(num) {
 A parse_noun(I n, C *s) {
     A y, z;
     B *bv;
-    I j, al, as, m, k=0, t = 0, *indx, *iv;
+    I al, as, m, j, k = 0, t = 0, *indx, *iv;
     D *dv;
     Z *zv;
     N *atm, *nouns;
 
     y = noun_index(n+1, s);
     indx = (I *)AV(y);
-    m = *indx++;
+    m = AN(y)/2;
     nouns = (N *)a_malloc(sizeof(N)*m);
 
     DO(m,
@@ -195,7 +195,6 @@ A parse_noun(I n, C *s) {
        t = MAX(t, NT(atm));
     );
 
-    k = type_size(t);
     z = gen_array(t, 1, m, NULL);
 
     NUMERIC_SWITCH(
