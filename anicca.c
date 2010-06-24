@@ -4,54 +4,24 @@
 #include "memory.h"
 #include "lexer.h"
 #include "verb.h"
+#include "util.h"
 
 V print(A y) {
-    C *cv;
-    I *iv;
-    D *fv;
-    A *bv;
-
     if (!y) {
         printf("NULL");
         return;
     }
-    switch (AT(y)) {
-    case BOOL: {
-        cv = (B *)AV(y);
-        DO(AN(y), printf("%d ", (I)cv[i]));
-        break;
-    }
-    case CHAR: {
-        cv = (C *)AV(y);
-        DO(AN(y), printf("%c", cv[i]));
-        break;
-    }
-    case INT: {
-        iv = (I *)AV(y);
-        DO(AN(y), printf("%d ", iv[i]));
-        break;
-    }
-    case FLT: {
-        fv = (D *)AV(y);
-        DO(AN(y), printf("%lf ", fv[i]));
-        break;
-    }
-    case BOX: {
-        bv = (A *)AV(y);
-        /* TODO?: fancy line drawings */
-        DO(AN(y), printf("(<"); print(bv[i]);
-           printf(")%s", (i+1 == AN(y))?"":","));
-        break;
-    }
-    case MARK: {
-        printf("MARK");
-        break;
-    }
-    default: {
-        printf("HUH?");
-        break;
-    }
-    }
+    NOUN_SWITCH(AT(y),
+                DO(AN(y), printf("%d ", bv[i])),
+                DO(AN(y), printf("%d ", cv[i])),
+                DO(AN(y), printf("%d ", iv[i])),
+                DO(AN(y), printf("%f ", fv[i])),
+                DO(AN(y), printf("%fj%f ", ZR(zv[i]), ZI(zv[i]))),
+                /* TODO?: fancy line drawings */
+                DO(AN(y), printf("(<"); print(bv[i]);
+                   printf(")%s", (i+1 == AN(y))?"":",")),
+                printf("MARK"),
+                printf("????"));
 }
 
 V println(A y) {

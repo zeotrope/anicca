@@ -14,8 +14,8 @@ typedef char   B;
 typedef double D;
 typedef void   V;
 
-#define ZR(z) ((z)->real)
-#define ZI(z) ((z)->imaginary)
+#define ZR(z) ((z).real)
+#define ZI(z) ((z).imaginary)
 
 typedef struct _complex {
     D real;
