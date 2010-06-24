@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 #include "anicca.h"
 #include "memory.h"
 
@@ -48,6 +49,43 @@ A gen_array(I t, I r, I n, I *s) {
     return z;
 }
 
+A gen_farray(D *d, I n) {
+    A z;
+    D *zv;
+
+    z = gen_array(FLT, 1, n, NULL);
+    zv = AV(z);
+    DO(n, zv[i] = d[i]);
+
+    return z;
+}
+
+A gen_iarray(I *ints, I n) {
+    A z;
+    I *zv;
+
+    z = gen_array(INT, 1, n, NULL);
+    zv = AV(z);
+    DO(n, zv[i] = ints[i]);
+
+    return z;
+}
+
+A gen_test_array(I n, ...) {
+    va_list ap;
+    A z, *zv;
+
+    z = gen_array(BOX, 1, n+4, NULL);
+    zv = AV(z);
+    va_start(ap, n);
+
+    DO(n, zv[i] = va_arg(ap, A));
+
+    DO(4, zv[n+i] = mark);
+    va_end(ap);
+    return z;
+}
+
 V resize_array(A y, I t, I n) {
     AN(y) = n;
     AV(y) = realloc(AV(y), type_size(t)*n);
@@ -58,7 +96,7 @@ V resize_array(A y, I t, I n) {
   input: String
   output: Boxed String
 */
-A array_str(I n, C *str) {
+A array_str(I n, const C *str) {
     A z;
     z = gen_array(CHAR, 1, n, NULL);
     memcpy(AV(z), str, n);

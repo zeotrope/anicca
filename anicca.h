@@ -1,12 +1,12 @@
 #ifndef _ANICCA_H
 #define _ANICCA_H
 
-#define DO(n, body) {             \
+#define DO(n, body) do {          \
         I i = 0;                  \
         for (i = 0; i < n; i++) { \
             body;                 \
         }                         \
-}
+    } while (0);
 
 typedef int    I;
 typedef char   C;

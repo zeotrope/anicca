@@ -17,14 +17,15 @@
 /* switch-case on noun types */
 #define NOUN_SWITCH(type, bool, ch, i, flt, cmpx, box, mark, def)   \
     switch (type) {                                                 \
-    case BOOL: { B *bv = AV(y); bool; break; }                      \
-    case CHAR: { C *cv = AV(y); ch;   break; }                      \
-    case INT:  { I *iv = AV(y); i;    break; }                      \
-    case FLT:  { D *fv = AV(y); flt;  break; }                      \
-    case CMPX: { Z *zv = AV(y); cmpx; break; }                      \
-    case BOX:  { A *bv = AV(y); box;  break; }                      \
+    case BOOL: { bool; break; }                                     \
+    case CHAR: { ch;   break; }                                     \
+    case INT:  { i;    break; }                                     \
+    case FLT:  { flt;  break; }                                     \
+    case CMPX: { cmpx; break; }                                     \
+    case BOX:  { box;  break; }                                     \
     case MARK: { mark;                break; }                      \
     default:   { def;                 break; }                      \
     }
 
+#define LENGTHOF(array) (sizeof(array)/sizeof(*array))
 #endif
