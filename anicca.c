@@ -47,6 +47,14 @@ V print(A y) {
         printf("MARK");
         break;
     }
+    case LPAR: {
+        printf("LPAR");
+        break;
+    }
+    case RPAR: {
+        printf("RPAR");
+        break;
+    }
     default: {
         printf("HUH?");
         break;
@@ -61,11 +69,13 @@ V println(A y) {
 
 V a_init(V) {
     mark = gen_array(MARK, 0, 0, NULL);
+    lpar = gen_array(LPAR, 0, 0, NULL);
+    rpar = gen_array(RPAR, 0, 0, NULL);
 }
 
 int main() {
     A x, y, z;
-    char *s = "1.5 9e2 3";
+    char *s = "(1.5 9e2 3)";
 
     a_init();
 
@@ -74,5 +84,6 @@ int main() {
     println(y);
     z = tokens(y, x);
     println(z);
+    parse(z);
     return 0;
 }
