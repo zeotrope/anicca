@@ -36,5 +36,24 @@ ACTION(paren) {
 }
 
 A parse(A tokens) {
-    A z; return z;
+    I b, c, e, n = AN(tokens), m = n-4, *t;
+    A *stack = (A *)AV(tokens), *top, z;
+
+    top = &stack[m];
+
+    for (c = 0; c < CASES; c++) {
+        t = grammar[c].t;
+        if (AT(top[0])&t[0] && AT(top[1])&t[1] &&
+            AT(top[2])&t[2] && AT(top[3])&t[3]) { break; }
+    }
+
+    if (c < CASES) {
+        b = grammar[c].b;
+        e = grammar[c].e;
+    }
+    else {
+        top--;
+    }
+
+    return z;
 }

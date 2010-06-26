@@ -124,19 +124,21 @@ MONAD(token_index) {
 */
 DYAD(tokens) {
     A z, *av;
-    C *s, *str = (C *)AV(y);
+    C c, *s, *str = (C *)AV(y);
     I j, ws, wl, n, t, *indx = (I *)AV(x);
 
     n = AN(x)/2;
-    z = gen_array(BOX, 1, n+4, NULL);
+    z = gen_array(BOX, 1, n+5, NULL);
     av = (A *)AV(z);
+    *av++ = mark;
 
     DO(n,
        j = i+i;
        ws = indx[j];
        wl = indx[j+1];
        s = &str[ws];
-       t = chartype[*s];
+       c = *s;
+       t = c=='(' ? CR : c==')' ? CL : chartype[*s];
        
        switch (t) {
        case C9: {
@@ -145,6 +147,14 @@ DYAD(tokens) {
        }
        case CQ: {
            *av++ = gen_char(wl, s);
+           break;
+       }
+       case CL: {
+           *av++ = lpar;
+           break;
+       }
+       case CR: {
+           *av++ = rpar;
            break;
        }
        }

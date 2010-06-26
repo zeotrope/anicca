@@ -15,16 +15,18 @@
 }
 
 /* switch-case on noun types */
-#define NOUN_SWITCH(type, bool, ch, i, flt, cmpx, box, mark, def)   \
-    switch (type) {                                                 \
-    case BOOL: { bool; break; }                                     \
-    case CHAR: { ch;   break; }                                     \
-    case INT:  { i;    break; }                                     \
-    case FLT:  { flt;  break; }                                     \
-    case CMPX: { cmpx; break; }                                     \
-    case BOX:  { box;  break; }                                     \
-    case MARK: { mark;                break; }                      \
-    default:   { def;                 break; }                      \
+#define NOUN_SWITCH(type, bool, ch, i, flt, cmpx, box, mark, lpar, rpar, def) \
+    switch (type) {                                                     \
+    case BOOL: { bool; break; }                                         \
+    case CHAR: { ch;   break; }                                         \
+    case INT:  { i;    break; }                                         \
+    case FLT:  { flt;  break; }                                         \
+    case CMPX: { cmpx; break; }                                         \
+    case BOX:  { box;  break; }                                         \
+    case MARK: { mark; break; }                                         \
+    case LPAR: { lpar; break; }                                         \
+    case RPAR: { rpar; break; }                                         \
+    default:   { def;  break; }                                         \
     }
 
 #define LENGTHOF(array) (sizeof(array)/sizeof(*array))

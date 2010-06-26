@@ -75,8 +75,9 @@ A gen_test_array(I n, ...) {
     va_list ap;
     A z, *zv;
 
-    z = gen_array(BOX, 1, n+4, NULL);
+    z = gen_array(BOX, 1, n+5, NULL);
     zv = AV(z);
+    *zv++ = mark;
     va_start(ap, n);
 
     DO(n, zv[i] = va_arg(ap, A));

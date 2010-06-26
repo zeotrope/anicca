@@ -61,5 +61,7 @@ typedef struct _array {
 #define DYAD(name)  A name(A x, A y)
 
 A mark;
+A lpar;
+A rpar;
 
 #endif

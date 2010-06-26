@@ -21,6 +21,8 @@ V print(A y) {
                 DO(AN(y), A *bv = AV(y); printf("(<"); print(bv[i]);
                    printf(")%s", (i+1 == AN(y))?"":",")),
                 printf("MARK"),
+                printf("LPAR"),
+                printf("RPAR"),
                 printf("????"));
 }
 
@@ -59,12 +61,16 @@ B eq(A x, A y) {
                 DO(AN(x), A *xbv = AV(x); A *ybv = AV(y);
                    if (!eq(xbv[i], ybv[i])) return 0),
                 return 1,       /* MARK, no value */
+                return 1,       /* LPAR, no value */
+                return 1,       /* RPAR, no value */
                 return 0);      /* unknown type, shouldn't happen */
     return 1;
 }
 
 V a_init(V) {
     mark = gen_array(MARK, 0, 0, NULL);
+    lpar = gen_array(LPAR, 0, 0, NULL);
+    rpar = gen_array(RPAR, 0, 0, NULL);
 }
 
 B run_test(const char *input, A expected) {
@@ -73,6 +79,7 @@ B run_test(const char *input, A expected) {
     x = array_str(strlen(input)+1, input);
     y = token_index(x);
     z = tokens(y, x);
+    parse(z);
 
     if (!eq(z, expected)) {
         printf("Test failed: %s\n", input);
@@ -90,7 +97,7 @@ struct {
     const char *input;
     A expected;
 } testcases[] = {
-    { "1.5 9e2 3", NULL },
+    { "(1.5 9e2 3)", NULL },
     { "1", NULL },
 };
 
@@ -98,7 +105,7 @@ V testcases_init() {
     D e0[] = { 1.5, 900, 3 };
     I e1[] = { 1 };
 
-    testcases[0].expected = gen_test_array(1, gen_farray(e0, LENGTHOF(e0)));
+    testcases[0].expected = gen_test_array(3, lpar, gen_farray(e0, LENGTHOF(e0)), rpar);
     testcases[1].expected = gen_test_array(1, gen_iarray(e1, LENGTHOF(e1)));
 }
 
@@ -109,5 +116,6 @@ int main() {
 
     DO(LENGTHOF(testcases),
        run_test(testcases[i].input, testcases[i].expected));
+
     return 0;
 }

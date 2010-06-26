@@ -26,6 +26,8 @@ typedef enum {
     CD, /* "."   */
     CC, /* ":"   */
     CQ, /* "'"   */
+    CR, /* R Par */
+    CL, /* L Par */
     END = -1
 } CHARTYPE;
 
