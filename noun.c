@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "anicca.h"
 #include "memory.h"
 #include "noun.h"

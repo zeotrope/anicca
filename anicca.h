@@ -46,6 +46,7 @@ typedef struct _verb {
     AF2 f2;
     A f, g, h;
     I lr, mr, rr, inv;
+    C id;
 } VE;
 
 #define ANY  -1

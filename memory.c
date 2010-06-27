@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "anicca.h"
 #include "memory.h"
 
@@ -31,6 +32,7 @@ I type_size(I type) {
     case FLT:  return sizeof(double);        break;
     case CMPX: return sizeof(Z);             break;
     case BOX:  return sizeof(struct _array); break;
+    case VERB: return sizeof(struct _verb);  break;
     }
     return sizeof(int);
 }

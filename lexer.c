@@ -5,6 +5,7 @@
 
 #include "anicca.h"
 #include "memory.h"
+#include "char.h"
 #include "table.h"
 #include "noun.h"
 #include "verb.h"
@@ -123,7 +124,7 @@ MONAD(token_index) {
 */
 DYAD(tokens) {
     A v, z, *av;
-    C c, *s, *str = (C *)AV(y);
+    C c, vn, *s, *str = (C *)AV(y);
     I j, ws, wl, n, t, *indx = (I *)AV(x);
 
     n = AN(x)/2;
@@ -138,7 +139,8 @@ DYAD(tokens) {
        s = &str[ws];
        c = *s;
        t = chartype[c];
-       v = primitive_lookup(c);
+       vn = verb_name(wl, s);
+       v = primitive_lookup(vn);
 
        if (AT(v)&MARK) {
            switch (t) {
@@ -157,7 +159,7 @@ DYAD(tokens) {
        else {
            *av++ = v;
        }
-    );       
+    );
 
     DO(4, *av++ = mark);
     return z;

@@ -9,7 +9,7 @@ anicca: $(OBJS)
 
 anicca.o:    anicca.c anicca.h
 parser.o:    parser.c parser.h
-lexer.o:     lexer.c lexer.h table.h primitive.h
+lexer.o:     lexer.c lexer.h char.h table.h primitive.h
 verb.o:      verb.c verb.h
 primitive.o: primitive.c primitive.h verb.h
 noun.o:      noun.c noun.h util.h

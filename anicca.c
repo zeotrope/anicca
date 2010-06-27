@@ -1,14 +1,18 @@
 #include <stdio.h>
 #include <string.h>
+
 #include "anicca.h"
+#include "char.h"
 #include "memory.h"
-#include "lexer.h"
 #include "verb.h"
+#include "primitive.h"
+#include "lexer.h"
 
 V print(A y) {
     C *cv;
     I *iv;
     D *fv;
+    VE *vv;
     A *bv;
 
     if (!y) {
@@ -43,6 +47,10 @@ V print(A y) {
            printf(")%s", (i+1 == AN(y))?"":","));
         break;
     }
+    case VERB: {
+        vv = VEAV(y);
+        printf("%d\n", vv->id);
+    }
     case MARK: {
         printf("MARK");
         break;
@@ -74,16 +82,14 @@ V a_init(V) {
 }
 
 int main() {
+    C *s = "(1)";
     A x, y, z;
-    char *s = "(1.5 9e2 3)";
 
     a_init();
-
     x = array_str(strlen(s)+1, s);
     y = token_index(x);
-    println(y);
     z = tokens(y, x);
     println(z);
-    parse(z);
+
     return 0;
 }

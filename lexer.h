@@ -66,6 +66,7 @@ static ST dfa[DROW][DCOL] = {
 /*-----------------------------------------------------------------------------*/
 
 A parse_literal(I n, C *s);
+A parse_verb(I n, C *s);
 
 A noun_index(I n, C *s);
 MONAD(token_index);
