@@ -49,7 +49,8 @@ V print(A y) {
     }
     case VERB: {
         vv = VEAV(y);
-        printf("%d\n", vv->id);
+        printf("%c %d", vv->id, vv->id);
+        break;
     }
     case MARK: {
         printf("MARK");
@@ -82,7 +83,7 @@ V a_init(V) {
 }
 
 int main() {
-    C *s = "(1)";
+    C *s = "(!1)";
     A x, y, z;
 
     a_init();
