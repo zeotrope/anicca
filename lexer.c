@@ -2,17 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+
 #include "anicca.h"
 #include "memory.h"
-#include "lexer.h"
+#include "table.h"
 #include "noun.h"
+#include "verb.h"
+#include "primitive.h"
+#include "lexer.h"
 
-/* 
-   Generation functions
-   input:  Length of string, String to be converted.
-   output: Noun with corresponding value and type.
-*/
-GENERATE(char) {
+A parse_literal(I n, C *s) {
     A z;
     C *v;
 
@@ -123,7 +122,7 @@ MONAD(token_index) {
   output: List of tokens.
 */
 DYAD(tokens) {
-    A z, *av;
+    A v, z, *av;
     C c, *s, *str = (C *)AV(y);
     I j, ws, wl, n, t, *indx = (I *)AV(x);
 
@@ -138,25 +137,25 @@ DYAD(tokens) {
        wl = indx[j+1];
        s = &str[ws];
        c = *s;
-       t = c=='(' ? CR : c==')' ? CL : chartype[*s];
-       
-       switch (t) {
-       case C9: {
-           *av++ = parse_noun(wl, s);
-           break;
+       t = chartype[c];
+       v = primitive_lookup(c);
+
+       if (AT(v)&MARK) {
+           switch (t) {
+           case CS:
+           case C9: {
+               *av++ = parse_noun(wl, s);
+               break;
+           }
+           case CQ: {
+               *av++ = parse_literal(wl, s);
+               break;
+           }
+           default: break; /* error */
+           }
        }
-       case CQ: {
-           *av++ = gen_char(wl, s);
-           break;
-       }
-       case CL: {
-           *av++ = lpar;
-           break;
-       }
-       case CR: {
-           *av++ = rpar;
-           break;
-       }
+       else {
+           *av++ = v;
        }
     );       
 

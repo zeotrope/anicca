@@ -3,7 +3,6 @@
 #include <string.h>
 #include "anicca.h"
 #include "memory.h"
-#include "lexer.h"
 #include "noun.h"
 #include "atom.h"
 #include "util.h"
@@ -17,6 +16,7 @@ NVAL(bval, B) {
         return (B)(ND(a) != 0),
         return (B)(NZ(a).real != 0)
     );
+    return 1;
 }
 
 NVAL(ival, I) {
@@ -27,6 +27,7 @@ NVAL(ival, I) {
         return (I)ND(a),
         return (I)NZ(a).real
     );
+    return 1;
 }
 
 NVAL(dval, D) {
@@ -37,6 +38,7 @@ NVAL(dval, D) {
         return ND(a),
         return NZ(a).real
     );
+    return 1;
 }
 
 NVAL(zval, Z) {

@@ -14,8 +14,8 @@ typedef char   B;
 typedef double D;
 typedef void   V;
 
-#define ZR(z) ((z)->real)
-#define ZI(z) ((z)->imaginary)
+#define ZR(z) ((z).real)
+#define ZI(z) ((z).imaginary)
 
 typedef struct _complex {
     D real;
@@ -36,6 +36,17 @@ typedef struct _array {
     V *value;
 } *A;
 
+typedef A(*AF1)(A);
+typedef A(*AF2)(A, A);
+
+#define VEAV(a) ((VE *)AV(a))
+
+typedef struct _verb {
+    AF1 f1;
+    AF2 f2;
+    A f, g, h;
+    I lr, mr, rr, inv;
+} VE;
 
 #define ANY  -1
 #define BOOL (1<<1)
