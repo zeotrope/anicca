@@ -1,15 +1,14 @@
 #ifndef _PARSER_H
 #define _PARSER_H
 
-#define ACTION(name) A name(I b, I e, A stack)
+#define ACTION(name) A name(I b, I e, A *stack)
 
-typedef A(*AF)(I, I, A);
+typedef A(*PF)(I, I, A *);
 
-typedef struct _parse_tree {
+typedef struct _parse_table {
     I t[4];
-    AF act;
-    I b;
-    I e;
+    PF act;
+    I b, e;
 } PT;
 
 #define AVN  (ADV | VERB | NOUN)

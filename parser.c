@@ -5,11 +5,20 @@
 #include "parser.h"
 
 ACTION(monad) {
-    A z; return z;
+    A y, v, z;
+    y = stack[e];
+    v = stack[b];
+    z = VEAV(v)->f1(y);
+    return z;
 }
 
 ACTION(dyad) {
-    A z; return z;
+    A x, y, v, z;
+    x = stack[b];
+    y = stack[e];
+    v = stack[b+1];
+    z = VEAV(v)->f2(x, y);
+    return z;
 }
 
 ACTION(adverb) {
@@ -38,9 +47,11 @@ ACTION(paren) {
 
 A parse(A tokens) {
     I b, c, e, n = AN(tokens), m = n-4, *t;
+    PF action;
     A *stack = (A *)AV(tokens), *top, z;
 
     top = &stack[m];
+    DO(3, top--); /* testing */
 
     for (c = 0; c < CASES; c++) {
         t = grammar[c].t;
@@ -51,6 +62,9 @@ A parse(A tokens) {
     if (c < CASES) {
         b = grammar[c].b;
         e = grammar[c].e;
+        action = grammar[c].act;
+        top[e] = action(b, e, top);
+        DO(b, top[--e] = top[--b]);
     }
     else {
         top--;

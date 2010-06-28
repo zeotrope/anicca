@@ -83,13 +83,15 @@ V a_init(V) {
 }
 
 int main() {
-    C *s = "(!1)";
+    C *s = "!3";
     A x, y, z;
 
     a_init();
     x = array_str(strlen(s)+1, s);
     y = token_index(x);
     z = tokens(y, x);
+    println(z);
+    parse(z);
     println(z);
 
     return 0;
