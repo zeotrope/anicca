@@ -7,6 +7,7 @@
 #include "verb.h"
 #include "primitive.h"
 #include "lexer.h"
+#include "parser.h"
 
 V print(A y) {
     C *cv;
@@ -82,16 +83,15 @@ V a_init(V) {
     rpar = gen_array(RPAR, 0, 0, NULL);
 }
 
-int main() {
-    C *s = "!3";
-    A x, y, z;
+int main(I argc, C *argv[]) {
+    C *s = argv[1] ? argv[1] : "!!5-3-1";
+    A w, x, y, z;
 
     a_init();
-    x = array_str(strlen(s)+1, s);
-    y = token_index(x);
-    z = tokens(y, x);
-    println(z);
-    parse(z);
+    w = array_str(strlen(s)+1, s);
+    x = token_index(w);
+    y = tokens(x, w);
+    z = parse(y);
     println(z);
 
     return 0;

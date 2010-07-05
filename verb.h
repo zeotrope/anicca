@@ -4,4 +4,7 @@
 MONAD(fact);
 DYAD(outof);
 
+MONAD(negate);
+DYAD(minus);
+
 #endif

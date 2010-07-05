@@ -26,3 +26,25 @@ DYAD(outof) {
 
     return z;
 }
+
+MONAD(negate) {
+    I yn = AN(y), *v, *yv = (I *)AV(y);
+    A z;
+
+    z = gen_array(INT, AR(y), yn, AS(y));
+    v = (I *)AV(z);
+    DO(yn, v[i] = - yv[i]);
+
+    return z;
+}
+
+DYAD(minus) {
+    I yn = AN(y), *v, *xv = (I *)AV(x), *yv = (I *)AV(y);
+    A z;
+
+    z = gen_array(INT, AR(y), yn, AS(y));
+    v = (I *)AV(z);
+    DO(yn, v[i] = xv[i] - yv[i]);
+
+    return z;
+}

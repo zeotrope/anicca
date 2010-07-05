@@ -38,4 +38,6 @@ static PT grammar[CASES] = {
     {LPAR,      CAVN,      RPAR, ANY,       paren,  0, 2}  /* Paren  */
 };
 
+A parse(A tokens);
+
 #endif

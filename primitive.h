@@ -31,18 +31,22 @@ static C primindx[256] = {
 
 /*-----------------------------------------------------------------------------*/
 
-#define NPRIM 9
+#define NPRIM 13
 
 static P primitives[NPRIM+1] = {
-    /* 0   0  */ {0,    0,    0,     0, 0, 0, 0},
-    /* 1 ! 33 */ {VERB, fact, outof, 0, 0, 0, 0},
-    /* 2 " 34 */ {CONJ, NULL, NULL,  0, 0, 0, 0},
-    /* 3 # 35 */ {VERB, NULL, NULL,  0, 0, 0, 0},
-    /* 4 $ 36 */ {VERB, NULL, NULL,  0, 0, 0, 0},
-    /* 5 % 37 */ {VERB, NULL, NULL,  0, 0, 0, 0},
-    /* 6 & 38 */ {CONJ, NULL, NULL,  0, 0, 0, 0},
-    /* 7 ( 40 */ {LPAR, NULL, NULL,  0, 0, 0, 0},
-    /* 8 ) 41 */ {RPAR, NULL, NULL,  0, 0, 0, 0}
+    /* 0     0  */ {0,    0,      0,     0, 0, 0, 0},
+    /* 1  !  33 */ {VERB, fact,   outof, 0, 0, 0, 0},
+    /* 2  "  34 */ {CONJ, NULL,   NULL,  0, 0, 0, 0},
+    /* 3  #  35 */ {VERB, NULL,   NULL,  0, 0, 0, 0},
+    /* 4  $  36 */ {VERB, NULL,   NULL,  0, 0, 0, 0},
+    /* 5  %  37 */ {VERB, NULL,   NULL,  0, 0, 0, 0},
+    /* 6  &  38 */ {CONJ, NULL,   NULL,  0, 0, 0, 0},
+    /* 7  (  40 */ {LPAR, NULL,   NULL,  0, 0, 0, 0},
+    /* 8  )  41 */ {RPAR, NULL,   NULL,  0, 0, 0, 0},
+    /* 9  *  41 */ {VERB, NULL,   NULL,  0, 0, 0, 0},
+    /* 10 +  41 */ {VERB, NULL,   NULL,  0, 0, 0, 0},
+    /* 11 ,  41 */ {VERB, NULL,   NULL,  0, 0, 0, 0},
+    /* 12 -  41 */ {VERB, negate, minus, 0, 0, 0, 0}
 };
 
 /*-----------------------------------------------------------------------------*/
