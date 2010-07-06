@@ -6,7 +6,7 @@
         for (i = 0; i < _t; i++) { \
             body;                  \
         }                          \
-} while(0);
+} while(0)
 
 typedef int    I;
 typedef char   C;
