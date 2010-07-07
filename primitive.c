@@ -36,9 +36,11 @@ C verb_name(I n, C *s) {
     case 2: {
         d = s[1];
         i = d==CDOT ? 1 : d==CCOL ? 2 : 0;
-        t = strchr(verbname[0], *s);
-        j = t - verbname[0];
-        return verbname[i][j];
+        if (i > 0) {
+            t = memchr(verbname[0], *s, sizeof(verbname[0]));
+            j = t - verbname[0];
+            return verbname[i][j];
+        }
     }
     }
     return *s;
