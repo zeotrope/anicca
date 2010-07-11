@@ -85,7 +85,7 @@ V a_init(V) {
 
 int main(I argc, C *argv[]) {
     C *s = argv[1] ? argv[1] : "!!5-3-1";
-    A w, x, y, z;
+    A t, u, w, x, y, z;
 
     a_init();
     w = array_str(strlen(s)+1, s);

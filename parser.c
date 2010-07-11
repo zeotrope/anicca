@@ -4,46 +4,17 @@
 #include "anicca.h"
 #include "parser.h"
 
-ACTION(monad) {
-    A y, v, z;
-    y = stack[e];
-    v = stack[b];
-    z = VEAV(v)->f1(y);
-    return z;
-}
+A df1(A y, A v)      { return VEAV(v)->f1(y); }
+A df2(A x, A y, A v) { return VEAV(v)->f2(x, y); }
 
-ACTION(dyad) {
-    A x, y, v, z;
-    x = stack[b];
-    y = stack[e];
-    v = stack[b+1];
-    z = VEAV(v)->f2(x, y);
-    return z;
-}
-
-ACTION(adverb) {
-    A z; return z;
-}
-
-ACTION(conjun) {
-    A z; return z;
-}
-
-ACTION(fork) {
-    A z; return z;
-}
-
-ACTION(bident) {
-    A z; return z;
-}
-
-ACTION(is) {
-    A z; return z;
-}
-
-ACTION(paren) {
-    A z; return z;
-}
+ACTION(monad)  { return df1(stack[e], stack[b]); }
+ACTION(dyad)   { return df2(stack[b], stack[e], stack[b+1]); }
+ACTION(adverb) { return df1(stack[b], stack[e]); }
+ACTION(conjun) { return df2(stack[b], stack[e], stack[b+1]); }
+ACTION(fork)   { A z; return z; }
+ACTION(bident) { A z; return z; }
+ACTION(is)     { A z; return z; }
+ACTION(paren)  { A z; return z; }
 
 A parse(A tokens) {
     I b, c, d, e, p, q, n = AN(tokens), j = n-4, m = j, *t;
