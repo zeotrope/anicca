@@ -12,7 +12,8 @@ typedef int    I;
 typedef char   C;
 typedef char   B;
 typedef double D;
-typedef void   V;
+typedef void   VO;
+typedef void*  VP;
 
 #define ZR(z) ((z).real)
 #define ZI(z) ((z).imaginary)
@@ -33,21 +34,11 @@ typedef struct _array {
     I rank;
     I num;
     I *shape;
-    V *value;
+    VP value;
 } *A;
 
 typedef A(*AF1)(A);
 typedef A(*AF2)(A, A);
-
-#define VEAV(a) ((VE *)AV(a))
-
-typedef struct _verb {
-    AF1 f1;
-    AF2 f2;
-    A f, g, h;
-    I lr, mr, rr, inv;
-    C id;
-} VE;
 
 #define ANY  -1
 #define BOOL (1<<1)

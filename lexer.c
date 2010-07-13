@@ -9,6 +9,7 @@
 #include "table.h"
 #include "noun.h"
 #include "verb.h"
+#include "adverb.h"
 #include "primitive.h"
 #include "lexer.h"
 

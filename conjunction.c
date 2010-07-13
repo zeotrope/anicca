@@ -1,4 +1,4 @@
-#ifndef _CONJUNCTION_H
-#define _CONJUNCTION_H
+#include "anicca.h"
+#include "function.h"
+#include "conjunction.h"
 
-#endif

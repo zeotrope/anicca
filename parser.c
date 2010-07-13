@@ -2,14 +2,15 @@
 #include <stdlib.h>
 
 #include "anicca.h"
+#include "function.h"
 #include "parser.h"
 
-A df1(A y, A v)      { return VEAV(v)->f1(y); }
-A df2(A x, A y, A v) { return VEAV(v)->f2(x, y); }
+A df1(A y, A v)      { return VAV(v)->f1(y);    }
+A df2(A x, A y, A v) { return VAV(v)->f2(x, y); }
 
-ACTION(monad)  { return df1(stack[e], stack[b]); }
+ACTION(monad)  { return df1(stack[e], stack[b]);             }
 ACTION(dyad)   { return df2(stack[b], stack[e], stack[b+1]); }
-ACTION(adverb) { return df1(stack[b], stack[e]); }
+ACTION(adverb) { return df1(stack[b], stack[e]);             }
 ACTION(conjun) { return df2(stack[b], stack[e], stack[b+1]); }
 ACTION(fork)   { A z; return z; }
 ACTION(bident) { A z; return z; }

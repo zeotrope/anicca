@@ -47,8 +47,8 @@ static P primitives[NPRIM+1] = {
     /* 10 +  43 */ {VERB, NULL,   NULL,  0, 0, 0, 0},
     /* 11 ,  44 */ {VERB, NULL,   NULL,  0, 0, 0, 0},
     /* 12 -  45 */ {VERB, negate, minus, 0, 0, 0, 0},
-    /* 13 .  46 */ {VERB, NULL,   NULL,  0, 0, 0, 0},
-    /* 14 /  47 */ {VERB, NULL,   NULL,  0, 0, 0, 0}
+    /* 13 .  46 */ {CONJ, NULL,   NULL,  0, 0, 0, 0},
+    /* 14 /  47 */ {ADV,  slash,   NULL,  0, 0, 0, 0}
 };
 
 /*-----------------------------------------------------------------------------*/
@@ -56,19 +56,18 @@ static P primitives[NPRIM+1] = {
 #define PUNC 3
 
 static C verbname[PUNC][NPRIM] = {
-    {CBANG, CDQOT, CPOND, CDOLR, CPERC, CAMPR, CLPAR, CRPAR, CSTAR, CPLUS, CCOMA,
-     CSUBT },
+{CBANG, CDQOT, CPOND, CDOLR, CPERC, CAMPR, CLPAR, CRPAR, CSTAR, CPLUS, CCOMA,
+ CSUBT },
 
-    {CFIT,  CDO,   CBASE, CSPRS, CMTRI, 1,     1,     1,     CAND,  COR,   CSTCH,
-     CNOT  },
+{CFIT,  CDO,   CBASE, CSPRS, CMTRI, 1,     1,     1,     CAND,  COR,   CSTCH,
+ CNOT  },
 
-    {CFRGN, CFORM, CABSE, CRECR, CSQRT, 1,     1,     1,     CSQR,  CDBL,  CLAMN,
-     CHALF }
+{CFRGN, CFORM, CABSE, CRECR, CSQRT, 1,     1,     1,     CSQR,  CDBL,  CLAMN,
+ CHALF }
 };
 
 /*-----------------------------------------------------------------------------*/
 
-A func_def(C id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv);
 C verb_name(I n, C *s);
 A primitive_lookup(C c);
 

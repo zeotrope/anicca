@@ -4,16 +4,18 @@
 #include "anicca.h"
 #include "char.h"
 #include "memory.h"
+#include "function.h"
 #include "verb.h"
+#include "adverb.h"
 #include "primitive.h"
 #include "lexer.h"
 #include "parser.h"
 
-V print(A y) {
+VO print(A y) {
     C *cv;
     I *iv;
     D *fv;
-    VE *vv;
+    V *vv;
     A *bv;
 
     if (!y) {
@@ -48,8 +50,8 @@ V print(A y) {
            printf(")%s", (i+1 == AN(y))?"":","));
         break;
     }
-    case VERB: {
-        vv = VEAV(y);
+    case VERB: case ADV: case CONJ: {
+        vv = VAV(y);
         printf("%c %d", vv->id, vv->id);
         break;
     }
@@ -72,18 +74,18 @@ V print(A y) {
     }
 }
 
-V println(A y) {
+VO println(A y) {
     print(y);
     printf("\n");
 }
 
-V a_init(V) {
+VO a_init(VO) {
     mark = gen_array(MARK, 0, 0, NULL);
     lpar = gen_array(LPAR, 0, 0, NULL);
     rpar = gen_array(RPAR, 0, 0, NULL);
 }
 
-int main(I argc, C *argv[]) {
+I main(I argc, C *argv[]) {
     C *s = argv[1] ? argv[1] : "!!5-3-1";
     A t, u, w, x, y, z;
 

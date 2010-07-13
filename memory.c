@@ -3,9 +3,10 @@
 #include <string.h>
 
 #include "anicca.h"
+#include "function.h"
 #include "memory.h"
 
-V *a_malloc(I size) {
+VP a_malloc(I size) {
     V *m;
     m = malloc(size);
     if (m == NULL) {
@@ -14,7 +15,7 @@ V *a_malloc(I size) {
     return m;
 }
 
-V a_free(A y) {
+VO a_free(A y) {
     if (AN(y) > 0) {
         free(AV(y));
         if (AR(y) > 1) {
@@ -50,7 +51,7 @@ A gen_array(I t, I r, I n, I *s) {
     return z;
 }
 
-V resize_array(A y, I t, I n) {
+VO resize_array(A y, I t, I n) {
     AN(y) = n;
     AV(y) = realloc(AV(y), type_size(t)*n);
 }
@@ -67,6 +68,6 @@ A array_str(I n, C *str) {
     return z;
 }
 
-V array_inspect(A y) {
+VO array_inspect(A y) {
     printf("%d %d %d\n", AT(y), AR(y), AN(y));
 }
