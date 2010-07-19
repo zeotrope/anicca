@@ -45,3 +45,10 @@ MONAD(iota) {
     DO(n, v[i] = i);
     return z;
 }
+
+MONAD(tail) {
+    MONAD_PROLOG;
+    z = gen_array(INT, 0, 1, NULL);
+    *(I *)AV(z) = yv[AN(y)-1];
+    return z;
+}

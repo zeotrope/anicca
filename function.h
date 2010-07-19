@@ -2,8 +2,8 @@
 #define _FUNCITON_H
 
 typedef struct _verb {
-    AF1 f1;
-    AF2 f2;
+    AF f1;
+    AF f2;
     A f, g, h;
     I lr, mr, rr, inv;
     C id;
@@ -25,6 +25,8 @@ typedef struct _verb {
 #define VDEF(id, f1, f2, l, m, r, i) \
     func_def(id, VERB, f1, f2, NULL, NULL, NULL. l, m, r, i)
 
-A func_def(C id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv);
+DMONAD(df1);
+DDYAD(df2);
+A func_def(C id, I t, AF f1, AF f2, A f, A g, A h, I lr, I mr, I rr, I inv);
 
 #endif

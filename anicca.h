@@ -37,8 +37,7 @@ typedef struct _array {
     VP value;
 } *A;
 
-typedef A(*AF1)(A);
-typedef A(*AF2)(A, A);
+typedef A(*AF)();
 
 #define ANY  -1
 #define BOOL (1<<1)
@@ -62,6 +61,9 @@ typedef A(*AF2)(A, A);
 
 #define MONAD(name) A name(A y)
 #define DYAD(name)  A name(A x, A y)
+
+#define DMONAD(name) A name(A y, A v)
+#define DDYAD(name)  A name(A x, A y, A v)
 
 A mark;
 A lpar;

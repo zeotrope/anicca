@@ -3,8 +3,8 @@
 
 typedef struct _primitive {
     I type;
-    AF1 f1;
-    AF2 f2;
+    AF f1;
+    AF f2;
     I lr, mr, rr, inv;
 } P;
 
@@ -34,7 +34,7 @@ static C primindx[256] = {
 #define NPRIM 15
 
 static P primitives[NPRIM+1] = {
-    /* 0     0  */ {0,    0,      0,     0, 0, 0, 0},
+    /* 0     0  */ {0,    NULL,   NULL,  0, 0, 0, 0},
     /* 1  !  33 */ {VERB, fact,   outof, 0, 0, 0, 0},
     /* 2  "  34 */ {CONJ, NULL,   NULL,  0, 0, 0, 0},
     /* 3  #  35 */ {VERB, NULL,   NULL,  0, 0, 0, 0},
@@ -48,7 +48,7 @@ static P primitives[NPRIM+1] = {
     /* 11 ,  44 */ {VERB, NULL,   NULL,  0, 0, 0, 0},
     /* 12 -  45 */ {VERB, negate, minus, 0, 0, 0, 0},
     /* 13 .  46 */ {CONJ, NULL,   NULL,  0, 0, 0, 0},
-    /* 14 /  47 */ {ADV,  slash,   NULL,  0, 0, 0, 0}
+    /* 14 /  47 */ {ADV,  slash,  NULL,  0, 0, 0, 0}
 };
 
 /*-----------------------------------------------------------------------------*/
@@ -56,14 +56,14 @@ static P primitives[NPRIM+1] = {
 #define PUNC 3
 
 static C verbname[PUNC][NPRIM] = {
-{CBANG, CDQOT, CPOND, CDOLR, CPERC, CAMPR, CLPAR, CRPAR, CSTAR, CPLUS, CCOMA,
- CSUBT },
+    {'!',   '"',   '#',   '$',   '%',   '&', '(', ')', '*',  '+',  ',',   '-',
+     '.',   '/'},
 
-{CFIT,  CDO,   CBASE, CSPRS, CMTRI, 1,     1,     1,     CAND,  COR,   CSTCH,
- CNOT  },
+    {CFIT,  CDO,   CBASE, CSPRS, CMTRI, 1,   1,   1,   CAND, COR,  CSTCH, CNOT,
+     1,     1},
 
-{CFRGN, CFORM, CABSE, CRECR, CSQRT, 1,     1,     1,     CSQR,  CDBL,  CLAMN,
- CHALF }
+    {CFRGN, CFORM, CABSE, CRECR, CSQRT, 1,   1,   1,   CSQR, CDBL, CLAMN, CHALF,
+     1,     1}
 };
 
 /*-----------------------------------------------------------------------------*/

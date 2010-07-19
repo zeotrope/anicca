@@ -14,4 +14,9 @@
         }                               \
 }
 
+VO print(A y);
+VO println(A y);
+VO a_init(VO);
+A eval(C *str);
+
 #endif

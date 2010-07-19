@@ -5,17 +5,14 @@
 #include "function.h"
 #include "parser.h"
 
-A df1(A y, A v)      { return VAV(v)->f1(y);    }
-A df2(A x, A y, A v) { return VAV(v)->f2(x, y); }
-
-ACTION(monad)  { return df1(stack[e], stack[b]);             }
+ACTION(monad)  { return df1(stack[b], stack[e]);             }
 ACTION(dyad)   { return df2(stack[b], stack[e], stack[b+1]); }
 ACTION(adverb) { return df1(stack[b], stack[e]);             }
 ACTION(conjun) { return df2(stack[b], stack[e], stack[b+1]); }
-ACTION(fork)   { A z; return z; }
-ACTION(bident) { A z; return z; }
-ACTION(is)     { A z; return z; }
-ACTION(paren)  { A z; return z; }
+ACTION(fork)   { A z; return z;                              }
+ACTION(bident) { A z; return z;                              }
+ACTION(is)     { A z; return z;                              }
+ACTION(paren)  { A z; return z;                              }
 
 A parse(A tokens) {
     I b, c, d, e, p, q, n = AN(tokens), j = n-4, m = j, *t;

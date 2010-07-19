@@ -7,10 +7,10 @@
 #define ADERV(id, f1, f2, f, l, m, r) \
     func_def(id, VERB, f1, f2, f, NULL, NULL, l, m, r, 0)
 
-#define ADVERB_PROLOG \
-    A f = VF(y); AF1 f1 = f ? VF1(f) : NULL; AF2 f2 = f ? VF2(f) : NULL
+#define ADV_PROLOG \
+    A f = VF(v); AF f1 = VF1(f); AF f2 = VF2(f);  A z;
 
 MONAD(slash);
-MONAD(reduce);
+DMONAD(reduce);
 
 #endif

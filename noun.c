@@ -198,7 +198,7 @@ A parse_noun(I n, C *s) {
        t = MAX(t, NT(atm));
     );
 
-    z = gen_array(t, 1, m, NULL);
+    z = gen_array(t, m!=1, m, NULL);
 
     NUMERIC_SWITCH(
         t

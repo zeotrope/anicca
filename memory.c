@@ -68,6 +68,13 @@ A array_str(I n, C *str) {
     return z;
 }
 
+A array_int(I n) {
+    A z;
+    z = gen_array(CHAR, 0, 1, NULL);
+    *(I *)AV(z) = n;
+    return z;
+}
+
 VO array_inspect(A y) {
     printf("%d %d %d\n", AT(y), AR(y), AN(y));
 }

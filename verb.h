@@ -15,4 +15,6 @@ DYAD(minus);
 
 MONAD(iota);
 
+MONAD(tail);
+
 #endif

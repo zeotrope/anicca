@@ -3,7 +3,17 @@
 #include "memory.h"
 #include "function.h"
 
-A func_def(C id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv) {
+DMONAD(df1) { 
+    A z; 
+    z = VF(v) ? VAV(v)->f1(y, VF(v)) : VAV(v)->f1(y);
+    return z;
+}
+
+DDYAD(df2) { 
+    return VF(v)&&VG(v) ? VAV(v)->f2(x, y, VF(v)) : VAV(v)->f2(x, y);
+}
+
+A func_def(C id, I t, AF f1, AF f2, A f, A g, A h, I lr, I mr, I rr, I inv) {
     V *v;
     A z;
 
