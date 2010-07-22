@@ -1,43 +1,68 @@
+#include <stdio.h>
 #include <stdlib.h>
+
 #include "anicca.h"
 #include "memory.h"
 #include "verb.h"
+#include "util.h"
 
-MONAD(tally) {
-    A z;
-    I r = AR(y), *v;
+MONAD(fact) {
+    MONAD_PROLOG;
+    I n = yv[0], r = 1;
     z = gen_array(INT, 0, 1, NULL);
     v = (I *)AV(z);
-     
-    if (r > 1) {
-        *v = AS(y)[0];
-    }
-    else if (r == 1) {
-        *v = AN(y);
-    }
-    else if (r == 0) {
-        *v = 0;
-    }
+    DO(n, r *= n--);
+    *v = r;
     return z;
 }
 
-MONAD(shape) {
-    A z;
-    I r = AR(y), *s = AS(y), *v;
-    z = gen_array(INT, 1, r, NULL);
+DYAD(outof) {
+    DYAD_PROLOG;
+    z = gen_array(INT, 0, 1, NULL);
+    return z;
+}
+
+MONAD(conjugate) {
+    MONAD_PROLOG;
+    return z;
+}
+
+DYAD(plus) {
+    DYAD_PROLOG;
+    z = gen_array(INT, AR(y), yn, AS(y));
     v = (I *)AV(z);
-     
-    if (r > 1) {
-        DO(r, v[i] = s[i]);
-    }
-    else if (r == 0) {
-        *v = 0;
-    }
-    else {
-        *v = AN(y);
-    }
+    DO(yn, v[i] = xv[i] + yv[i]);
     return z;
 }
 
-MONAD(ravel) { IMPLEMENT }
-DYAD(append) { IMPLEMENT }
+MONAD(negate) {
+    MONAD_PROLOG;
+    z = gen_array(INT, AR(y), yn, AS(y));
+    v = (I *)AV(z);
+    DO(yn, v[i] = - yv[i]);
+    return z;
+}
+
+DYAD(minus) {
+    DYAD_PROLOG;
+    z = gen_array(INT, AR(y), yn, AS(y));
+    v = (I *)AV(z);
+    DO(yn, v[i] = xv[i] - yv[i]);
+    return z;
+}
+
+MONAD(iota) {
+    MONAD_PROLOG;
+    I n = yv[0];
+    z = gen_array(INT, AR(y), n, AS(y));
+    v = (I *)AV(z);
+    DO(n, v[i] = i);
+    return z;
+}
+
+MONAD(tail) {
+    MONAD_PROLOG;
+    z = gen_array(INT, 0, 1, NULL);
+    *(I *)AV(z) = yv[AN(y)-1];
+    return z;
+}

@@ -1,18 +1,19 @@
 #ifndef _ANICCA_H
 #define _ANICCA_H
 
-#define DO(n, body) do {          \
-        I i = 0;                  \
-        for (i = 0; i < n; i++) { \
-            body;                 \
-        }                         \
-    } while (0);
+#define DO(n, body) do {           \
+        I i = 0, _t = n;           \
+        for (i = 0; i < _t; i++) { \
+            body;                  \
+        }                          \
+} while(0)
 
 typedef int    I;
 typedef char   C;
 typedef char   B;
 typedef double D;
-typedef void   V;
+typedef void   VO;
+typedef void*  VP;
 
 #define ZR(z) ((z).real)
 #define ZI(z) ((z).imaginary)
@@ -33,9 +34,13 @@ typedef struct _array {
     I rank;
     I num;
     I *shape;
-    V *value;
+    VP value;
 } *A;
 
+typedef A(*AF)();
+typedef A(*AF1)(A);
+typedef A(*AF2)(A, A);
+typedef A(*AF3)(A, A, A);
 
 #define ANY  -1
 #define BOOL (1<<1)
@@ -59,6 +64,9 @@ typedef struct _array {
 
 #define MONAD(name) A name(A y)
 #define DYAD(name)  A name(A x, A y)
+
+#define DMONAD(name) A name(A y, A self)
+#define DDYAD(name)  A name(A x, A y, A self)
 
 A mark;
 A lpar;

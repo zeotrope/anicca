@@ -45,5 +45,6 @@ PARSE(exp);
 PARSE(num);
 
 A parse_noun(I n, C *s);
+A noun_index(I n, C *s);
 
 #endif

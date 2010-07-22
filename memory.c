@@ -2,10 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+
 #include "anicca.h"
+#include "function.h"
 #include "memory.h"
 
-V *a_malloc(I size) {
+VP a_malloc(I size) {
     V *m;
     m = malloc(size);
     if (m == NULL) {
@@ -14,10 +16,10 @@ V *a_malloc(I size) {
     return m;
 }
 
-V a_free(A y) {
+VO a_free(A y) {
     if (AN(y) > 0) {
         free(AV(y));
-        if (AR(y) > 1) {
+        if (AR(y) > 0) {
             free(AS(y));
         }
     }
@@ -32,6 +34,9 @@ I type_size(I type) {
     case FLT:  return sizeof(double);        break;
     case CMPX: return sizeof(Z);             break;
     case BOX:  return sizeof(struct _array); break;
+    case ADV:
+    case CONJ:
+    case VERB: return sizeof(struct _verb);  break;
     }
     return sizeof(int);
 }
@@ -87,7 +92,7 @@ A gen_test_array(I n, ...) {
     return z;
 }
 
-V resize_array(A y, I t, I n) {
+VO resize_array(A y, I t, I n) {
     AN(y) = n;
     AV(y) = realloc(AV(y), type_size(t)*n);
 }
@@ -104,6 +109,13 @@ A array_str(I n, const C *str) {
     return z;
 }
 
-V array_inspect(A y) {
+A array_int(I n) {
+    A z;
+    z = gen_array(CHAR, 0, 1, NULL);
+    *(I *)AV(z) = n;
+    return z;
+}
+
+VO array_inspect(A y) {
     printf("%d %d %d\n", AT(y), AR(y), AN(y));
 }

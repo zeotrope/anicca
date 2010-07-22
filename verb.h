@@ -1,10 +1,23 @@
 #ifndef _VERB_H
 #define _VERB_H
 
-#define IMPLEMENT \
-    A z; return z;
+#define MONAD_PROLOG \
+    I yn = AN(y), *v, *yv = (I *)AV(y); A z
 
-MONAD(tally);
-MONAD(shape);
+#define DYAD_PROLOG \
+    I xn = AN(x), yn = AN(y), *v, *xv = (I *)AV(x), *yv = (I *)AV(y); A z
+
+MONAD(fact);
+DYAD(outof);
+
+MONAD(conjugate);
+DYAD(plus);
+
+MONAD(negate);
+DYAD(minus);
+
+MONAD(iota);
+
+MONAD(tail);
 
 #endif

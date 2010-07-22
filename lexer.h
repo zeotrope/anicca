@@ -1,8 +1,6 @@
 #ifndef _LEXER_H
 #define _LEXER_H
 
-#define GENERATE(type) A gen_ ## type(I n, C *s)
-
 typedef enum {
     SS, /* Space            */
     SX, /* Unknown          */
@@ -15,21 +13,6 @@ typedef enum {
     SC, /* Even Quote       */
     SZ  /* Trailing Comment */
 } STATE;
-
-typedef enum {
-    CX, /* Other */
-    CS, /* Space */
-    CA, /* Alpha */
-    CN, /* "N"   */
-    CB, /* "B"   */
-    C9, /* Num   */
-    CD, /* "."   */
-    CC, /* ":"   */
-    CQ, /* "'"   */
-    CR, /* R Par */
-    CL, /* L Par */
-    END = -1
-} CHARTYPE;
 
 typedef enum {
     EO, /* No effect */
@@ -48,26 +31,6 @@ typedef struct _state {
 
 /* Noun Lexer------------------------------------------------------------------*/
 
-/* Noun Mapping */
-static C nountype[256] = {
-    /*0*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CS,CX,CX,CX,CX,CX,CX,
-    /*1*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
-    /*2*/ CS,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CA,CX, /* !"#$%&'()*+,-./*/
-    /*3*/ CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CX,CX,CX,CX,CX, /*0123456789:;<=>?*/
-    /*4*/ CX,CX,CX,CX,CX,CA,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX, /*@ABCDEFGHIJKLMNO*/
-    /*5*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CA, /*PQRSTUVWXYZ[\]^_*/
-    /*6*/ CX,CA,CA,CX,CA,CA,CX,CX,CX,CX,CA,CX,CX,CX,CX,CX, /*`abcdefghijklmno*/
-    /*7*/ CA,CX,CA,CX,CX,CX,CX,CX,CA,CX,CX,CX,CX,CX,CX,CX, /*pqrstuvwxyz{|}~ */
-    /*8*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
-    /*9*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
-    /*a*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
-    /*b*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
-    /*c*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
-    /*d*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
-    /*e*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX
-         /*0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f*/
-};
-
 #define NCOL 3
 #define NROW 5
 
@@ -82,25 +45,6 @@ static ST noun[NROW][NCOL] = {
 };
 
 /* General Lexer---------------------------------------------------------------*/
-
-static C chartype[256] = {
-    /*0*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CS,CX,CX,CX,CX,CX,CX,
-    /*1*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
-    /*2*/ CS,CX,CX,CX,CX,CX,CX,CQ,CX,CX,CX,CX,CX,CX,CD,CX, /* !"#$%&'()*+,-./*/
-    /*3*/ C9,C9,C9,C9,C9,C9,C9,C9,C9,C9,CC,CX,CX,CX,CX,CX, /*0123456789:;<=>?*/
-    /*4*/ CX,CA,CB,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CN,CA, /*@ABCDEFGHIJKLMNO*/
-    /*5*/ CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CX,CX,CX,CX,C9, /*PQRSTUVWXYZ[\]^_*/
-    /*6*/ CX,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA, /*`abcdefghijklmno*/
-    /*7*/ CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CX,CX,CX,CX,CX, /*pqrstuvwxyz{|}~ */
-    /*8*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
-    /*9*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
-    /*a*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
-    /*b*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
-    /*c*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
-    /*d*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
-    /*e*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX
-         /*0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f*/
-};
 
 #define DCOL 9
 #define DROW 10
@@ -121,10 +65,11 @@ static ST dfa[DROW][DCOL] = {
 
 /*-----------------------------------------------------------------------------*/
 
-GENERATE(char);
+A parse_literal(I n, C *s);
+A parse_verb(I n, C *s);
 
+A noun_index(I n, C *s);
 MONAD(token_index);
-A noun_index(I, C *);
 DYAD(tokens);
 
 #endif

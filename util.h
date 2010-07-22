@@ -30,4 +30,10 @@
     }
 
 #define LENGTHOF(array) (sizeof(array)/sizeof(*array))
+
+VO print(A y);
+VO println(A y);
+VO a_init(VO);
+A eval(const C *str);
+
 #endif
