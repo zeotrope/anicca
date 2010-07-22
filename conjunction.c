@@ -38,17 +38,14 @@ DDYAD(dbond) {
 DMONAD(compose) {
     V *v = VAV(self);
     A f = VF(v), g = VG(v), z;
-    AF1 f1 = VF1(VAV(f)), g1 = VF1(VAV(g));
-    z = f1(g1(y));
+    z = df1(df1(y, g), f);
     return z;
 }
 
 DDYAD(dcompose) {
     V *v = VAV(self);
     A f = VF(v), g = VG(v), z;
-    AF2 f2 = VF2(VAV(f));
-    AF1 g1 = VF1(VAV(g));
-    z = f2(g1(x), g1(y));
+    z = df2(df1(x, g), df1(y, g), f);
     return z;
 }
 
@@ -71,8 +68,6 @@ DMONAD(atop) {
 DDYAD(datop) {
     V *v = VAV(self);
     A f = VF(v), g = VG(v), z;
-    AF1 f1 = VF1(VAV(f));
-    AF2 g2 = VF2(VAV(g));
-    z = f1(g2(x, y));
+    z = df1(df2(x, y, g), f);
     return z;
 }
