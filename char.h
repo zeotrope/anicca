@@ -51,5 +51,16 @@
 #define CSLASH '/'
 #define CCOL ':'
 
+#define CSCOL ';'
+
+#define CLT '<'
+
+#define CEQ '='
+
+#define CGT '>'
+
+#define CQUES '?'
+
+#define CAT '@'
 
 #endif

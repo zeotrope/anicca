@@ -51,3 +51,28 @@ DDYAD(dcompose) {
     z = f2(g1(x), g1(y));
     return z;
 }
+
+DYAD(at) {
+    V *v;
+    A z;
+    if (AT(x)&VERB && AT(y)&VERB) {
+        v = VAV(y);
+        z = CDERV(CAT, atop, datop, x, y, VLR(v), VMR(v), VRR(v));
+    }
+    return z;
+}
+
+DMONAD(atop) {
+    A z;
+    z = compose(y, self);
+    return z;
+}
+
+DDYAD(datop) {
+    V *v = VAV(self);
+    A f = VF(v), g = VG(v), z;
+    AF1 f1 = VF1(VAV(f));
+    AF2 g2 = VF2(VAV(g));
+    z = f1(g2(x, y));
+    return z;
+}

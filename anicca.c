@@ -17,5 +17,6 @@ I main(I argc, C *argv[]) {
     A x, y, z;
     a_init();
     println(eval("!&- 5&- 3+&!3"));
+    println(eval("!@- 3 -@+ 4"));
     return 0;
 }

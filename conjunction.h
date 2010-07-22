@@ -17,4 +17,8 @@ DDYAD(dbond);
 DMONAD(compose);
 DDYAD(dcompose);
 
+DYAD(at);
+DMONAD(atop);
+DDYAD(datop);
+
 #endif

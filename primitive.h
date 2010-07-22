@@ -31,7 +31,7 @@ static C primindx[256] = {
 
 /*-----------------------------------------------------------------------------*/
 
-#define NPRIM 14
+#define NPRIM 21
 
 static P primitives[NPRIM+1] = {
     /* 0     0  */ {0,    NULL,      NULL,  0, 0, 0, 0},
@@ -48,7 +48,14 @@ static P primitives[NPRIM+1] = {
     /* 11 ,  44 */ {VERB, NULL,      NULL,  0, 0, 0, 0},
     /* 12 -  45 */ {VERB, negate,    minus, 0, 0, 0, 0},
     /* 13 .  46 */ {CONJ, NULL,      NULL,  0, 0, 0, 0},
-    /* 14 /  47 */ {ADV,  slash,     NULL,  0, 0, 0, 0}
+    /* 14 /  47 */ {ADV,  slash,     NULL,  0, 0, 0, 0},
+    /* 15 :  58 */ {CONJ, NULL,      NULL,  0, 0, 0, 0},
+    /* 16 ;  59 */ {VERB, NULL,      NULL,  0, 0, 0, 0},
+    /* 17 <  60 */ {VERB, NULL,      NULL,  0, 0, 0, 0},
+    /* 18 =  61 */ {VERB, NULL,      NULL,  0, 0, 0, 0},
+    /* 19 >  62 */ {VERB, NULL,      NULL,  0, 0, 0, 0},
+    /* 20 ?  63 */ {VERB, NULL,      NULL,  0, 0, 0, 0},
+    /* 21 @  64 */ {CONJ, NULL,      at,    0, 0, 0, 0}
 };
 
 /*-----------------------------------------------------------------------------*/
