@@ -3,8 +3,8 @@
 
 typedef struct _primitive {
     I type;
-    AF f1;
-    AF f2;
+    AF1 f1;
+    AF2 f2;
     I lr, mr, rr, inv;
 } P;
 
@@ -31,7 +31,7 @@ static C primindx[256] = {
 
 /*-----------------------------------------------------------------------------*/
 
-#define NPRIM 15
+#define NPRIM 14
 
 static P primitives[NPRIM+1] = {
     /* 0     0  */ {0,    NULL,   NULL,  0, 0, 0, 0},

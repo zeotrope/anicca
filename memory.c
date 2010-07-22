@@ -18,7 +18,7 @@ VP a_malloc(I size) {
 VO a_free(A y) {
     if (AN(y) > 0) {
         free(AV(y));
-        if (AR(y) > 1) {
+        if (AR(y) > 0) {
             free(AS(y));
         }
     }
@@ -33,6 +33,8 @@ I type_size(I type) {
     case FLT:  return sizeof(double);        break;
     case CMPX: return sizeof(Z);             break;
     case BOX:  return sizeof(struct _array); break;
+    case ADV:
+    case CONJ:
     case VERB: return sizeof(struct _verb);  break;
     }
     return sizeof(int);

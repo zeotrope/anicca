@@ -14,10 +14,9 @@
 
 I main(I argc, C *argv[]) {
     A x, y, z;
-    C *s = "1 2 3";
 
     a_init();
-    x = eval(argv[1] ? argv[1] : s);
+    x = eval("-/");
     println(x);
 
     return 0;

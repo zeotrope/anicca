@@ -9,8 +9,10 @@
 
 MONAD(slash) {
     A z;
+    V *v;
     if (AT(y)&VERB) {
-        return ADERV(CSLASH, reduce, NULL, y, VLR(y), VMR(y), VRR(y));
+        v = VAV(y);
+        z = ADERV(CSLASH, reduce, NULL, y, VLR(v), VMR(v), VRR(v));
     }
     return z;
 }

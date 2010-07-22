@@ -5,7 +5,7 @@
 #include "function.h"
 #include "parser.h"
 
-ACTION(monad)  { return df1(stack[b], stack[e]);             }
+ACTION(monad)  { return df1(stack[e], stack[b]);             }
 ACTION(dyad)   { return df2(stack[b], stack[e], stack[b+1]); }
 ACTION(adverb) { return df1(stack[b], stack[e]);             }
 ACTION(conjun) { return df2(stack[b], stack[e], stack[b+1]); }

@@ -86,12 +86,10 @@ VO a_init(VO) {
 
 A eval(C *str) {
     A w, x, y, z;
-
     w = array_str(strlen(str)+1, str);
     x = token_index(w);
     y = tokens(x, w);
     z = parse(y);
     a_free(w); a_free(x); a_free(y);
-
     return z;
 }
