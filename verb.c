@@ -4,6 +4,7 @@
 #include "anicca.h"
 #include "memory.h"
 #include "verb.h"
+#include "util.h"
 
 MONAD(fact) {
     MONAD_PROLOG;
@@ -18,6 +19,19 @@ MONAD(fact) {
 DYAD(outof) {
     DYAD_PROLOG;
     z = gen_array(INT, 0, 1, NULL);
+    return z;
+}
+
+MONAD(conjugate) {
+    MONAD_PROLOG;
+    return z;
+}
+
+DYAD(plus) {
+    DYAD_PROLOG;
+    z = gen_array(INT, AR(y), yn, AS(y));
+    v = (I *)AV(z);
+    DO(yn, v[i] = xv[i] + yv[i]);
     return z;
 }
 

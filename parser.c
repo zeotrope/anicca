@@ -47,7 +47,7 @@ A parse(A tokens) {
         printf("\n");
     } while (j >= 0 && m > 2);
 
-    printf("%d %d\n", m, j);
+    printf("m: %d j: %d\n", m, j);
     println(tokens);
     z = stack[j];
 

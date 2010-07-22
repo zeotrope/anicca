@@ -7,6 +7,7 @@
 #include "function.h"
 #include "verb.h"
 #include "adverb.h"
+#include "conjunction.h"
 #include "primitive.h"
 
 C verb_name(I n, C *s) {

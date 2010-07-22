@@ -34,36 +34,46 @@ static C primindx[256] = {
 #define NPRIM 14
 
 static P primitives[NPRIM+1] = {
-    /* 0     0  */ {0,    NULL,   NULL,  0, 0, 0, 0},
-    /* 1  !  33 */ {VERB, fact,   outof, 0, 0, 0, 0},
-    /* 2  "  34 */ {CONJ, NULL,   NULL,  0, 0, 0, 0},
-    /* 3  #  35 */ {VERB, NULL,   NULL,  0, 0, 0, 0},
-    /* 4  $  36 */ {VERB, NULL,   NULL,  0, 0, 0, 0},
-    /* 5  %  37 */ {VERB, NULL,   NULL,  0, 0, 0, 0},
-    /* 6  &  38 */ {CONJ, NULL,   NULL,  0, 0, 0, 0},
-    /* 7  (  40 */ {LPAR, NULL,   NULL,  0, 0, 0, 0},
-    /* 8  )  41 */ {RPAR, NULL,   NULL,  0, 0, 0, 0},
-    /* 9  *  42 */ {VERB, NULL,   NULL,  0, 0, 0, 0},
-    /* 10 +  43 */ {VERB, NULL,   NULL,  0, 0, 0, 0},
-    /* 11 ,  44 */ {VERB, NULL,   NULL,  0, 0, 0, 0},
-    /* 12 -  45 */ {VERB, negate, minus, 0, 0, 0, 0},
-    /* 13 .  46 */ {CONJ, NULL,   NULL,  0, 0, 0, 0},
-    /* 14 /  47 */ {ADV,  slash,  NULL,  0, 0, 0, 0}
+    /* 0     0  */ {0,    NULL,      NULL,  0, 0, 0, 0},
+    /* 1  !  33 */ {VERB, fact,      outof, 0, 0, 0, 0},
+    /* 2  "  34 */ {CONJ, NULL,      NULL,  0, 0, 0, 0},
+    /* 3  #  35 */ {VERB, NULL,      NULL,  0, 0, 0, 0},
+    /* 4  $  36 */ {VERB, NULL,      NULL,  0, 0, 0, 0},
+    /* 5  %  37 */ {VERB, NULL,      NULL,  0, 0, 0, 0},
+    /* 6  &  38 */ {CONJ, NULL,      amper, 0, 0, 0, 0},
+    /* 7  (  40 */ {LPAR, NULL,      NULL,  0, 0, 0, 0},
+    /* 8  )  41 */ {RPAR, NULL,      NULL,  0, 0, 0, 0},
+    /* 9  *  42 */ {VERB, NULL,      NULL,  0, 0, 0, 0},
+    /* 10 +  43 */ {VERB, conjugate, plus,  0, 0, 0, 0},
+    /* 11 ,  44 */ {VERB, NULL,      NULL,  0, 0, 0, 0},
+    /* 12 -  45 */ {VERB, negate,    minus, 0, 0, 0, 0},
+    /* 13 .  46 */ {CONJ, NULL,      NULL,  0, 0, 0, 0},
+    /* 14 /  47 */ {ADV,  slash,     NULL,  0, 0, 0, 0}
 };
 
 /*-----------------------------------------------------------------------------*/
 
+#define BASE 52
 #define PUNC 3
 
-static C verbname[PUNC][NPRIM] = {
+static C verbname[PUNC][BASE] = {
     {'!',   '"',   '#',   '$',   '%',   '&', '(', ')', '*',  '+',  ',',   '-',
-     '.',   '/'},
+     '.',   '/',   ':',   ';',   '<',   '=', '>', '?', '@',  'A',  'C',   'D',
+     'E',   'H',   'I',   'L',   'M',   'S', 'T', '[', '\\', ']',  '^',   '_',
+     '`',   'a',   'b',   'd',   'e',   'f', 'i', 'j', 'o',  'p',  'q',   'r',
+     's',   't',   'u',   'x'},
 
     {CFIT,  CDO,   CBASE, CSPRS, CMTRI, 1,   1,   1,   CAND, COR,  CSTCH, CNOT,
-     1,     1},
+     1,     1,     1,     1,     1,     1,   1,   1,   1,    1,    1,     1,
+     1,     1,     1,     1,     1,     1,   1,   1,   1,    1,    1,     1,
+     1,     1,     1,     1,     1,     1,   1,   1,   1,    1,    1,     1,
+     1,     1,     1,     1},
 
     {CFRGN, CFORM, CABSE, CRECR, CSQRT, 1,   1,   1,   CSQR, CDBL, CLAMN, CHALF,
-     1,     1}
+     1,     1,     1,     1,     1,     1,   1,   1,   1,    1,    1,     1,
+     1,     1,     1,     1,     1,     1,   1,   1,   1,    1,    1,     1,
+     1,     1,     1,     1,     1,     1,   1,   1,   1,    1,    1,     1,
+     1,     1,     1,     1}
 };
 
 /*-----------------------------------------------------------------------------*/

@@ -10,6 +10,9 @@
 MONAD(fact);
 DYAD(outof);
 
+MONAD(conjugate);
+DYAD(plus);
+
 MONAD(negate);
 DYAD(minus);
 

@@ -8,19 +8,23 @@
 #include "adverb.h"
 
 MONAD(slash) {
-    A z;
     V *v;
+    A z;
     if (AT(y)&VERB) {
         v = VAV(y);
-        z = ADERV(CSLASH, reduce, NULL, y, VLR(v), VMR(v), VRR(v));
+        z = ADERV(CSLASH, insert, table, y, VLR(v), VMR(v), VRR(v));
     }
     return z;
 }
 
-DMONAD(reduce) {
-    A z;
-    I n = AN(y);
-    z = tail(y);
+DMONAD(insert) {
+    A z = tail(y);
+    I r, n = AN(y), k = n-2;
     if (n==1) { return z; }
+    return z;
+}
+
+DDYAD(table) {
+    A z;
     return z;
 }

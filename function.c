@@ -3,19 +3,15 @@
 #include "memory.h"
 #include "function.h"
 
-DMONAD(df1) { 
-    A z;
+DMONAD(df1) {
     V *v = VAV(self);
-    z = VF(v)&&VDF1(v) ? v->df1(y, VF(v)) : v->f1(y);
-
+    A z = VF(v)&&VDF1(v) ? v->df1(y, self) : v->f1(y);
     return z;
 }
 
 DDYAD(df2) {
-    A z;
     V *v = VAV(self);
-    z = VF(v)&&VG(v)&&VDF2(v) ? v->df2(x, y, VF(v)) : v->f2(x, y);
-
+    A z = VF(v)&&VG(v)&&VDF2(v) ? v->df2(x, y, self) : v->f2(x, y);
     return z;
 }
 
@@ -44,6 +40,5 @@ A derv_def(C id, I t, AF2 df1, AF3 df2, A f, A g, A h, I lr, I mr, I rr, I inv) 
     V *v = VAV(z);
     VDF1(v) = df1;
     VDF2(v) = df2;
-
     return z;
 }
