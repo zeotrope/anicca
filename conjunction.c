@@ -71,3 +71,31 @@ DDYAD(datop) {
     z = df1(df2(x, y, g), f);
     return z;
 }
+
+DMONAD(chook) {
+    V *v = VAV(self);
+    A f = VF(v), g = VG(v), z;
+    z = df2(y, df1(y, g), f);
+    return z;
+}
+
+DDYAD(dchook) {
+    V *v = VAV(self);
+    A f = VF(v), g = VG(v), z;
+    z = df2(x, df1(y, g), f);
+    return z;
+}
+
+DMONAD(cfork) {
+    V *v = VAV(self);
+    A f = VF(v), g = VG(v), h = VH(v), z;
+    z = df2(df1(y, f), df1(y, h), g);
+    return z;
+}
+
+DDYAD(dcfork) {
+    V *v = VAV(self);
+    A f = VF(v), g = VG(v), h = VH(v), z;
+    z = df2(df2(x, y, f), df2(x, y, h), g);
+    return z;
+}

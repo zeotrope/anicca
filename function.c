@@ -1,7 +1,9 @@
 #include <stdlib.h>
 #include "anicca.h"
+#include "char.h"
 #include "memory.h"
 #include "function.h"
+#include "conjunction.h"
 
 DMONAD(df1) {
     V *v = VAV(self);
@@ -13,6 +15,18 @@ DDYAD(df2) {
     V *v = VAV(self);
     A z = VF(v)&&VG(v)&&VDF2(v) ? v->df2(x, y, self) : v->f2(x, y);
     return z;
+}
+
+DMONAD(dhk) {
+    V *v = VAV(y);
+    return derv_def(CHOOK, VERB, chook, dchook, y, self, NULL, VLR(v), VMR(v), \
+                    VRR(v), 0);
+}
+
+DDYAD(dfrk) {
+    V *v = VAV(x);
+    return derv_def(CFORK, VERB, cfork, dcfork, x, y, self, VLR(v), VMR(v), \
+                    VRR(v), 0);
 }
 
 A func_def(C id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv) {

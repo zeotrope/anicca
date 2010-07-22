@@ -21,4 +21,10 @@ DYAD(at);
 DMONAD(atop);
 DDYAD(datop);
 
+DMONAD(chook);
+DDYAD(dchook);
+
+DMONAD(cfork);
+DDYAD(dcfork);
+
 #endif

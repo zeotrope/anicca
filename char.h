@@ -63,4 +63,7 @@
 
 #define CAT '@'
 
+#define CHOOK 19
+#define CFORK 20
+
 #endif

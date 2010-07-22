@@ -33,7 +33,7 @@ static PT grammar[CASES] = {
 {EDGE|AVN,  VERB|NOUN, ADV,  ANY,       adverb, 1, 2}, /* Adverb */
 {EDGE|AVN,  VERB|NOUN, CONJ, VERB|NOUN, conjun, 1, 3}, /* Conjun */
 {EDGE|AVN,  VERB|NOUN, VERB, VERB,      fork,   1, 3}, /* Fork   */
-{EDGE,      CAVN,      CAVN, ANY,       bident, 1, 2}, /* Biject */
+{EDGE,      CAVN,      CAVN, ANY,       bident, 1, 2}, /* Bident */
 {NAME|NOUN, ASGN,      CAVN, ANY,       is,     0, 2}, /* Is     */
 {LPAR,      CAVN,      RPAR, ANY,       paren,  0, 2}  /* Paren  */
 };
