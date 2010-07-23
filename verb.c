@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "anicca.h"
+#include "error.h"
 #include "memory.h"
 #include "verb.h"
 #include "util.h"
@@ -9,6 +10,7 @@
 MONAD(fact) {
     MONAD_PROLOG;
     I n = yv[0], r = 1;
+    ASSERT(AT(y)&INT && (n>=0), ERDOM);
     z = gen_array(INT, 0, 1, NULL);
     v = (I *)AV(z);
     DO(n, r *= n--);
@@ -29,6 +31,7 @@ MONAD(conjugate) {
 
 DYAD(plus) {
     DYAD_PROLOG;
+    ASSERT(AT(x)&INT && AT(y)&INT, ERDOM);
     z = gen_array(INT, AR(y), yn, AS(y));
     v = (I *)AV(z);
     DO(yn, v[i] = xv[i] + yv[i]);
@@ -45,6 +48,7 @@ MONAD(negate) {
 
 DYAD(minus) {
     DYAD_PROLOG;
+    ASSERT(AT(x)&INT && AT(y)&INT, ERDOM);
     z = gen_array(INT, AR(y), yn, AS(y));
     v = (I *)AV(z);
     DO(yn, v[i] = xv[i] - yv[i]);

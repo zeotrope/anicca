@@ -1,6 +1,6 @@
 
-OBJS=  memory.o util.o atom.o noun.o function.o verb.o primitive.o adverb.o \
-       conjunction.o lexer.o parser.o test.o anicca.o
+OBJS=  memory.o util.o error.o atom.o noun.o function.o verb.o primitive.o \
+       adverb.o conjunction.o lexer.o parser.o test.o anicca.o
 
 CFLAGS=-ansi -pedantic -g3
 
@@ -20,6 +20,7 @@ primitive.o: primitive.c primitive.h verb.h
 function.o:  function.c function.h
 noun.o:      noun.c noun.h util.h
 atom.o:      atom.c atom.h noun.h
+error.o:     error.c error.h
 util.o:      util.c util.h
 memory.o:    memory.c memory.h
 

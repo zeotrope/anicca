@@ -7,9 +7,11 @@
 #define CDERV(id, df1, df2, f, g, l, r, m) \
     derv_def(id, VERB, df1, df2, f, g, NULL, l, r, m, 0)
 
-#define CONJ_PROLOG \
-    A f = VF(v); A g = VG(v); AF1 f1 = VF1(f); AF2 f2 = VF2(f); AF1 g1 = VF1(g); \
-    AF2 g2 = VF2(g);
+#define DECL_FG \
+    V *v = VAV(self); A f = VF(v), g = VG(v), z
+
+#define DECL_FGH \
+    V *v = VAV(self); A f = VF(v), g = VG(v), h = VH(v), z
 
 DYAD(amper);
 DMONAD(bond);

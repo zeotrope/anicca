@@ -23,28 +23,24 @@ DYAD(amper) {
 }
 
 DMONAD(bond) {
-    V *v = VAV(self);
-    A f = VF(v), g = VG(v), n = (AT(f)&NOUN ? f : g), z;
-    AF2 f2 = VF2(VAV(AT(f)&VERB ? f : g));
-    z = f2(n, y);
+    DECL_FG;
+    z = AT(f)&NOUN ? df2(f, y, g) : df2(y, g, f);
     return z;
 }
 
 DDYAD(dbond) {
-    A z;
+    DECL_FG;
     return z;
 }
 
 DMONAD(compose) {
-    V *v = VAV(self);
-    A f = VF(v), g = VG(v), z;
+    DECL_FG;
     z = df1(df1(y, g), f);
     return z;
 }
 
 DDYAD(dcompose) {
-    V *v = VAV(self);
-    A f = VF(v), g = VG(v), z;
+    DECL_FG;
     z = df2(df1(x, g), df1(y, g), f);
     return z;
 }
@@ -66,36 +62,31 @@ DMONAD(atop) {
 }
 
 DDYAD(datop) {
-    V *v = VAV(self);
-    A f = VF(v), g = VG(v), z;
+    DECL_FG;
     z = df1(df2(x, y, g), f);
     return z;
 }
 
 DMONAD(chook) {
-    V *v = VAV(self);
-    A f = VF(v), g = VG(v), z;
+    DECL_FG;
     z = df2(y, df1(y, g), f);
     return z;
 }
 
 DDYAD(dchook) {
-    V *v = VAV(self);
-    A f = VF(v), g = VG(v), z;
+    DECL_FG;
     z = df2(x, df1(y, g), f);
     return z;
 }
 
 DMONAD(cfork) {
-    V *v = VAV(self);
-    A f = VF(v), g = VG(v), h = VH(v), z;
+    DECL_FGH;
     z = df2(df1(y, f), df1(y, h), g);
     return z;
 }
 
 DDYAD(dcfork) {
-    V *v = VAV(self);
-    A f = VF(v), g = VG(v), h = VH(v), z;
+    DECL_FGH;
     z = df2(df2(x, y, f), df2(x, y, h), g);
     return z;
 }

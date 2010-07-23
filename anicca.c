@@ -14,8 +14,16 @@
 #include "util.h"
 
 I main(I argc, C *argv[]) {
+    C str[100];
     A x, y, z;
+
     a_init();
-    println(eval(argv[1]));
+    while (1) {
+        printf("   ");
+        fgets(str, 100, stdin);
+        x = array_str(strlen(str), str);
+        y = parse(tokens(token_index(x), x));
+        println(y);
+    }
     return 0;
 }
