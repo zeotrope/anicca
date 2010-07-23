@@ -13,7 +13,7 @@ DMONAD(df1) {
 
 DDYAD(df2) {
     V *v = VAV(self);
-    A z = VF(v)&&VG(v)&&VDF2(v) ? v->df2(x, y, self) : v->f2(x, y);
+    A z = VF(v)&&VDF2(v) ? v->df2(x, y, self) : v->f2(x, y);
     return z;
 }
 

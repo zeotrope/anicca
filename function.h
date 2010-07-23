@@ -25,6 +25,15 @@ typedef struct _verb {
 #define VRR(v)  (v->rr)
 #define VIR(v)  (v->inv)
 
+#define DECL_F \
+    V *v = VAV(self); A f = VF(v), z
+
+#define DECL_FG \
+    V *v = VAV(self); A f = VF(v), g = VG(v), z
+
+#define DECL_FGH \
+    V *v = VAV(self); A f = VF(v), g = VG(v), h = VH(v), z
+
 #define VDEF(id, f1, f2, l, m, r, i) \
     func_def(id, VERB, f1, f2, NULL, NULL, NULL. l, m, r, i)
 

@@ -1,67 +1,56 @@
 #ifndef _CHAR_H
 #define _CHAR_H
 
-
-#define CBANG '!'
-#define CFIT  127
-#define CFRGN 2
-
-#define CDQOT '"'
-#define CDO   128
-#define CFORM 4
-
-#define CPOND '#'
-#define CBASE 129
-#define CABSE 6
-
-#define CDOLR '$'
-#define CSPRS 130
-#define CRECR 8
-
-#define CPERC '%'
-#define CMTRI 131
-#define CSQRT 10
-
-#define CAMPR '&'
-#define CAPSE 132
-
-#define CSQOT '\''
-
-#define CLPAR '('
-
-#define CRPAR ')'
-
-#define CSTAR '*'
-#define CAND 133
-#define CSQR 12
-
-#define CPLUS '+'
-#define COR 134
-#define CDBL 14
-
-#define CCOMA ','
-#define CSTCH 135
-#define CLAMN 16
-
-#define CSUBT '-'
-#define CNOT 17
-#define CHALF 18
-
-#define CDOT '.'
+#define CBANG  '!'
+#define CDQOT  '"'
+#define CPOND  '#'
+#define CDOLR  '$'
+#define CPERC  '%'
+#define CAMPR  '&'
+#define CLPAR  '('
+#define CRPAR  ')'
+#define CSTAR  '*'
+#define CPLUS  '+'
+#define CCOMA  ','
+#define CSUBT  '-'
+#define CDOT   '.'
 #define CSLASH '/'
-#define CCOL ':'
+#define CCOL   ':'
+#define CSCOL  ';'
+#define CLT    '<'
+#define CEQ    '='
+#define CGT    '>'
+#define CQUES  '?'
+#define CAT    '@'
+#define CIOTA  'i'
+#define CTILDE '~'
+#define CSQOT  '\''
 
-#define CSCOL ';'
+typedef enum {
+    CFIT = 127,
+    CNOT,
+    CHALF,
+    CDO,
+    CBASE,
+    CSPRS,
+    CMTRI,
+    CAPSE,
+    CAND,
+    COR,
+    CSTCH,
+    CSTEP
+} PUNCDOT;
 
-#define CLT '<'
-
-#define CEQ '='
-
-#define CGT '>'
-
-#define CQUES '?'
-
-#define CAT '@'
+typedef enum {
+    CFRGN = 181,
+    CFORM,
+    CABSE,
+    CRECR,
+    CSQRT,
+    CSQR,
+    CDBL,
+    CLAMN
+} PUNCCOL;
 
 #define CHOOK 19
 #define CFORK 20
