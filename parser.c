@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "anicca.h"
+#include "error.h"
 #include "function.h"
 #include "parser.h"
 
@@ -27,7 +28,7 @@ A parse(A tokens) {
             if (AT(top[0])&t[0] && AT(top[1])&t[1] &&
                 AT(top[2])&t[2] && AT(top[3])&t[3]) { break; }
         }
-        
+
         if (c < CASES) {
             b = grammar[c].b; p = b+j;
             e = grammar[c].e; q = e+j;
@@ -43,9 +44,9 @@ A parse(A tokens) {
         }
         /* printf("\n"); */
     } while (j >= 0 && m > 2);
-
     /* printf("m: %d j: %d\n", m, j); */
-    /* println(tokens); */
+    /* println(tokens); */    
+    if (m > 2) { a_signal(ERSYNTX); };
     z = stack[j];
 
     return z;

@@ -7,11 +7,14 @@
 #define DYAD_PROLOG \
     I xn = AN(x), yn = AN(y), *v, *xv = (I *)AV(x), *yv = (I *)AV(y); A z
 
+MONAD(fact);
+DYAD(outof);
+
 MONAD(tally);
 DYAD(copy);
 
-MONAD(fact);
-DYAD(outof);
+MONAD(reciprocal);
+DYAD(divide);
 
 MONAD(signum);
 DYAD(times);
@@ -21,6 +24,10 @@ DYAD(plus);
 
 MONAD(negate);
 DYAD(minus);
+
+MONAD(same);
+DYAD(left);
+DYAD(right);
 
 MONAD(iota);
 

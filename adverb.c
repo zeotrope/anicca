@@ -30,27 +30,20 @@ DDYAD(table) {
 
 MONAD(tilde) {
     V *v; A z;
-
     ASSERT(AT(y)&VERB, ERDOM);
     v = VAV(y);
-
     z = ADERV(CTILDE, reflex, passive, y, VLR(v), VMR(v), VRR(v));
-
     return z;
 }
 
 DMONAD(reflex) {
     DECL_F;
-
     z = df2(y, y, f);
-
     return z;
 }
 
 DDYAD(passive) {
     DECL_F;
-
     z = df2(y, x, f);
-
     return z;
 }

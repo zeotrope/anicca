@@ -24,6 +24,7 @@ I main(I argc, C *argv[]) {
         x = array_str(strlen(str), str);
         y = parse(tokens(token_index(x), x));
         println(y);
+        a_free(x); a_free(y);
     }
     return 0;
 }

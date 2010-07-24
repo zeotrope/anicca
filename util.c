@@ -11,11 +11,7 @@
 #include "util.h"
 
 VO print(A y) {
-    C *cv;
-    I *iv;
-    D *fv;
-    V *vv;
-    A *bv;
+    C *cv; I *iv; D *fv; V *vv; A *bv;
 
     if (!y) {
         printf("NULL");
@@ -51,7 +47,12 @@ VO print(A y) {
     }
     case VERB: case ADV: case CONJ: {
         vv = VAV(y);
-        printf("%c %d", vv->id, vv->id);
+        if (VF(vv)) { print(vv->f);
+            if (VG(vv)) { print(vv->g);
+                if (VH(vv)) { print(vv->h); };
+            }
+        };
+        printf("%c", vv->id);
         break;
     }
     case MARK: {

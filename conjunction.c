@@ -6,8 +6,7 @@
 #include "conjunction.h"
 
 DYAD(amper) {
-    V *v;
-    A z;
+    V *v; A z;
     I xt = AT(x), yt = AT(y);
 
     if ((xt&VERB && yt&NOUN)||(xt&NOUN && yt&VERB)) {
@@ -18,7 +17,6 @@ DYAD(amper) {
         v = VAV(y);
         z = CDERV(CAMPR, compose, dcompose, x, y, VLR(v), VMR(v), VRR(v));
     }
-
     return z;
 }
 
@@ -46,8 +44,7 @@ DDYAD(dcompose) {
 }
 
 DYAD(at) {
-    V *v;
-    A z;
+    V *v; A z;
     if (AT(x)&VERB && AT(y)&VERB) {
         v = VAV(y);
         z = CDERV(CAT, atop, datop, x, y, VLR(v), VMR(v), VRR(v));
