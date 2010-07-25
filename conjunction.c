@@ -78,12 +78,14 @@ DDYAD(dchook) {
 
 DMONAD(cfork) {
     DECL_FGH;
-    z = df2(df1(y, f), df1(y, h), g);
+    V *fv = VAV(f);
+    z = VID(fv)==CCAP ? df1(df1(y, h), g) : df2(df1(y, f), df1(y, h), g);
     return z;
 }
 
 DDYAD(dcfork) {
     DECL_FGH;
-    z = df2(df2(x, y, f), df2(x, y, h), g);
+    V *fv = VAV(f);
+    z = VID(fv)==CCAP ? df2(x, df1(y, h), g) : df2(df2(x, y, f), df2(x, y, h), g);
     return z;
 }

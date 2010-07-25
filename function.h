@@ -7,11 +7,10 @@ typedef struct _verb {
     AF3 df2;
     A f, g, h;
     I lr, mr, rr, inv;
-    C id;
+    UC id;
 } V;
 
-#define VAV(a) ((V *)AV(a))
-
+#define VAV(a)  ((V *)AV(a))
 #define VID(v)  (v->id)
 #define VF1(v)  (v->f1)
 #define VF2(v)  (v->f2)
@@ -42,7 +41,7 @@ DDYAD(df2);
 DMONAD(dhk);
 DDYAD(dfrk);
 
-A func_def(C id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv);
-A derv_def(C id, I t, AF2 df1, AF3 df2, A f, A g, A h, I lr, I mr, I rr, I inv);
+A func_def(UC id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv);
+A derv_def(UC id, I t, AF2 df1, AF3 df2, A f, A g, A h, I lr, I mr, I rr, I inv);
 
 #endif

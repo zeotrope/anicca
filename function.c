@@ -29,7 +29,7 @@ DDYAD(dfrk) {
                     VRR(v), 0);
 }
 
-A func_def(C id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv) {
+A func_def(UC id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv) {
     A z = gen_array(t, 0, 1, NULL);
     V *v = VAV(z);
 
@@ -49,7 +49,7 @@ A func_def(C id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv) {
     return z;
 }
 
-A derv_def(C id, I t, AF2 df1, AF3 df2, A f, A g, A h, I lr, I mr, I rr, I inv) {
+A derv_def(UC id, I t, AF2 df1, AF3 df2, A f, A g, A h, I lr, I mr, I rr, I inv) {
     A z = func_def(id, t, NULL, NULL, f, g, h, lr, mr, rr, inv);
     V *v = VAV(z);
     VDF1(v) = df1;

@@ -10,7 +10,7 @@ typedef struct _primitive {
 
 /*-----------------------------------------------------------------------------*/
 
-static C primindx[256] = {
+static UC primindx[256] = {
 /*0*/  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 /*1*/  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 /*2*/  0, 1, 2, 3, 4, 5, 6, 0, 7, 8, 9, 10,11,12,13,14, /* !"#$%&'()*+,-./*/
@@ -18,7 +18,7 @@ static C primindx[256] = {
 /*4*/  21,22,0, 23,24,25,0, 0, 26,27,0, 0, 28,29,0, 0,  /*@ABCDEFGHIJKLMNO*/
 /*5*/  0, 0, 0, 30,31,0, 0, 0, 0, 0, 0, 32,33,34,35,0,  /*PQRSTUVWXYZ[\]^_*/
 /*6*/  36,37,38,0, 39,40,41,0, 0, 42,43,0, 0, 0, 0, 44, /*`abcdefghijklmno*/
-/*7*/  45,46,47,48,49,50,0, 0, 51,0, 0, 52,53,54,55,0,  /*pqrstuvwxyz{|}~ */
+/*7*/  45,46,47,48,49,50,0, 0, 51,0, 0, 52,53,54,55,56,  /*pqrstuvwxyz{|}~ */
 /*8*/  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 /*9*/  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 /*a*/  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -34,29 +34,29 @@ static C primindx[256] = {
 #define BASE 56
 #define PUNC 3
 
-static C verbname[PUNC][BASE] = {
-    {'!',   '"',   '#',   '$',   '%',   '&', '(',   ')', '*',  '+',  ',',   '-',
-     '.',   '/',   ':',   ';',   '<',   '=', '>',   '?', '@',  'A',  'C',   'D',
-     'E',   'H',   'I',   'L',   'M',   'S', 'T',   '[', '\\', ']',  '^',   '_',
-     '`',   'a',   'b',   'd',   'e',   'f', 'i',   'j', 'o',  'p',  'q',   'r',
-     's',   't',   'u',   'x',   '{',   '|', '}',   '~'},
+static UC verbname[PUNC][BASE] = {
+{'!',   '"',   '#',   '$',   '%',   '&', '(',   ')',  '*',  '+',  ',',   '-',
+ '.',   '/',   ':',   ';',   '<',   '=', '>',   '?',  '@',  'A',  'C',   'D',
+ 'E',   'H',   'I',   'L',   'M',   'S', 'T',   '[',  '\\', ']',  '^',   '_',
+ '`',   'a',   'b',   'd',   'e',   'f', 'i',   'j',  'o',  'p',  'q',   'r',
+ 's',   't',   'u',   'x',   '{',   '|', '}',   '~'},
 
-    {CFIT,  CDO,   CBASE, CSPRS, CMTRI, 1,   1,     1,   CAND, COR,  CSTCH, CNOT,
-     1,     1,     1,     1,     1,     1,   1,     1,   1,    1,    1,     1,
-     1,     1,     1,     1,     1,     1,   1,     1,   1,    1,    1,     1,
-     1,     1,     1,     1,     1,     1,   CIOTA, 1,   1,    1,    1,     1,
-     1,     1,     1,     1,     1,     1,   1,     1},
+{CFIT,  CDO,   CBASE, CSPRS, CMTRI, 1,   1,     1,    CAND, COR,  CSTCH, CNOT,
+ 1,     1,     1,     1,     1,     1,   1,     1,    1,    1,    1,     1,
+ 1,     1,     1,     1,     1,     1,   1,     1,    1,    1,    1,     1,
+ 1,     1,     1,     1,     1,     1,   CIOTA, 1,    1,    1,    1,     1,
+ 1,     1,     1,     1,     1,     1,   1,     1},
 
-    {CFRGN, CFORM, CABSE, CRECR, CSQRT, 1,   1,     1,   CSQR, CDBL, CLAMN, CHALF,
-     1,     1,     1,     1,     1,     1,   1,     1,   1,    1,    1,     1,
-     1,     1,     1,     1,     1,     1,   1,     1,   1,    1,    1,     1,
-     1,     1,     1,     1,     1,     1,   1,     1,   1,    1,    1,     1,
-     1,     1,     1,     1,     1,     1,   1,     1}
+{CFRGN, CFORM, CABSE, CRECR, CSQRT, 1,   1,     1,    CSQR, CDBL, CLAMN, CHALF,
+ 1,     1,     1,     1,     1,     1,   1,     1,    1,    1,    1,     1,
+ 1,     1,     1,     1,     1,     1,   1,     CCAP, 1,    1,    1,     1,
+ 1,     1,     1,     1,     1,     1,   1,     1,    1,    1,    1,     1,
+ 1,     1,     1,     1,     1,     1,   1,     1}
 };
 
 /*-----------------------------------------------------------------------------*/
 
-#define NPRIM 56
+#define NPRIM 57
 
 static P primitives[NPRIM+1] = {
     /* 0     0  */ {0,    NULL,       NULL,   0, 0, 0, 0},
@@ -81,45 +81,46 @@ static P primitives[NPRIM+1] = {
     /* 19 >  62 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
     /* 20 ?  63 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
     /* 21 @  64 */ {CONJ, NULL,       at,     0, 0, 0, 0},
-    /* 22 A  59 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 23 C  60 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 24 D  61 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 25 E  62 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 26 H  63 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 27 I  59 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 28 L  60 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 29 M  61 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 30 S  62 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 31 T  63 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 22 A. 59 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 23 C. 60 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 24 D. 61 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 25 E. 62 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 26 H. 63 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 27 I. 59 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 28 L. 60 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 29 M. 61 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 30 S. 62 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 31 T. 63 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
     /* 32 [  59 */ {VERB, same,       left,   0, 0, 0, 0},
     /* 33 \  60 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
     /* 34 ]  61 */ {VERB, same,       right,  0, 0, 0, 0},
     /* 35 ^  62 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
     /* 36 `  59 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 37 a  60 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 38 b  61 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 39 d  62 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 40 e  63 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 41 f  59 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 42 i  60 */ {VERB, iota,       NULL,   0, 0, 0, 0},
-    /* 43 j  61 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 44 o  62 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 45 p  63 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 46 q  59 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 47 r  60 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 48 s  61 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 49 t  62 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 50 u  63 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
-    /* 51 x  59 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 37 a. 60 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 38 b. 61 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 39 d. 62 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 40 e. 63 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 41 f. 59 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 42 i. 60 */ {VERB, iota,       NULL,   0, 0, 0, 0},
+    /* 43 j. 61 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 44 o. 62 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 45 p. 63 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 46 q. 64 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 47 r. 65 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 48 s. 66 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 49 t. 67 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 50 u. 68 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
+    /* 51 x. 71 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
     /* 52 {  59 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
     /* 53 |  59 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
     /* 54 }  59 */ {VERB, NULL,       NULL,   0, 0, 0, 0},
     /* 55 ~  59 */ {ADV,  tilde,      NULL,   0, 0, 0, 0},
+    /* 56 [: 56 */ {VERB, NULL,       NULL,   0, 0, 0, 0} /*not proper position*/
 };
 
 /*-----------------------------------------------------------------------------*/
 
 C verb_name(I n, C *s);
-A primitive_lookup(C c);
+A primitive_lookup(UC c);
 
 #endif

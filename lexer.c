@@ -158,9 +158,7 @@ DYAD(tokens) {
            default: break; /* error */
            }
        }
-       else {
-           *av++ = v;
-       }
+       else { *av++ = v; }
     );
 
     DO(4, *av++ = mark);

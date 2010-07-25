@@ -8,12 +8,13 @@
         }                          \
 } while(0)
 
-typedef int    I;
-typedef char   C;
-typedef char   B;
-typedef double D;
-typedef void   VO;
-typedef void*  VP;
+typedef int           I;
+typedef char          B;
+typedef char          C;
+typedef unsigned char UC;
+typedef double        D;
+typedef void          VO;
+typedef void*         VP;
 
 #define ZR(z) ((z).real)
 #define ZI(z) ((z).imaginary)

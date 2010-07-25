@@ -22,6 +22,9 @@
 #define CGT    '>'
 #define CQUES  '?'
 #define CAT    '@'
+#define CSAMEL '['
+#define CPREFX '\\'
+#define CSAMER ']'
 #define CIOTA  'i'
 #define CTILDE '~'
 #define CSQOT  '\''
@@ -49,10 +52,11 @@ typedef enum {
     CSQRT,
     CSQR,
     CDBL,
-    CLAMN
+    CLAMN,
+    CCAP = 127
 } PUNCCOL;
 
-#define CHOOK 19
-#define CFORK 20
+#define CHOOK 200
+#define CFORK 201
 
 #endif
