@@ -25,18 +25,28 @@ typedef struct _complex {
 } Z;
 
 #define AT(a) ((a)->type)
+#define AC(a) ((a)->count)
 #define AR(a) ((a)->rank)
 #define AN(a) ((a)->num)
 #define AS(a) ((a)->shape)
 #define AV(a) ((a)->value)
 
+#define BAV(a) ((B *)AV(a))
+#define CAV(a) ((C *)AV(a))
+#define IAV(a) ((I *)AV(a))
+#define DAV(a) ((D *)AV(a))
+#define ZAV(a) ((Z *)AV(a))
+
 typedef struct _array {
     I type;
+    I count;
     I rank;
     I num;
     I *shape;
     VP value;
 } *A;
+
+#define AAV(a) ((A *)AV(a))
 
 typedef A(*AF)();
 typedef A(*AF1)(A);

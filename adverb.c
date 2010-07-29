@@ -12,7 +12,7 @@ MONAD(slash) {
     V *v; A z;
     ASSERT(AT(y)&VERB, ERDOM);
     v = VAV(y);
-    z = ADERV(CSLASH, insert, table, y, VLR(v), VMR(v), VRR(v));
+    z = ADERV(CFWSL, insert, table, y, VLR(v), VMR(v), VRR(v));
     return z;
 }
 
@@ -36,14 +36,12 @@ MONAD(tilde) {
     return z;
 }
 
-DMONAD(reflex) {
-    DECL_F;
+DMONAD(reflex) { DECL_F;
     z = df2(y, y, f);
     return z;
 }
 
-DDYAD(passive) {
-    DECL_F;
+DDYAD(passive) { DECL_F;
     z = df2(y, x, f);
     return z;
 }

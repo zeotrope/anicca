@@ -2,10 +2,10 @@
 #define _VERB_H
 
 #define MONAD_PROLOG \
-    I yn = AN(y), *v, *yv = (I *)AV(y); A z
+    I yn = AN(y), *v, *yv = IAV(y); A z
 
 #define DYAD_PROLOG \
-    I xn = AN(x), yn = AN(y), *v, *xv = (I *)AV(x), *yv = (I *)AV(y); A z
+    I xn = AN(x), yn = AN(y), *v, *xv = IAV(x), *yv = IAV(y); A z
 
 MONAD(fact);
 DYAD(outof);
@@ -22,15 +22,19 @@ DYAD(times);
 MONAD(conjugate);
 DYAD(plus);
 
+DYAD(append);
+
 MONAD(negate);
 DYAD(minus);
+
+MONAD(iota);
+
+MONAD(tail);
 
 MONAD(same);
 DYAD(left);
 DYAD(right);
 
-MONAD(iota);
-
-MONAD(tail);
+DYAD(residue);
 
 #endif

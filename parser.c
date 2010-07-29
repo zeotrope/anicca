@@ -18,7 +18,7 @@ ACTION(paren)  { return stack[b+1];                           }
 A parse(A tokens) {
     I b, c, d, e, p, q, n = AN(tokens), j = n-4, m = j, *t;
     PF action;
-    A *stack = (A *)AV(tokens), *top, z;
+    A *stack = AAV(tokens), *top, z;
 
     do {
         top = &stack[j];

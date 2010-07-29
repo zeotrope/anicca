@@ -10,7 +10,7 @@
 #include "conjunction.h"
 #include "primitive.h"
 
-C verb_name(I n, C *s) {
+UC verb_name(I n, C *s) {
     UC d, *t;
     I i, j;
 
@@ -26,7 +26,6 @@ C verb_name(I n, C *s) {
         }
     }
     }
-
     return *s;
 }
 

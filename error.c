@@ -4,7 +4,7 @@
 #include "error.h"
 
 VO a_signal(C err) {
-    printf("|");
-    printf("%s\n", errors[err]);
-    printf("|\n");
+    fprintf(stderr, "|");
+    fprintf(stderr, "%s\n", errors[err]);
+    fprintf(stderr, "|\n");
 }

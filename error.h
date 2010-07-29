@@ -7,6 +7,7 @@ typedef enum {
     ERLEXER,
     ERSYNTX,
     ERILLNUM,
+    ERALLOC,
     NERRS
 } ERRS;
 
@@ -16,6 +17,7 @@ static C *errors[NERRS] = {
     "lexical error",
     "syntax error",
     "ill-formed number",
+    "allocation error"
 };
 
 #define ASSERT(cond, err) \

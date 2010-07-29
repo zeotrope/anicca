@@ -15,14 +15,8 @@
 #include "lexer.h"
 
 A parse_literal(I n, C *s) {
-    A z;
-    C *v;
-
-    s++; n-=2;
-    z = gen_array(CHAR, 1, n, NULL);
-    v = (C *)AV(z);
-    if (n > 0) { strncpy(v, s, n); }
-
+    A z = gen_array(CHAR, 1, n-=2, NULL);  C *v = CAV(z);
+    if (n > 0) { s++; strncpy(v, s, n); }
     return z;
 }
 
@@ -34,13 +28,11 @@ A parse_literal(I n, C *s) {
   length token 2, ..., start index token n, length token n].
 */
 A noun_index(I n, C *s) {
-    A z;
     C st = SS, e, t;
     I m = 1+n,  j = 0, k = 0, i, *v;
     ST pr;
-
-    z = gen_array(INT, 1, m, NULL);
-    v = (I *)AV(z);
+    A z = gen_array(INT, 1, m, NULL);
+    v = IAV(z);
 
     for (i = 0; i < n; i++) {
         t = nountype[s[i]];
@@ -69,13 +61,11 @@ A noun_index(I n, C *s) {
   length token 2, ..., start index token n, length token n].
 */
 MONAD(token_index) {
-    A z; 
-    C vec = 0, e, t, s = SS, sn, *str = (C *)AV(y);
+    C vec = 0, e, t, s = SS, sn, *str = CAV(y);
     I i, jv, j = 0, k = 0, n = AN(y), *v;
     ST pr;
-
-    z = gen_array(INT, 1, n+n, NULL);
-    v = (I *)AV(z);
+    A z = gen_array(INT, 1, n+n, NULL);
+    v = IAV(z);
 
     for (i = 0; i < n; i++) {
         t = chartype[str[i]];
@@ -125,13 +115,9 @@ MONAD(token_index) {
   output: List of tokens.
 */
 DYAD(tokens) {
-    A v, z, *av;
-    C c, vn, *s, *str = (C *)AV(y);
-    I j, ws, wl, n, t, *indx = (I *)AV(x);
-
-    n = AN(x)/2;
-    z = gen_array(BOX, 1, n+5, NULL);
-    av = (A *)AV(z);
+    C c, vn, *s, *str = CAV(y);
+    I j, ws, wl, t, n = AN(x)/2, *indx = IAV(x);
+    A v, z = gen_array(BOX, 1, n+5, NULL), *av = AAV(z);
     *av++ = mark;
 
     DO(n,

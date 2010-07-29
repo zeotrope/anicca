@@ -20,25 +20,21 @@ DYAD(amper) {
     return z;
 }
 
-DMONAD(bond) {
-    DECL_FG;
+DMONAD(bond) { DECL_FG;
     z = AT(f)&NOUN ? df2(f, y, g) : df2(y, g, f);
     return z;
 }
 
-DDYAD(dbond) {
-    DECL_FG;
+DDYAD(dbond) { DECL_FG;
     return z;
 }
 
-DMONAD(compose) {
-    DECL_FG;
+DMONAD(compose) { DECL_FG;
     z = df1(df1(y, g), f);
     return z;
 }
 
-DDYAD(dcompose) {
-    DECL_FG;
+DDYAD(dcompose) { DECL_FG;
     z = df2(df1(x, g), df1(y, g), f);
     return z;
 }
@@ -58,34 +54,29 @@ DMONAD(atop) {
     return z;
 }
 
-DDYAD(datop) {
-    DECL_FG;
+DDYAD(datop) { DECL_FG;
     z = df1(df2(x, y, g), f);
     return z;
 }
 
-DMONAD(chook) {
-    DECL_FG;
+DMONAD(chook) { DECL_FG;
     z = df2(y, df1(y, g), f);
     return z;
 }
 
-DDYAD(dchook) {
-    DECL_FG;
+DDYAD(dchook) { DECL_FG;
     z = df2(x, df1(y, g), f);
     return z;
 }
 
-DMONAD(cfork) {
-    DECL_FGH;
+DMONAD(cfork) { DECL_FGH;
     V *fv = VAV(f);
     z = VID(fv)==CCAP ? df1(df1(y, h), g) : df2(df1(y, f), df1(y, h), g);
     return z;
 }
 
-DDYAD(dcfork) {
-    DECL_FGH;
+DDYAD(dcfork) { DECL_FGH;
     V *fv = VAV(f);
-    z = VID(fv)==CCAP ? df2(x, df1(y, h), g) : df2(df2(x, y, f), df2(x, y, h), g);
+    z = VID(fv)==CCAP ? df1(df2(x, y, h), g) : df2(df2(x, y, f), df2(x, y, h), g);
     return z;
 }
