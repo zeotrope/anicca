@@ -29,12 +29,8 @@ ATOMFUNC(angd) {
 }
 
 ATOMFUNC(exp) {
-    D d;
-
-    /* TODO: it could be an integer */
-    d = noun_dval(a);
-    /* TODO: negative exponents */
-    DO(noun_ival(&b), d *= 10);
+    D d = noun_dval(a);         /* TODO: it could be an integer */
+    DO(noun_ival(&b), d *= 10); /* TODO: negative exponents */
     a->t = FLT;
     a->val.d = d;
     return 1;

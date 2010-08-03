@@ -9,32 +9,25 @@
 
 MONAD(fact);
 DYAD(outof);
-
 MONAD(tally);
 DYAD(copy);
-
 MONAD(reciprocal);
 DYAD(divide);
-
 MONAD(signum);
 DYAD(times);
-
 MONAD(conjugate);
 DYAD(plus);
-
 DYAD(append);
-
 MONAD(negate);
 DYAD(minus);
-
+DYAD(lthan);
+DYAD(equal);
+DYAD(gthan);
 MONAD(iota);
-
 MONAD(tail);
-
 MONAD(same);
 DYAD(left);
 DYAD(right);
-
 DYAD(residue);
 
 #endif

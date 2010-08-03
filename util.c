@@ -59,7 +59,7 @@ VO a_init(VO) {
 
 A eval(const C *str) {
     A w, x, y, z;
-    w = array_str(strlen(str)+1, str);
+    w = array_str(strlen(str), str);
     x = token_index(w);
     y = tokens(x, w);
     z = parse(y);

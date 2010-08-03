@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "anicca.h"
+#include "error.h"
 #include "char.h"
 #include "function.h"
 #include "conjunction.h"
@@ -70,13 +71,37 @@ DDYAD(dchook) { DECL_FG;
 }
 
 DMONAD(cfork) { DECL_FGH;
-    V *fv = VAV(f);
-    z = VID(fv)==CCAP ? df1(df1(y, h), g) : df2(df1(y, f), df1(y, h), g);
+    z = (AT(f)&VERB && VID(VAV(f))==CCAP) ? df1(df1(y, h), g) :
+        AT(f)&NOUN ? df2(f, df1(y, h), g) :
+        df2(df1(y, f), df1(y, h), g);
     return z;
 }
 
 DDYAD(dcfork) { DECL_FGH;
-    V *fv = VAV(f);
-    z = VID(fv)==CCAP ? df1(df2(x, y, h), g) : df2(df2(x, y, f), df2(x, y, h), g);
+    z = (AT(f)&VERB && VID(VAV(f))==CCAP) ? df1(df2(x, y, h), g) :
+        AT(f)&NOUN ? df2(f, df2(x, y, h), g) :
+        df2(df2(x, y, f), df2(x, y, h), g);
+    return z;
+}
+
+DYAD(powr) {
+    V *v; A z; I xt = AT(x), yt = AT(y);
+    ASSERT(xt&VERB && yt&INT, ERDOM);
+    v = VAV(xt&VERB ? x : y);
+    z = CDERV(CPOWR, cpower, cdpower, x, y, VLR(v), VMR(v), VRR(v));
+    return z;
+}
+
+DMONAD(cpower) { DECL_FG;
+    I n = *IAV(g); A temp;
+    DO(n, temp = y; y = df1(temp, f); a_free(temp));
+    z = y;
+    return z;
+}
+
+DDYAD(cdpower) { DECL_FG;
+    I n = *IAV(g); A temp;
+    DO(n, temp = y; y = df2(x, temp, f); a_free(temp));
+    z = y;
     return z;
 }

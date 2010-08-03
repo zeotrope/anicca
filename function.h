@@ -25,13 +25,13 @@ typedef struct _verb {
 #define VIR(v)  (v->inv)
 
 #define DECL_F \
-    V *v = VAV(self); A f = VF(v), z
+    V *v = VAV(self); A f = VF(v), z; AF1 f1 = f ? VAV(f)->f1 : NULL;
 
 #define DECL_FG \
     V *v = VAV(self); A f = VF(v), g = VG(v), z
 
 #define DECL_FGH \
-    V *v = VAV(self); A f = VF(v), g = VG(v), h = VH(v), z
+    V *v = VAV(self); A f = VF(v), g = VG(v), h = VH(v), z;
 
 #define VDEF(id, f1, f2, l, m, r, i) \
     func_def(id, VERB, f1, f2, NULL, NULL, NULL. l, m, r, i)

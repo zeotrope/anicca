@@ -43,7 +43,6 @@ NVAL(dval, D) {
 
 NVAL(zval, Z) {
     Z z = {0, 0};
-
     NUMERIC_SWITCH(NT(a),
         z.real = (D)NB(a); break,
         z.real = (D)NI(a); break,
@@ -67,7 +66,7 @@ PARSE(base) {
     if (!se) return NULL;
     n -= (se+1) - s;
 
-    if (se[0] == 'b') {
+    if (se[0]=='b') {
         se = parse_pi(n, se+1, &b);
         if (!se) return NULL;
         good = abase(a, b);
@@ -82,12 +81,12 @@ PARSE(pi) {
     if (!se) return NULL;
     n -= (se+1) - s;
 
-    if (se[0] == 'p') {
+    if (se[0]=='p') {
         se = parse_cmpx(n, se+1, &b);
         if (!se) return NULL;
         good = apitime(a, b);
     }
-    else if (se[0] == 'x') {
+    else if (se[0]=='x') {
         se = parse_cmpx(n, se+1, &b);
         if (!se) return NULL;
         good = aeuler(a, b);
@@ -102,18 +101,18 @@ PARSE(cmpx) {
     if (!se) return NULL;
     n -= se - s;
 
-    if (s[0] == 'j') {
+    if (s[0]=='j') {
         se = parse_exp(n-1, se+1, &b);
         if (!se) return NULL;
         good = acmpx(a, b);
     }
-    else if (s[0] == 'a') {
-        if (s[1] == 'd') {
+    else if (s[0]=='a') {
+        if (s[1]=='d') {
             se = parse_exp(n-2, se+2, &b);
             if (!se) return NULL;
             good = aangd(a, b);
         }
-        else if (s[1] == 'r') {
+        else if (s[1]=='r') {
             se = parse_exp(n-2, se+2, &b);
             if (!se) return NULL;
             good = aangr(a, b);
@@ -129,9 +128,9 @@ PARSE(exp) {
     if (!se) return NULL;
     n -= se - s;
 
-    if (se[0] == 'e') {
+    if (se[0]=='e') {
         se = parse_num(n-1, se+1, &b);
-        if (b.t > INT) {
+        if (b.t>INT) {
             a_signal(ERLEXER);
             return NULL;
         }
@@ -142,18 +141,16 @@ PARSE(exp) {
 
 PARSE(num) {
     C *d = memchr(s, '.', n), *e;
-
-    if (d) {
-        ND(a) = strtod(s, &e);
-        NT(a) = FLT;
-    }
-    else {
-        NI(a) = strtol(s, &e, 10);
-        NT(a) = INT;
-    }
+    if (d) { ND(a) = strtod(s, &e);     NT(a) = FLT; }
+    else   { NI(a) = strtol(s, &e, 10); NT(a) = INT; }
     return e;
 }
 
+/*
+  parse_numeric
+  input: Length of numeric string, Pointer to string.
+  output: Numeric array.
+*/
 A parse_noun(I n, C *s) {
     A y = noun_index(n+1, s), z;
     B *bv;
@@ -167,10 +164,9 @@ A parse_noun(I n, C *s) {
        as = indx[j];
        al = indx[j+1];
        atm = &nouns[i];
-       if (!parse_atom(al, &s[as], atm)) { a_signal(ERLEXER); }
+       ASSERT(parse_atom(al, &s[as], atm), ERLEXER);
        t = MAX(t, NT(atm));
     );
-
     z = gen_array(t, m!=1, m, NULL);
 
     NUMERIC_SWITCH(t,
@@ -179,5 +175,6 @@ A parse_noun(I n, C *s) {
         dv = DAV(z); DO(m, dv[i] = noun_dval(&nouns[i])); break,
         zv = ZAV(z); DO(m, zv[i] = noun_zval(&nouns[i])); break
     );
+
     return z;
 }

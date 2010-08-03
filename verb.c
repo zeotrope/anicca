@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include "anicca.h"
 #include "error.h"
@@ -13,9 +14,7 @@ MONAD(fact) { MONAD_PROLOG;
     ASSERT(AT(y)&INT, ERDOM);
     z = gen_array(INT, AR(y), yn, AS(y));
     v = IAV(z);
-    DO(yn,
-       r = 1;
-       temp = yv[i];
+    DO(yn, r = 1; temp = yv[i];
        DO(temp, r *= temp--);
        v[i] = r;
     );
@@ -34,6 +33,14 @@ MONAD(tally) { MONAD_PROLOG;
 }
 
 DYAD(copy) { DYAD_PROLOG;
+    I n = 0, itm, cnt;
+    ASSERT(xn==yn, ERLEN );
+    DO(xn, n += xv[i]);
+    z = gen_array(INT, AR(y), n, AS(y));
+    v = IAV(z);
+    DO(xn, cnt = xv[i]; itm = yv[i];
+       if (cnt>0) { DO(cnt, *v++ = itm); }
+    );
     return z;
 }
 
@@ -113,6 +120,64 @@ DYAD(minus) { DYAD_PROLOG;
     v = IAV(z);
     DO(yn, v[i] = xv[i] - yv[i]);
     return z;
+}
+
+DYAD(link) {
+    A z; return z;
+}
+
+MONAD(box) {
+    A z; return z;
+}
+
+DYAD(lthan) { DYAD_PROLOG;
+    ASSERT(AT(x)&INT && AT(y)&INT, ERDOM);
+    z = gen_array(INT, AR(y), yn, AS(y));
+    v = IAV(z);
+    DO(yn, v[i] = xv[i] < yv[i]);
+    return z;
+}
+
+DYAD(equal) { DYAD_PROLOG;
+    ASSERT(AT(x)&INT && AT(y)&INT, ERDOM);
+    z = gen_array(INT, AR(y), yn, AS(y));
+    v = IAV(z);
+    DO(yn, v[i] = xv[i] == yv[i]);
+    return z;
+}
+
+MONAD(unbox) {
+    A z; return z;
+}
+
+DYAD(gthan) { DYAD_PROLOG;
+    ASSERT(AT(x)&INT && AT(y)&INT, ERDOM);
+    z = gen_array(INT, AR(y), yn, AS(y));
+    v = IAV(z);
+    DO(yn, v[i] = xv[i] > yv[i]);
+    return z;
+}
+
+MONAD(roll) {
+    A z; return z;
+}
+
+DYAD(deal) {
+    A z; return z;
+}
+
+MONAD(indices) { MONAD_PROLOG;
+    z = gen_array(INT, AR(y), yn, AS(y));
+    v = IAV(z);
+    return z;
+}
+
+MONAD(exponential) {
+    A z; return z;
+}
+
+MONAD(exec) {
+    A z; return z;
 }
 
 MONAD(iota) { MONAD_PROLOG;

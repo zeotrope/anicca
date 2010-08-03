@@ -15,21 +15,26 @@ ACTION(bident) { return dhk(stack[b], stack[e]);              }
 ACTION(is)     { A z; return z;                               }
 ACTION(paren)  { return stack[b+1];                           }
 
+/*
+   parse
+   input: Array of tokens to be parsed, output of tokens.
+   output: An array, the result of a successful parse.
+*/
 A parse(A tokens) {
-    I b, c, d, e, p, q, n = AN(tokens), j = n-4, m = j, *t;
+    I  b, c, d, e, p, q, n = AN(tokens), j = n-4, m = j,*t;
     PF action;
-    A *stack = AAV(tokens), *top, z;
+    A *top, *stack = AAV(tokens), z;
 
     do {
         top = &stack[j];
         /* printf("m: %d j: %d ", m, j); print(tokens); */
-        for (c = 0; c < CASES; c++) {
+        for (c=0; c<CASES; c++) {
             t = grammar[c].t;
             if (AT(top[0])&t[0] && AT(top[1])&t[1] &&
                 AT(top[2])&t[2] && AT(top[3])&t[3]) { break; }
         }
 
-        if (c < CASES) {
+        if (c<CASES) {
             b = grammar[c].b; p = b+j;
             e = grammar[c].e; q = e+j;
             /* printf(" b: %d e: %d c: %d\n", p, q, c); */
@@ -43,10 +48,10 @@ A parse(A tokens) {
             j--;
         }
         /* printf("\n"); */
-    } while (j >= 0 && m > 2);
+    } while (j>=0 && m>2);
     /* printf("m: %d j: %d\n", m, j); */
     /* println(tokens); */    
-    if (m > 2) { a_signal(ERSYNTX); };
+    if (m>2) { a_signal(ERSYNTX); };
     z = stack[j];
 
     return z;

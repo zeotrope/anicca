@@ -12,14 +12,14 @@ DMONAD(bond);
 DDYAD(dbond);
 DMONAD(compose);
 DDYAD(dcompose);
-
 DYAD(at);
 DMONAD(atop);
 DDYAD(datop);
-
 DMONAD(chook);
 DDYAD(dchook);
-
+DYAD(powr);
+DMONAD(cpower);
+DDYAD(cdpower);
 DMONAD(cfork);
 DDYAD(dcfork);
 

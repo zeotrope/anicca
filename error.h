@@ -3,7 +3,8 @@
 
 typedef enum {
     ERDOM,
-    ERRANK,    
+    ERRANK,
+    ERLEN,
     ERLEXER,
     ERSYNTX,
     ERILLNUM,
@@ -14,6 +15,7 @@ typedef enum {
 static C *errors[NERRS] = {
     "domain error",
     "rank error",
+    "length error",
     "lexical error",
     "syntax error",
     "ill-formed number",

@@ -10,7 +10,6 @@
 MONAD(slash);
 DMONAD(insert);
 DDYAD(table);
-
 MONAD(tilde);
 DMONAD(reflex);
 DDYAD(passive);

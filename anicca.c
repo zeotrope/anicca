@@ -21,10 +21,7 @@ I main(I argc, C *argv[]) {
     while (1) {
         printf("   ");
         fgets(str, 100, stdin);
-        x = array_str(strlen(str), str);
-        y = parse(tokens(token_index(x), x));
-        println(y);
-        a_free(x); a_free(y);
+        println(eval(str));
     }
     return 0;
 }

@@ -9,19 +9,13 @@
 #include "memory.h"
 
 VP a_malloc(I size) {
-    V *m;
-    m = malloc(size);
-    if (!m) { a_signal(ERALLOC); }
+    V *m = malloc(size);
+    ASSERT(m, ERALLOC);
     return m;
 }
 
 VO a_free(A y) {
-    if (AN(y) > 0) {
-        free(AV(y));
-        if (AR(y) > 0) {
-            free(AS(y));
-        }
-    }
+    if (AN(y)>0) { free(AV(y)); if (AR(y)>0) { free(AS(y)); } }
     free(y);
 }
 
@@ -57,16 +51,14 @@ A gen_farray(D *d, I n) {
 }
 
 A gen_iarray(I *ints, I n) {
-    A z; I *zv;
-    z = gen_array(INT, 1, n, NULL);
-    zv = AV(z);
+    A z = gen_array(INT, 1, n, NULL); I *zv = IAV(z);
     DO(n, zv[i] = ints[i]);
     return z;
 }
 
 A gen_test_array(I n, ...) {
     va_list ap;
-    A z = gen_array(BOX, 1, n+ 5, NULL), *zv = AV(z);
+    A z = gen_array(BOX, 1, n+ 5, NULL), *zv = AAV(z);
     *zv++ = mark;
     va_start(ap, n);
     DO(n, zv[i] = va_arg(ap, A));
@@ -76,8 +68,7 @@ A gen_test_array(I n, ...) {
 }
 
 VO resize_array(A y, I t, I n) {
-    AN(y) = n;
-    AV(y) = realloc(AV(y), type_size(t)*n);
+    AN(y) = n; AV(y) = realloc(AV(y), type_size(t)*n);
 }
 
 /*
@@ -88,12 +79,6 @@ VO resize_array(A y, I t, I n) {
 A array_str(I n, const C *str) {
     A z = gen_array(CHAR, 1, n, NULL);
     memcpy(AV(z), str, n);
-    return z;
-}
-
-A array_int(I n) {
-    A z = gen_array(CHAR, 0, 1, NULL);
-    *IAV(z) = n;
     return z;
 }
 
