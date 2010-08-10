@@ -22,14 +22,14 @@ VO a_free(A y) {
 I type_size(I type) {
     switch (type) {
     case BOOL:
-    case CHAR: return sizeof(char);          break;
-    case INT:  return sizeof(int);           break;
-    case FLT:  return sizeof(double);        break;
-    case CMPX: return sizeof(Z);             break;
-    case BOX:  return sizeof(struct _array); break;
+    case CHAR: return sizeof(C); break;
+    case INT:  return sizeof(I); break;
+    case FLT:  return sizeof(D); break;
+    case CMPX: return sizeof(Z); break;
+    case BOX:  return sizeof(A); break;
     case ADV:
     case CONJ:
-    case VERB: return sizeof(struct _verb);  break;
+    case VERB: return sizeof(V); break;
     }
     return sizeof(int);
 }

@@ -9,6 +9,7 @@
 } while(0)
 
 typedef int           I;
+typedef unsigned int  UI;
 typedef char          B;
 typedef char          C;
 typedef unsigned char UC;
@@ -48,6 +49,7 @@ typedef struct _array {
 
 #define AAV(a) ((A *)AV(a))
 
+typedef VO(*SF)();
 typedef A(*AF)();
 typedef A(*AF1)(A);
 typedef A(*AF2)(A, A);

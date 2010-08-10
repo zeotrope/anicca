@@ -4,9 +4,11 @@
 #include <math.h>
 
 #include "anicca.h"
+#include "char.h"
 #include "error.h"
 #include "memory.h"
 #include "verb.h"
+#include "verb-atomic.h"
 #include "util.h"
 
 MONAD(fact) { MONAD_PROLOG;
@@ -53,13 +55,14 @@ MONAD(reciprocal) {
     return z;
 }
 
+SF2(bdivide,  I, I, *x + *y)
+SF2(bdivide2, I, B, *x + *y)
+SF2(idivide,  D, I, *x + *y)
+SF2(ddivide,  D, D, *x + *y)
+/*SF2(jplus,  Z, Z, zplus(x,y))*/
+
 DYAD(divide) {
-    I yn = AN(y), *xv = IAV(x), *yv = IAV(y); D *v; A z;
-    ASSERT(AT(x)&INT && AT(y)&INT, ERDOM);
-    z = gen_array(FLT, AR(y), yn, AS(y));
-    v = DAV(z);
-    DO(yn, v[i] = xv[i]/(D)yv[i]);
-    return z;
+    A z; return z;
 }
 
 MONAD(signum) { MONAD_PROLOG;
@@ -73,11 +76,22 @@ MONAD(signum) { MONAD_PROLOG;
     return z;
 }
 
-DYAD(times) { DYAD_PROLOG;
-    ASSERT(AT(x)&INT && AT(y)&INT, ERDOM);
+
+SF2(btimes,  I, I, *x + *y)
+SF2(btimes2, I, B, *x + *y)
+SF2(itimes,  D, I, *x + *y)
+SF2(dtimes,  D, D, *x + *y)
+/*SF2(jplus,  Z, Z, zplus(x,y))*/
+
+DYAD(times) {
+    A z; return z;
+}
+
+MONAD(square) { MONAD_PROLOG;
+    ASSERT(AT(y)&INT, ERDOM);
     z = gen_array(INT, AR(y), yn, AS(y));
     v = IAV(z);
-    DO(yn, v[i] = xv[i] * yv[i]);
+    DO(yn, v[i] = yv[i] * yv[i]);
     return z;
 }
 
@@ -85,11 +99,23 @@ MONAD(conjugate) { MONAD_PROLOG;
     return z;
 }
 
+SF2(bplus,  I, I, *x + *y)
+SF2(bplus2, I, B, *x + *y)
+SF2(iplus,  D, I, *x + *y)
+SF2(dplus,  D, D, *x + *y)
+/*SF2(jplus,  Z, Z, zplus(x,y))*/
+
 DYAD(plus) { DYAD_PROLOG;
-    ASSERT(AT(x)&INT && AT(y)&INT, ERDOM);
+    ASSERT(AT(x)&NUMERIC&&AT(y)&NUMERIC, ERDOM);
+    z = va2(CPLUS, x, y);
+    return z;
+}
+
+MONAD(duble) { MONAD_PROLOG;
+    ASSERT(AT(y)&INT, ERDOM);
     z = gen_array(INT, AR(y), yn, AS(y));
     v = IAV(z);
-    DO(yn, v[i] = xv[i] + yv[i]);
+    DO(yn, v[i] = yv[i] + yv[i]);
     return z;
 }
 
@@ -114,12 +140,14 @@ MONAD(negate) { MONAD_PROLOG;
     return z;
 }
 
-DYAD(minus) { DYAD_PROLOG;
-    ASSERT(AT(x)&INT && AT(y)&INT, ERDOM);
-    z = gen_array(INT, AR(y), yn, AS(y));
-    v = IAV(z);
-    DO(yn, v[i] = xv[i] - yv[i]);
-    return z;
+SF2(bminus,  I, I, *x + *y)
+SF2(bminus2, I, B, *x + *y)
+SF2(iminus,  D, I, *x + *y)
+SF2(dminus,  D, D, *x + *y)
+/*SF2(jplus,  Z, Z, zplus(x,y))*/
+
+DYAD(minus) {
+    A z; return z;
 }
 
 DYAD(link) {
@@ -130,32 +158,38 @@ MONAD(box) {
     A z; return z;
 }
 
-DYAD(lthan) { DYAD_PROLOG;
-    ASSERT(AT(x)&INT && AT(y)&INT, ERDOM);
-    z = gen_array(INT, AR(y), yn, AS(y));
-    v = IAV(z);
-    DO(yn, v[i] = xv[i] < yv[i]);
-    return z;
+SF2(blthan,  I, I, *x + *y)
+SF2(blthan2, I, B, *x + *y)
+SF2(ilthan,  D, I, *x + *y)
+SF2(dlthan,  D, D, *x + *y)
+/*SF2(jplus,  Z, Z, zplus(x,y))*/
+
+DYAD(lthan) {
+    A z; return z;
 }
 
-DYAD(equal) { DYAD_PROLOG;
-    ASSERT(AT(x)&INT && AT(y)&INT, ERDOM);
-    z = gen_array(INT, AR(y), yn, AS(y));
-    v = IAV(z);
-    DO(yn, v[i] = xv[i] == yv[i]);
-    return z;
+SF2(bequal,  I, I, *x + *y)
+SF2(bequal2, I, B, *x + *y)
+SF2(iequal,  D, I, *x + *y)
+SF2(dequal,  D, D, *x + *y)
+/*SF2(jplus,  Z, Z, zplus(x,y))*/
+
+DYAD(equal) {
+    A z; return z;
 }
 
 MONAD(unbox) {
     A z; return z;
 }
 
-DYAD(gthan) { DYAD_PROLOG;
-    ASSERT(AT(x)&INT && AT(y)&INT, ERDOM);
-    z = gen_array(INT, AR(y), yn, AS(y));
-    v = IAV(z);
-    DO(yn, v[i] = xv[i] > yv[i]);
-    return z;
+SF2(bgthan,  I, I, *x + *y)
+SF2(bgthan2, I, B, *x + *y)
+SF2(igthan,  D, I, *x + *y)
+SF2(dgthan,  D, D, *x + *y)
+/*SF2(jplus,  Z, Z, zplus(x,y))*/
+
+DYAD(gthan) {
+    A z; return z;
 }
 
 MONAD(roll) {
@@ -172,12 +206,11 @@ MONAD(indices) { MONAD_PROLOG;
     return z;
 }
 
-MONAD(exponential) {
-    A z; return z;
-}
-
-MONAD(exec) {
-    A z; return z;
+MONAD(expntl) {
+    I yn = AN(y), *yv = IAV(y);
+    A z = gen_array(FLT, AR(y), yn, AS(y)); D *v = DAV(z);
+    DO(yn, v[i] = exp((D)yv[i]));
+    return z;
 }
 
 MONAD(iota) { MONAD_PROLOG;
@@ -185,12 +218,6 @@ MONAD(iota) { MONAD_PROLOG;
     z = gen_array(INT, AR(y), n, AS(y));
     v = IAV(z);
     DO(n, v[i] = i);
-    return z;
-}
-
-MONAD(tail) { MONAD_PROLOG;
-    z = gen_array(INT, 0, 1, NULL);
-    *IAV(z) = yv[AN(y)-1];
     return z;
 }
 
@@ -209,10 +236,18 @@ DYAD(right) {
     return z;
 }
 
-DYAD(residue) { DYAD_PROLOG;
-    ASSERT(AT(x)&INT && AT(y)&INT, ERDOM);
-    z = gen_array(INT, AR(y), yn, AS(y));
-    v = IAV(z);
-    DO(yn, v[i] =  yv[i] % xv[i]);
+SF2(bresidue,  I, I, *x + *y)
+SF2(bresidue2, I, B, *x + *y)
+SF2(iresidue,  D, I, *x + *y)
+SF2(dresidue,  D, D, *x + *y)
+/*SF2(jplus,  Z, Z, zplus(x,y))*/
+
+DYAD(residue) {
+    A z; return z;
+}
+
+MONAD(tail) { MONAD_PROLOG;
+    z = gen_array(INT, 0, 1, NULL);
+    *IAV(z) = yv[AN(y)-1];
     return z;
 }

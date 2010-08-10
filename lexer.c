@@ -107,7 +107,6 @@ MONAD(token_index) {
   end:
     resize_array(z, INT, k);
     AN(z) = k;
-    println(z);
     return z;
 }
 

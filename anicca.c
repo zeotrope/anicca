@@ -21,7 +21,7 @@ I main(I argc, C *argv[]) {
     while (1) {
         printf("   ");
         fgets(str, 100, stdin);
-        println(eval(str));
+        println(z = eval(str));
     }
     return 0;
 }

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "anicca.h"
 #include "error.h"
@@ -17,7 +18,7 @@ ACTION(paren)  { return stack[b+1];                           }
 
 /*
    parse
-   input: Array of tokens to be parsed, output of tokens.
+   input: Array of tokens to be parsed, output of function tokens.
    output: An array, the result of a successful parse.
 */
 A parse(A tokens) {
@@ -41,16 +42,13 @@ A parse(A tokens) {
             action = grammar[c].act;
             top[e] = action(b, e, top);
             DO(p, stack[--q] = stack[--p]);
-            m -= e-b;
-            j += e;
+            m -= e-b; j += e;
         }
-        else {
-            j--;
-        }
+        else { j--; }
         /* printf("\n"); */
     } while (j>=0 && m>2);
     /* printf("m: %d j: %d\n", m, j); */
-    /* println(tokens); */    
+    /* println(tokens); */
     if (m>2) { a_signal(ERSYNTX); };
     z = stack[j];
 
