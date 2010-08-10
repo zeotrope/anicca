@@ -1,12 +1,6 @@
 #ifndef _VERB_H
 #define _VERB_H
 
-#define SF1(name, zt, yt, exp) \
-    VO name(zt *z, yt *y) { *z=(exp); }
-
-#define SF2(name, zt, yt, exp) \
-    VO name(zt *z, yt *x, yt *y) { *z=(exp); }
-
 #define MONAD_PROLOG \
     I yn = AN(y), *v, *yv = IAV(y); A z
 
@@ -25,13 +19,7 @@ MONAD(signum);
 DYAD(times);
 MONAD(square);
 MONAD(conjugate);
-
-VO bplus(I *, I *, I *);
-VO bplus2(I *,B *, B *);
-VO iplus(D *, I *, I *);
-VO dplus(D *, D *, D *);
 DYAD(plus);
-
 MONAD(duble);
 DYAD(append);
 MONAD(negate);

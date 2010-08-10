@@ -1,6 +1,7 @@
 
-OBJS=  memory.o util.o error.o atom.o noun.o function.o verb.o verb-atomic.o \
-	   primitive.o adverb.o conjunction.o lexer.o parser.o test.o anicca.o
+OBJS=  memory.o util.o error.o atom.o noun.o function.o verb.o verb-scalar.o \
+	   verb-atomic.o primitive.o adverb.o conjunction.o lexer.o parser.o test.o \
+	   anicca.o
 
 CFLAGS=-ansi -pedantic -g3
 
@@ -16,6 +17,7 @@ lexer.o:       lexer.c lexer.h char.h table.h primitive.h
 conjunction:   conjunction.c conjunction.h function.h
 adverb.o:      adverb.c adverb.h function.h
 verb.o:        verb.c verb.h
+verb-scalar.o: verb-scalar.c verb-scalar.h
 verb-atomic.o: verb-atomic.c verb-atomic.h
 primitive.o:   primitive.c primitive.h verb.h
 function.o:    function.c function.h

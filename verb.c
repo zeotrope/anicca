@@ -55,14 +55,10 @@ MONAD(reciprocal) {
     return z;
 }
 
-SF2(bdivide,  I, I, *x + *y)
-SF2(bdivide2, I, B, *x + *y)
-SF2(idivide,  D, I, *x + *y)
-SF2(ddivide,  D, D, *x + *y)
-/*SF2(jplus,  Z, Z, zplus(x,y))*/
-
-DYAD(divide) {
-    A z; return z;
+DYAD(divide) { A z;
+    ASSERT(AT(x)&NUMERIC&&AT(y)&NUMERIC, ERDOM);
+    z = va2(CFWSL, x, y);
+    return z;
 }
 
 MONAD(signum) { MONAD_PROLOG;
@@ -76,15 +72,10 @@ MONAD(signum) { MONAD_PROLOG;
     return z;
 }
 
-
-SF2(btimes,  I, I, *x + *y)
-SF2(btimes2, I, B, *x + *y)
-SF2(itimes,  D, I, *x + *y)
-SF2(dtimes,  D, D, *x + *y)
-/*SF2(jplus,  Z, Z, zplus(x,y))*/
-
-DYAD(times) {
-    A z; return z;
+DYAD(times) { A z;
+    ASSERT(AT(x)&NUMERIC&&AT(y)&NUMERIC, ERDOM);
+    z = va2(CSTAR, x, y);
+    return z;
 }
 
 MONAD(square) { MONAD_PROLOG;
@@ -99,13 +90,7 @@ MONAD(conjugate) { MONAD_PROLOG;
     return z;
 }
 
-SF2(bplus,  I, I, *x + *y)
-SF2(bplus2, I, B, *x + *y)
-SF2(iplus,  D, I, *x + *y)
-SF2(dplus,  D, D, *x + *y)
-/*SF2(jplus,  Z, Z, zplus(x,y))*/
-
-DYAD(plus) { DYAD_PROLOG;
+DYAD(plus) { A z;
     ASSERT(AT(x)&NUMERIC&&AT(y)&NUMERIC, ERDOM);
     z = va2(CPLUS, x, y);
     return z;
@@ -140,14 +125,10 @@ MONAD(negate) { MONAD_PROLOG;
     return z;
 }
 
-SF2(bminus,  I, I, *x + *y)
-SF2(bminus2, I, B, *x + *y)
-SF2(iminus,  D, I, *x + *y)
-SF2(dminus,  D, D, *x + *y)
-/*SF2(jplus,  Z, Z, zplus(x,y))*/
-
-DYAD(minus) {
-    A z; return z;
+DYAD(minus) { A z;
+    ASSERT(AT(x)&NUMERIC&&AT(y)&NUMERIC, ERDOM);
+    z = va2(CPLUS, x, y);
+    return z;
 }
 
 DYAD(link) {
@@ -158,38 +139,26 @@ MONAD(box) {
     A z; return z;
 }
 
-SF2(blthan,  I, I, *x + *y)
-SF2(blthan2, I, B, *x + *y)
-SF2(ilthan,  D, I, *x + *y)
-SF2(dlthan,  D, D, *x + *y)
-/*SF2(jplus,  Z, Z, zplus(x,y))*/
-
-DYAD(lthan) {
-    A z; return z;
+DYAD(lthan) { A z;
+    ASSERT(AT(x)&NUMERIC&&AT(y)&NUMERIC, ERDOM);
+    z = va2(CPLUS, x, y);
+    return z;
 }
 
-SF2(bequal,  I, I, *x + *y)
-SF2(bequal2, I, B, *x + *y)
-SF2(iequal,  D, I, *x + *y)
-SF2(dequal,  D, D, *x + *y)
-/*SF2(jplus,  Z, Z, zplus(x,y))*/
-
-DYAD(equal) {
-    A z; return z;
+DYAD(equal) { A z;
+    ASSERT(AT(x)&NUMERIC&&AT(y)&NUMERIC, ERDOM);
+    z = va2(CPLUS, x, y);
+    return z;
 }
 
 MONAD(unbox) {
     A z; return z;
 }
 
-SF2(bgthan,  I, I, *x + *y)
-SF2(bgthan2, I, B, *x + *y)
-SF2(igthan,  D, I, *x + *y)
-SF2(dgthan,  D, D, *x + *y)
-/*SF2(jplus,  Z, Z, zplus(x,y))*/
-
-DYAD(gthan) {
-    A z; return z;
+DYAD(gthan) { A z;
+    ASSERT(AT(x)&NUMERIC&&AT(y)&NUMERIC, ERDOM);
+    z = va2(CPLUS, x, y);
+    return z;
 }
 
 MONAD(roll) {
@@ -235,12 +204,6 @@ DYAD(right) {
     A z = y;
     return z;
 }
-
-SF2(bresidue,  I, I, *x + *y)
-SF2(bresidue2, I, B, *x + *y)
-SF2(iresidue,  D, I, *x + *y)
-SF2(dresidue,  D, D, *x + *y)
-/*SF2(jplus,  Z, Z, zplus(x,y))*/
 
 DYAD(residue) {
     A z; return z;
