@@ -52,6 +52,8 @@ VO println(A y) {
 }
 
 VO a_init(VO) {
+    zero = scalar_int(0);
+    one = scalar_int(1);
     mark = gen_array(MARK, 0, 0, NULL);
     lpar = gen_array(LPAR, 0, 0, NULL);
     rpar = gen_array(RPAR, 0, 0, NULL);
@@ -59,7 +61,7 @@ VO a_init(VO) {
 
 A eval(const C *str) {
     A w, x, y, z;
-    w = array_str(strlen(str), str);
+    w = gen_str(strlen(str), str);
     x = token_index(w);
     y = tokens(x, w);
     z = parse(y);

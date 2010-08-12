@@ -7,7 +7,9 @@
 #include "char.h"
 #include "error.h"
 #include "memory.h"
+#include "function.h"
 #include "verb.h"
+#include "verb-scalar1.h"
 #include "verb-atomic.h"
 #include "util.h"
 
@@ -23,16 +25,12 @@ MONAD(fact) { MONAD_PROLOG;
     return z;
 }
 
-DYAD(outof) { DYAD_PROLOG;
+DYAD(outof) { A z;
     z = divide(fact(y), times(fact(x), fact(minus(y, x))));
     return z;
 }
 
-MONAD(tally) { MONAD_PROLOG;
-    z = gen_array(INT, 0, 1, NULL);
-    v = IAV(z); *v = AN(y);
-    return z;
-}
+MONAD(tally) { A z; z = scalar_int(AN(y)); return z; }
 
 DYAD(copy) { DYAD_PROLOG;
     I n = 0, itm, cnt;
@@ -46,63 +44,30 @@ DYAD(copy) { DYAD_PROLOG;
     return z;
 }
 
-MONAD(reciprocal) {
-    I yn = AN(y), *yv = IAV(y); D *v; A z;
-    ASSERT(AT(y)&INT, ERDOM)
-    z = gen_array(FLT, AR(y), yn, AS(y));
-    v = DAV(z);
-    DO(yn, v[i] = 1/(D)yv[i]);
+MONAD(reciprocal) { A z = divide(one, y); return z; }
+
+DYAD(divide) { A z = va2(CFWSL, x, y); return z; }
+
+MONAD(signum) { A z;
+    switch (AT(y)) {
+    case BOOL: z = copy_array(y);         break;
+    case INT:  z = sex1(y, INT, isignum); break;
+    case FLT:  z = sex1(y, INT, dsignum); break;
+    }
     return z;
 }
 
-DYAD(divide) { A z;
-    ASSERT(AT(x)&NUMERIC&&AT(y)&NUMERIC, ERDOM);
-    z = va2(CFWSL, x, y);
-    return z;
-}
+DYAD(times) { A z = va2(CSTAR, x, y); return z; }
 
-MONAD(signum) { MONAD_PROLOG;
-    I r;
-    ASSERT(AT(y)&INT, ERDOM);
-    z = gen_array(INT, AR(y), yn, AS(y));
-    v = IAV(z);
-    DO(yn,
-       r = yv[i];
-       v[i] = r > 0 ? 1 : r < 0 ? -1 : 0);
-    return z;
-}
-
-DYAD(times) { A z;
-    ASSERT(AT(x)&NUMERIC&&AT(y)&NUMERIC, ERDOM);
-    z = va2(CSTAR, x, y);
-    return z;
-}
-
-MONAD(square) { MONAD_PROLOG;
-    ASSERT(AT(y)&INT, ERDOM);
-    z = gen_array(INT, AR(y), yn, AS(y));
-    v = IAV(z);
-    DO(yn, v[i] = yv[i] * yv[i]);
-    return z;
-}
+MONAD(square) { A z = times(y, y); return z;  }
 
 MONAD(conjugate) { MONAD_PROLOG;
     return z;
 }
 
-DYAD(plus) { A z;
-    ASSERT(AT(x)&NUMERIC&&AT(y)&NUMERIC, ERDOM);
-    z = va2(CPLUS, x, y);
-    return z;
-}
+DYAD(plus) { A z = va2(CPLUS, x, y); return z; }
 
-MONAD(duble) { MONAD_PROLOG;
-    ASSERT(AT(y)&INT, ERDOM);
-    z = gen_array(INT, AR(y), yn, AS(y));
-    v = IAV(z);
-    DO(yn, v[i] = yv[i] + yv[i]);
-    return z;
-}
+MONAD(duble) { A z = plus(y, y); return z; }
 
 DYAD(append) {
     I xt = AT(x), yt = AT(y), xn = AN(x), yn = AN(y), zn = yn + xn, k;
@@ -118,48 +83,31 @@ DYAD(append) {
     return z;
 }
 
-MONAD(negate) { MONAD_PROLOG;
-    z = gen_array(INT, AR(y), yn, AS(y));
-    v = IAV(z);
-    DO(yn, v[i] = - yv[i]);
-    return z;
-}
+MONAD(negate) { A z = minus(zero, y); return z; }
 
-DYAD(minus) { A z;
-    ASSERT(AT(x)&NUMERIC&&AT(y)&NUMERIC, ERDOM);
-    z = va2(CPLUS, x, y);
-    return z;
-}
+DYAD(minus) { A z = va2(CSUBT, x, y); return z; }
+
+MONAD(not) { A z = minus(one, y); return z; }
 
 DYAD(link) {
     A z; return z;
 }
 
-MONAD(box) {
-    A z; return z;
-}
+MONAD(box) { A z = gen_array(BOX, 0, 1, NULL); *AAV(z) = y; return z; }
 
-DYAD(lthan) { A z;
-    ASSERT(AT(x)&NUMERIC&&AT(y)&NUMERIC, ERDOM);
-    z = va2(CPLUS, x, y);
+DYAD(lthan) { A z = va2(CLT, x, y); return z; }
+
+MONAD(decrement) { A z = minus(y, one); return z; }
+
+DYAD(equal) { A z = va2(CEQ, x, y); return z; }
+
+MONAD(unbox) { A z;
     return z;
 }
 
-DYAD(equal) { A z;
-    ASSERT(AT(x)&NUMERIC&&AT(y)&NUMERIC, ERDOM);
-    z = va2(CPLUS, x, y);
-    return z;
-}
+DYAD(gthan) { A z = va2(CGT, x, y); return z; }
 
-MONAD(unbox) {
-    A z; return z;
-}
-
-DYAD(gthan) { A z;
-    ASSERT(AT(x)&NUMERIC&&AT(y)&NUMERIC, ERDOM);
-    z = va2(CPLUS, x, y);
-    return z;
-}
+MONAD(increment) { A z = plus(y, one); return z; }
 
 MONAD(roll) {
     A z; return z;
@@ -182,35 +130,24 @@ MONAD(expntl) {
     return z;
 }
 
-MONAD(iota) { MONAD_PROLOG;
-    I n = yv[0];
-    z = gen_array(INT, AR(y), n, AS(y));
+MONAD(iota) { A z;
+    I yr = AR(y), n = *IAV(y), *v;
+    z = gen_array(INT, 1, n, AS(y));
     v = IAV(z);
     DO(n, v[i] = i);
     return z;
 }
 
-MONAD(same) {
-    A z = y;
-    return z;
-}
+MONAD(same) { A z = copy_array(y); return z; }
 
-DYAD(left) {
-    A z = x;
-    return z;
-}
+DYAD(left) { A z = copy_array(x); return z; }
 
-DYAD(right) {
-    A z = y;
-    return z;
-}
+DYAD(right) { A z = copy_array(y); return z; }
 
 DYAD(residue) {
     A z; return z;
 }
 
-MONAD(tail) { MONAD_PROLOG;
-    z = gen_array(INT, 0, 1, NULL);
-    *IAV(z) = yv[AN(y)-1];
+MONAD(tail) { A z;
     return z;
 }

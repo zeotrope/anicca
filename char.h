@@ -56,6 +56,9 @@
 #define CPOLR 'r'
 #define CTYLC 't'
 
+#define CZERO '0'
+#define CONE  '1'
+
 typedef enum {
     CFIT = 1,
     CDO,

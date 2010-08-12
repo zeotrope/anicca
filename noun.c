@@ -3,8 +3,8 @@
 #include <string.h>
 
 #include "anicca.h"
+#include "char.h"
 #include "error.h"
-#include "memory.h"
 #include "memory.h"
 #include "noun.h"
 #include "atom.h"
@@ -140,9 +140,20 @@ PARSE(exp) {
 }
 
 PARSE(num) {
-    C *d = memchr(s, '.', n), *e;
-    if (d) { ND(a) = strtod(s, &e);     NT(a) = FLT; }
-    else   { NI(a) = strtol(s, &e, 10); NT(a) = INT; }
+    C si = 0, c = *s, *d = memchr(s, '.', n), *e;
+    I iv; D dv;
+    if (c==CUNDS) { si = 1; s++; }
+    if (d) {
+        dv = strtod(s, &e);
+        ND(a) = si ? -dv : dv;
+        NT(a) = FLT; }
+    else {
+        iv = strtol(s, &e, 10);
+        if (iv==0 || ABS(iv)==1) {
+            NB(a) = si ? -(B)iv : (B)iv;
+            NT(a) = BOOL; }
+        else { NI(a) = si ? -iv : iv; NT(a) = INT; }
+    }
     return e;
 }
 

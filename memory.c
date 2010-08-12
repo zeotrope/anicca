@@ -34,6 +34,18 @@ I type_size(I type) {
     return sizeof(int);
 }
 
+A scalar_char(C c) {
+    A z; z = gen_array(CHAR, 0, 1, NULL); *CAV(z) = c; return z;
+}
+
+A scalar_int(I i)  {
+    A z; z = gen_array(INT, 0, 1, NULL); *IAV(z) = i; return z;
+}
+
+A scalar_flt(D d)  {
+    A z; z = gen_array(FLT, 0, 1, NULL); *DAV(z) = d; return z;
+}
+
 A gen_array(I t, I r, I n, I *s) {
     A z = (A)a_malloc(sizeof(struct _array));
     AT(z) = t; AC(z) = 1; AR(z) = r;
@@ -42,17 +54,23 @@ A gen_array(I t, I r, I n, I *s) {
     return z;
 }
 
-A gen_farray(D *d, I n) {
-    A z; D *zv;
-    z = gen_array(FLT, 1, n, NULL);
-    zv = AV(z);
-    DO(n, zv[i] = d[i]);
+A gen_str(I n, const C *str) {
+    A z = gen_array(CHAR, 1, n, NULL);
+    memcpy(AV(z), str, n);
     return z;
 }
 
 A gen_iarray(I *ints, I n) {
     A z = gen_array(INT, 1, n, NULL); I *zv = IAV(z);
     DO(n, zv[i] = ints[i]);
+    return z;
+}
+
+A gen_farray(D *d, I n) {
+    A z; D *zv;
+    z = gen_array(FLT, 1, n, NULL);
+    zv = AV(z);
+    DO(n, zv[i] = d[i]);
     return z;
 }
 
@@ -67,21 +85,12 @@ A gen_test_array(I n, ...) {
     return z;
 }
 
-VO resize_array(A y, I t, I n) {
-    AN(y) = n; AV(y) = realloc(AV(y), type_size(t)*n);
-}
-
-/*
-  array_str
-  input: String
-  output: Boxed String
-*/
-A array_str(I n, const C *str) {
-    A z = gen_array(CHAR, 1, n, NULL);
-    memcpy(AV(z), str, n);
+A copy_array(A y) {
+    A z = gen_array(AT(y), AR(y), AN(y), AS(y));
+    memcpy(AV(z), AV(y), AN(y)*type_size(AT(y)));
     return z;
 }
 
-VO array_inspect(A y) {
-    printf("%d %d %d\n", AT(y), AR(y), AN(y));
+VO resize_array(A y, I t, I n) {
+    AN(y) = n; AV(y) = realloc(AV(y), type_size(t)*n);
 }
