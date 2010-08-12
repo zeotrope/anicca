@@ -46,7 +46,7 @@ DYAD(copy) { DYAD_PROLOG;
 
 MONAD(reciprocal) { A z = divide(one, y); return z; }
 
-DYAD(divide) { A z = va2(CFWSL, x, y); return z; }
+DYAD(divide) { A z = va2(CPERC, x, y); return z; }
 
 MONAD(signum) { A z;
     switch (AT(y)) {

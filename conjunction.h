@@ -9,18 +9,18 @@
 
 DYAD(amper);
 DMONAD(bond);
-DDYAD(dbond);
+DDYAD(bond2);
 DMONAD(compose);
-DDYAD(dcompose);
-DYAD(at);
+DDYAD(compose2);
+DYAD(atsign);
 DMONAD(atop);
-DDYAD(datop);
-DMONAD(chook);
-DDYAD(dchook);
-DYAD(powr);
-DMONAD(cpower);
-DDYAD(cdpower);
-DMONAD(cfork);
-DDYAD(dcfork);
+DDYAD(atop2);
+DMONAD(hook);
+DDYAD(hook2);
+DYAD(cartcol);
+DMONAD(power);
+DDYAD(power2);
+DMONAD(forrk);
+DDYAD(forrk2);
 
 #endif

@@ -149,9 +149,7 @@ PARSE(num) {
         NT(a) = FLT; }
     else {
         iv = strtol(s, &e, 10);
-        if (iv==0 || ABS(iv)==1) {
-            NB(a) = si ? -(B)iv : (B)iv;
-            NT(a) = BOOL; }
+        if (!si && (iv==0 || ABS(iv)==1)) { NB(a) = (B)iv; NT(a) = BOOL; }
         else { NI(a) = si ? -iv : iv; NT(a) = INT; }
     }
     return e;
@@ -163,18 +161,13 @@ PARSE(num) {
   output: Numeric array.
 */
 A parse_noun(I n, C *s) {
-    A y = noun_index(n+1, s), z;
-    B *bv;
     I al, as, m = AN(y)/2, j, k = 0, t = 0, *indx = IAV(y), *iv;
-    D *dv;
-    Z *zv;
+    B *bv; D *dv; Z *zv;
+    A y = noun_index(n+1, s), z;
     N *atm, *nouns = (N *)a_malloc(sizeof(N)*m);
 
     DO(m,
-       j  = i+i;
-       as = indx[j];
-       al = indx[j+1];
-       atm = &nouns[i];
+       j  = i+i; as = indx[j]; al = indx[j+1]; atm = &nouns[i];
        ASSERT(parse_atom(al, &s[as], atm), ERLEXER);
        t = MAX(t, NT(atm));
     );

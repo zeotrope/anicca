@@ -1,4 +1,5 @@
 #include <stdlib.h>
+
 #include "anicca.h"
 #include "char.h"
 #include "memory.h"
@@ -19,13 +20,13 @@ DDYAD(df2) {
 
 DMONAD(dhk) {
     V *v = VAV(y);
-    return derv_def(CHOOK, VERB, chook, dchook, y, self, NULL, VLR(v), VMR(v), \
+    return derv_def(CHOOK, VERB, hook, hook2, y, self, NULL, VLR(v), VMR(v), \
                     VRR(v), 0);
 }
 
 DDYAD(dfrk) {
     V *v = VAV(x);
-    return derv_def(CFORK, VERB, cfork, dcfork, x, y, self, VLR(v), VMR(v), \
+    return derv_def(CFORK, VERB, forrk, forrk2, x, y, self, VLR(v), VMR(v), \
                     VRR(v), 0);
 }
 

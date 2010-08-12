@@ -55,21 +55,21 @@ typedef A(*AF1)(A);
 typedef A(*AF2)(A, A);
 typedef A(*AF3)(A, A, A);
 
-#define ANY  -1
-#define BOOL (1<<1)
-#define CHAR (1<<2)
-#define INT  (1<<3)
-#define FLT  (1<<4)
-#define CMPX (1<<5)
-#define BOX  (1<<6)
-#define VERB (1<<7)
-#define ADV  (1<<8)
-#define CONJ (1<<9)
-#define NAME (1<<10)
-#define LPAR (1<<11)
-#define RPAR (1<<12)
-#define ASGN (1<<13)
-#define MARK (1<<14)
+#define ANY  -1L
+#define BOOL (1L<<0)
+#define CHAR (1L<<1)
+#define INT  (1L<<2)
+#define FLT  (1L<<3)
+#define CMPX (1L<<4)
+#define BOX  (1L<<5)
+#define VERB (1L<<6)
+#define ADV  (1L<<7)
+#define CONJ (1L<<8)
+#define NAME (1L<<9)
+#define LPAR (1L<<10)
+#define RPAR (1L<<11)
+#define ASGN (1L<<12)
+#define MARK (1L<<13)
 
 #define NUMERIC (BOOL | INT | FLT | CMPX)
 #define NOUN    (NUMERIC | CHAR | BOX)

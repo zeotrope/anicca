@@ -1,5 +1,5 @@
-#ifndef _VERB_ATOMIC_
-#define _VERB_ATOMIC_
+#ifndef _VERB_ATOMIC_H
+#define _VERB_ATOMIC_H
 
 #define NSF 6
 

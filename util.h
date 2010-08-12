@@ -35,6 +35,7 @@
 VO print(A y);
 VO println(A y);
 VO a_init(VO);
+C *strndup(const C *s, UI n);
 A eval(const C *str);
 
 #endif

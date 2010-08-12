@@ -4,6 +4,7 @@
 #include "anicca.h"
 #include "error.h"
 #include "memory.h"
+#include "convert.h"
 #include "function.h"
 #include "verb-scalar2.h"
 #include "verb-atomic.h"
@@ -31,25 +32,29 @@ static UC vaindx[256] = {
 #define NVA 6
 
 static VA verbatm[NVA] = {
-    {{ {NULL,   0      }, {NULL,   0      }, {NULL,   0      },
-       {NULL,   0      }, {NULL,   0      }, {NULL,   0      } }},
+    {{ {NULL,   0}, {NULL,   0}, {NULL,   0},
+       {NULL,   0}, {NULL,   0}, {NULL,   0} }},
 
-    {{ {bdivide,  VAB+VRB}, {bdivide2, VAI+VRB}, {idivide,  VAI+VRI},
-       {ddivide,  VAD+VRD}, {ddivide,  VAD+VRD}, {ddivide,  VAZ+VRZ} }},
+    {{ {bdivide, VAB|VRD}, {idivide, VAI|VRD}, {ddivide, VAD|VRD},
+       {ddivide, VAD|VRD}, {ddivide, VAD|VRD}, {ddivide, VAZ|VRZ} }},
 
-    {{ {btimes,  VAB+VRB}, {btimes2, VAI+VRB}, {itimes,  VAI+VRI},
-       {dtimes,  VAD+VRD}, {dtimes,  VAD+VRD}, {dtimes,  VAZ+VRZ} }},
+    {{ {btimes, VAB|VRB},  {itimes, VAI|VRI},  {dtimes, VAD|VRD},
+       {dtimes, VAD+VRD},  {dtimes, VAD|VRD},  {dtimes, VAZ|VRZ}  }},
 
-    {{ {bplus,  VAB+VRB}, {bplus2, VAI+VRB}, {iplus,  VAI+VRI},
-       {dplus,  VAD+VRD}, {dplus,  VAD+VRD}, {dplus,  VAZ+VRZ} }},
+    {{ {bplus, VAB|VRI},   {iplus, VAI|VRI},   {dplus, VAD|VRD},
+       {dplus, VAD|VRD},   {dplus, VAD|VRD},   {dplus, VAZ|VRZ}   }},
 
-    {{ {bminus,  VAB+VRB}, {bminus2, VAI+VRB}, {iminus,  VAI+VRI},
-       {dminus,  VAD+VRD}, {dminus,  VAD+VRD}, {dminus,  VAZ+VRZ} }},
+    {{ {bminus, VAB|VRI},  {iminus, VAI|VRI},  {dminus, VAD|VRD},
+       {dminus, VAD|VRD},  {dminus, VAD|VRD},  {dminus, VAZ|VRZ}  }},
 
-    {{ {blthan,  VAB+VRB}, {blthan2, VAI+VRB}, {ilthan,  VAI+VRI},
-       {dlthan,  VAD+VRD}, {dlthan,  VAD+VRD}, {dlthan,  VAZ+VRZ} }},
+    {{ {blthan, VAB|VRB},  {ilthan, VAI|VRB},  {dlthan, VAD|VRB},
+       {dlthan, VAD|VRD},  {dlthan, VAD|VRD},  {dlthan, VAZ|VRZ}  }},
 
 };
+
+I atype(I cv) { return cv&VAB ? BOOL : cv&VAI ? INT : cv&VAD ? FLT : CMPX; }
+
+I rtype(I cv) { return cv&VRB ? BOOL : cv&VRI ? INT : cv&VRD ? FLT : CMPX; }
 
 /*
   va2: Execute dyadic atomic verb.
@@ -61,12 +66,12 @@ static VA verbatm[NVA] = {
     Result of the dyadic atomic verb.
 */
 A va2(C id, A x, A y) {
-    I xt = AT(x), yt = AT(y), t = MAX(xt, yt), cv;
-    I i = vaindx[id], j = (t&INT ? 0 : t&BOOL ? 1 : t&FLT ? 3 : 2);
+    I xt = AT(x), yt = AT(y), t = MAX(xt, yt), cv, at, rt;
+    I i = vaindx[id], j = (t&BOOL ? 0 : t&INT ? 1 : t&FLT ? 2 : 3);
     VA2 *vd = &(&verbatm[i])->fcv[j];
     SF f2 = vd->f; A z;
     ASSERT(xt&NUMERIC&&yt&NUMERIC, ERDOM);
-    z = sex2(x, y, t, f2);
-    cv = vd->cv;
+    cv = vd->cv; at = atype(cv); rt = rtype(cv);
+    z = sex2(xt==at ? x : convert(at, x), yt==at ? y : convert(at, y), rt, f2);
     return z;
 }

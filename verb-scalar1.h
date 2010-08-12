@@ -1,5 +1,5 @@
-#ifndef _VERB_SCALAR1_
-#define _VERB_SCALAR1_
+#ifndef _VERB_SCALAR1_H
+#define _VERB_SCALAR1_H
 
 #define SF1(name, zt, yt, exp) \
     VO name(zt *z, yt *y) { *z=(exp); }
