@@ -72,6 +72,6 @@ A va2(C id, A x, A y) {
     SF f2 = vd->f; A z;
     ASSERT(xt&NUMERIC&&yt&NUMERIC, ERDOM);
     cv = vd->cv; at = atype(cv); rt = rtype(cv);
-    z = sex2(xt==at ? x : convert(at, x), yt==at ? y : convert(at, y), rt, f2);
+    z = sex2(xt==at ? x : conv(at, x), yt==at ? y : conv(at, y), rt, f2);
     return z;
 }

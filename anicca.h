@@ -8,6 +8,8 @@
         }                      \
 } while(0)
 
+#define R return
+
 typedef int           I;
 typedef unsigned int  UI;
 typedef char          B;

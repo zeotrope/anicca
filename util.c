@@ -52,18 +52,27 @@ VO println(A y) {
 }
 
 VO a_init(VO) {
-    zero = scalar_int(0); one = scalar_int(1);
-    mark = gen_array(MARK, 0, 0, NULL);
-    lpar = gen_array(LPAR, 0, 0, NULL);
-    rpar = gen_array(RPAR, 0, 0, NULL);
+    zero = sint(0); one = sint(1);
+    mark = ga(MARK, 0, 0, NULL);
+    lpar = ga(LPAR, 0, 0, NULL);
+    rpar = ga(RPAR, 0, 0, NULL);
 }
 
 A eval(const C *str) {
-    A w, x, y, z;
-    w = gen_str(strlen(str)+1, str);
-    x = token_index(w);
-    y = tokens(x, w);
+    A w, y, z;
+    w = gstr(strlen(str)+1, str);
+    y = tokens(w);
     z = parse(y);
-    a_free(w); a_free(x); a_free(y);
+    a_free(w); a_free(y);
     return z;
+}
+
+VO a_repl(const C *s) {
+    C *v, str[100]; A z;
+    while (1) {
+        printf(s, "%s\n");
+        fgets(str, 100, stdin);
+        v = strndup(str, strlen(str)-1); /* remove carriage return */
+        println(z = eval(v));
+    }
 }

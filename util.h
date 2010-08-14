@@ -28,7 +28,7 @@
     case LPAR: { lpar; break; }                                               \
     case RPAR: { rpar; break; }                                               \
     default:   { def;  break; }                                               \
-    }
+}
 
 #define LENGTHOF(array) (sizeof(array)/sizeof(*array))
 
@@ -37,5 +37,6 @@ VO println(A y);
 VO a_init(VO);
 C *strndup(const C *s, UI n);
 A eval(const C *str);
+VO a_repl(const C *str);
 
 #endif

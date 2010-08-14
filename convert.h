@@ -16,6 +16,20 @@
 #define ItZ CNVCASE(INT, CMPX)
 #define DtZ CNVCASE(FLT, CMPX)
 
-A convert(I t, A y);
+/*
+  Atomic conversions
+   c(Argument)T(Result)
+     input:
+       n: number of elements.
+       v1: result.
+       v2: argument.
+     output: error code.
+*/
+B cbTi(I n, I *iv, B *bv);
+B cbTd(I n, D *dv, B *bv);
+B ciTd(I n, D *dv, I *iv);
+
+B aconv(I cv, I n, VP z, VP y);
+A conv(I t, A y);
 
 #endif

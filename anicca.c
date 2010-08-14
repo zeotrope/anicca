@@ -15,17 +15,8 @@
 #include "parser.h"
 #include "util.h"
 
-
 I main(I argc, C *argv[]) {
-    C *v, str[100];
-    A x, y, z;
-
     a_init();
-    while (1) {
-        printf("   ");
-        fgets(str, 100, stdin);
-        v = strndup(str, strlen(str)-1); /* remove carriage return */
-        println(z = eval(v));
-    }
+    a_repl("   ");
     return 0;
 }

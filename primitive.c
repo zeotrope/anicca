@@ -206,7 +206,7 @@ A primitive_lookup(UC id) {
     case NOUN: break;
     case ADV:
     case VERB:
-    case CONJ: return func_def(id, t, p->f1, p->f2, NULL, NULL, NULL, \
+    case CONJ: return fdef(id, t, p->f1, p->f2, NULL, NULL, NULL, \
                         p->lr, p->mr, p->rr, p->inv);
     case LPAR: return lpar;
     case RPAR: return rpar;

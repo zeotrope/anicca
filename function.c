@@ -20,18 +20,16 @@ DDYAD(df2) {
 
 DMONAD(dhk) {
     V *v = VAV(y);
-    return derv_def(CHOOK, VERB, hook, hook2, y, self, NULL, VLR(v), VMR(v), \
-                    VRR(v), 0);
+    return ddef(CHOOK,VERB,hook,hook2,y,self,NULL,VLR(v),VMR(v),VRR(v),0);
 }
 
 DDYAD(dfrk) {
     V *v = VAV(x);
-    return derv_def(CFORK, VERB, forrk, forrk2, x, y, self, VLR(v), VMR(v), \
-                    VRR(v), 0);
+    return ddef(CFORK,VERB,forrk,forrk2,x,y,self,VLR(v),VMR(v),VRR(v),0);
 }
 
 /*
-  ado: Execute a dyadic scalar function on elements of the arguments.
+  ado: Execute a dyadic atomic function on elements of the arguments.
     input:
       b:  xr <= yr
       m:  minimum number of elements.
@@ -65,8 +63,8 @@ VO ado(I b, I m, I n, I k, I zk, C *zv, C *xv, C *yv, SF f2) {
 */
 A sex1(A y, I zt, SF f1) {
     I yt = AT(y), yr = AR(y), yn = AN(y), *ys = AS(y);
-    I zk = type_size(zt), k = type_size(yt);
-    A z = gen_array(zt, yr, yn, ys);
+    I zk = ts(zt), k = ts(yt);
+    A z = ga(zt, yr, yn, ys);
     C *yv = CAV(y), *zv = CAV(z);
     zv -= zk; yv -= k;
     DO(yn, f1(zv+=zk,  yv+=k));
@@ -86,16 +84,16 @@ A sex1(A y, I zt, SF f1) {
 A sex2(A x, A y, I zt, SF f2) {
     I xt = AT(x), yt = AT(y), *xs = AS(x), *ys = AS(y);
     I xn = AN(x), yn = AN(y), xr = AR(x), yr = AR(y);
-    I zk = type_size(zt), k = type_size(xt);
+    I zk = ts(zt), k = ts(xt);
     I b = xr <= yr, m = b ? xn : yn, n = m ? (b ? yn : xn)/m : 0;
-    A z = gen_array(zt, b ? yr : xr, m*n, b ? ys : xs);
+    A z = ga(zt, b ? yr : xr, m*n, b ? ys : xs);
     C *xv = CAV(x), *yv = CAV(y), *zv = CAV(z);
     ado(b, m, n, k, zk, zv, xv, yv, f2);
     return z;
 }
 
-A func_def(UC id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv) {
-    A z = gen_array(t, 0, 1, NULL);
+A fdef(UC id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv) {
+    A z = ga(t, 0, 1, NULL);
     V *v = VAV(z);
     VF1(v) = f1; VF2(v) = f2;
     VDF1(v) = NULL; VDF2(v) = NULL;
@@ -106,8 +104,8 @@ A func_def(UC id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv) {
     return z;
 }
 
-A derv_def(UC id, I t, AF2 df1, AF3 df2, A f, A g, A h, I lr, I mr, I rr, I inv) {
-    A z = func_def(id, t, NULL, NULL, f, g, h, lr, mr, rr, inv);
+A ddef(UC id, I t, AF2 df1, AF3 df2, A f, A g, A h, I lr, I mr, I rr, I inv) {
+    A z = fdef(id, t, NULL, NULL, f, g, h, lr, mr, rr, inv);
     V *v = VAV(z);
     VDF1(v) = df1; VDF2(v) = df2;
     return z;

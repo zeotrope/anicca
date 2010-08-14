@@ -34,7 +34,7 @@ typedef struct _verb {
     V *v = VAV(self); A f = VF(v), g = VG(v), h = VH(v), z;
 
 #define VDEF(id, f1, f2, l, m, r, i) \
-    func_def(id, VERB, f1, f2, NULL, NULL, NULL. l, m, r, i)
+    fdef(id, VERB, f1, f2, NULL, NULL, NULL. l, m, r, i)
 
 DMONAD(df1);
 DDYAD(df2);
@@ -44,7 +44,7 @@ DDYAD(dfrk);
 static VO ado(I b, I m, I n, I k, I zk, C *zv, C *xv, C *yv, SF f2);
 A sex1(A y, I zt, SF f1);
 A sex2(A x, A y, I zt, SF f2);
-A func_def(UC id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv);
-A derv_def(UC id, I t, AF2 df1, AF3 df2, A f, A g, A h, I lr, I mr, I rr, I inv);
+A fdef(UC id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv);
+A ddef(UC id, I t, AF2 df1, AF3 df2, A f, A g, A h, I lr, I mr, I rr, I inv);
 
 #endif

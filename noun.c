@@ -3,182 +3,127 @@
 #include <string.h>
 
 #include "anicca.h"
-#include "char.h"
 #include "error.h"
 #include "memory.h"
-#include "noun.h"
-#include "atom.h"
+#include "char.h"
+#include "table.h"
+#include "convert.h"
 #include "util.h"
+#include "verb.h"
+/*#include "atom.h"*/
+#include "lexer.h"
+#include "noun.h"
 
-NVAL(bval, B) {
-    NUMERIC_SWITCH(NT(a),
-        return NB(a),
-        return (B)(NI(a) != 0),
-        /* FIXME: floating point tolerance */
-        return (B)(ND(a) != 0),
-        return (B)(NZ(a).real != 0)
-    );
-    return 1;
-}
 
-NVAL(ival, I) {
-    NUMERIC_SWITCH(NT(a),
-        return (I)NB(a),
-        return NI(a),
-        return (I)ND(a),
-        return (I)NZ(a).real
-    );
-    return 1;
-}
+#define NCOL 3
+#define NROW 5
 
-NVAL(dval, D) {
-    NUMERIC_SWITCH(NT(a),
-        return (D)NB(a),
-        return (D)NI(a),
-        return ND(a),
-        return NZ(a).real
-    );
-    return 1;
-}
-
-NVAL(zval, Z) {
-    Z z = {0, 0};
-    NUMERIC_SWITCH(NT(a),
-        z.real = (D)NB(a); break,
-        z.real = (D)NI(a); break,
-        z.real = ND(a);    break,
-        return NZ(a)
-    );
-    return z;
-}
-
-PARSE(atom) {
-    N res; C *se;
-    se = parse_exp(n, s, &res);
-    *a = res;
-    return se;
-}
-
-PARSE(base) {
-    C *se; N b; B good = 1;
-
-    se = parse_pi(n, s, a);
-    if (!se) return NULL;
-    n -= (se+1) - s;
-
-    if (se[0]=='b') {
-        se = parse_pi(n, se+1, &b);
-        if (!se) return NULL;
-        good = abase(a, b);
-    }
-    return good ? se : NULL;
-}
-
-PARSE(pi) {
-    C *p, *x, *se; N b; B good = 1;
-
-    se = parse_cmpx(n, s, a);
-    if (!se) return NULL;
-    n -= (se+1) - s;
-
-    if (se[0]=='p') {
-        se = parse_cmpx(n, se+1, &b);
-        if (!se) return NULL;
-        good = apitime(a, b);
-    }
-    else if (se[0]=='x') {
-        se = parse_cmpx(n, se+1, &b);
-        if (!se) return NULL;
-        good = aeuler(a, b);
-    }
-    return good ? se : NULL;
-}
-
-PARSE(cmpx) {
-    C *j, *r, *se; N b; B good = 1;
-
-    se = parse_exp(n, s, a);
-    if (!se) return NULL;
-    n -= se - s;
-
-    if (s[0]=='j') {
-        se = parse_exp(n-1, se+1, &b);
-        if (!se) return NULL;
-        good = acmpx(a, b);
-    }
-    else if (s[0]=='a') {
-        if (s[1]=='d') {
-            se = parse_exp(n-2, se+2, &b);
-            if (!se) return NULL;
-            good = aangd(a, b);
-        }
-        else if (s[1]=='r') {
-            se = parse_exp(n-2, se+2, &b);
-            if (!se) return NULL;
-            good = aangr(a, b);
-        }
-    }
-    return good ? se : NULL;
-}
-
-PARSE(exp) {
-    C *se; N b; B good = 1;
-
-    se = parse_num(n, s, a);
-    if (!se) return NULL;
-    n -= se - s;
-
-    if (se[0]=='e') {
-        se = parse_num(n-1, se+1, &b);
-        if (b.t>INT) {
-            a_signal(ERLEXER);
-            return NULL;
-        }
-        good = aexp(a, b);
-    }
-    return good ? se : NULL;
-}
-
-PARSE(num) {
-    C si = 0, c = *s, *d = memchr(s, '.', n), *e;
-    I iv; D dv;
-    if (c==CUNDS) { si = 1; s++; }
-    if (d) {
-        dv = strtod(s, &e);
-        ND(a) = si ? -dv : dv;
-        NT(a) = FLT; }
-    else {
-        iv = strtol(s, &e, 10);
-        if (!si && (iv==0 || ABS(iv)==1)) { NB(a) = (B)iv; NT(a) = BOOL; }
-        else { NI(a) = si ? -iv : iv; NT(a) = INT; }
-    }
-    return e;
-}
+/* Noun Transition Table */
+static ST noun[NROW][NCOL] = {
+    /*SS*/ {{SM,ES},{SS,EO},{SX,EN}},
+    /*SX*/ {{SM,EW},{SN,EW},{SA,EO}},
+    /*SA*/ {{SM,EW},{SN,EW},{SA,EO}},
+    /*SN*/ {{SM,ES},{SS,EO},{SX,EN}},
+    /*SM*/ {{SS,ES},{SS,ES},{SS,ES}}
+           /*  CX      CS      CA  */
+};
 
 /*
-  parse_numeric
-  input: Length of numeric string, Pointer to string.
-  output: Numeric array.
+  noun_start
+  input:  Length of noun, String of noun.
+  output: Array of size 2n, in the form:
+    [start index token 1, length token 1, start index token 2,
+    length token 2, ..., start index token n, length token n].
 */
+static A noun_index(I n, C *s) {
+    C e, t, st = SS;
+    I i, m = 1+n, j = 0, k = 0, *v;
+    ST pr; A z = ga(INT, 1, m, NULL);
+    v = IAV(z);
+
+    DO(n,
+       t = nountype[s[i]];
+       pr = noun[st][t];
+       e = pr.effect;
+       st = pr.new;
+
+       switch (e) {
+       case EO: break;
+       case EN: j = i; break;
+       case EW: v[k++] = j; v[k++] = i-j; break;
+       case ES: goto end_noun; break;
+       }
+    );
+  end_noun:
+    ra(z, INT, k);
+    AN(z) = k;
+    R z;
+}
+
+NPARSE(base) {
+    parse_pieul(n,s,y);
+    if (*s=='b') { parse_pieul(n,s,y); }
+    R 1;
+}
+
+NPARSE(pieul) {
+    parse_cmpx(n,s,y);
+    if (*s=='p')      { parse_cmpx(n,s,y); }
+    else if (*s=='x') { parse_cmpx(n,s,y); }
+    R 1;
+}
+
+NPARSE(cmpx) {
+    parse_exp(n,s,y);
+    if (*s=='a') { s++;
+        if (*s=='d')      { parse_exp(n,s,y); }
+        else if (*s=='r') { parse_exp(n,s,y); }
+    }
+    else if (*s=='j') { parse_exp(n,s,y); }
+    R 1;
+}
+
+NPARSE(exp) {
+    parse_rat(n,s,y);
+    if (*s=='e') {
+        ASSERT(parse_rat(n,s++,y),ERILLNUM);
+    }
+    R 1;
+}
+
+NPARSE(rat) {
+    parse_num(n,s,y);
+    if (*s=='r') { parse_num(n,s,y); }
+    R 1;
+}
+
+NPARSE(num) {
+    C c = *s, *d=memchr(s,'.',n), *e;
+    I si = (*s==CUNDS) ? 1 : 0, iv; D dv; A w = *y;
+    if (n==1&&(c==CZERO||c==CONE)) { *BAV(w)=c-CZERO; e=s+1; }
+    else if (d) { w=conv(FLT,w); dv=strtod(s,&e);    *DAV(w)=si ? -(dv) : dv; }
+    else        { w=conv(INT,w); iv=strtol(s,&e,10); *IAV(w)=si ? -(iv) : iv; }
+    *y=w; s=e; R 1;
+}
+
 A parse_noun(I n, C *s) {
-    I al, as, m = AN(y)/2, j, k = 0, t = 0, *indx = IAV(y), *iv;
-    B *bv; D *dv; Z *zv;
-    A y = noun_index(n+1, s), z;
-    N *atm, *nouns = (N *)a_malloc(sizeof(N)*m);
-
-    DO(m,
-       j  = i+i; as = indx[j]; al = indx[j+1]; atm = &nouns[i];
-       ASSERT(parse_atom(al, &s[as], atm), ERLEXER);
-       t = MAX(t, NT(atm));
-    );
-    z = gen_array(t, m!=1, m, NULL);
-
-    NUMERIC_SWITCH(t,
-        bv = BAV(z); DO(m, bv[i] = noun_bval(&nouns[i])); break,
-        iv = IAV(z); DO(m, iv[i] = noun_ival(&nouns[i])); break,
-        dv = DAV(z); DO(m, dv[i] = noun_dval(&nouns[i])); break,
-        zv = ZAV(z); DO(m, zv[i] = noun_zval(&nouns[i])); break
+    B *bv; C *av, *zv, *ws; D *dv;
+    A y=noun_index(n+1,s), nouns, z, atm, *nv;
+    I m=AN(y)/2, t=0, ak, at, j, wi, wl, zk, *indx=IAV(y), *iv;
+    nouns = ga(BOX, 1, m, NULL); nv = AAV(nouns);
+    DO(m, j=i+i; wi=indx[j]; wl=indx[j+1]; ws=&s[wi];
+       atm = nv[i] = ga(BOOL, 0, 1, NULL);
+       ASSERT(parse_num(wl,ws,&atm),ERILLNUM);
+       t=MAX(at=AT(atm),t); nv[i]=atm;
     );
 
-    return z;
+    if (m==1) { z = ca(atm); }
+    else {
+        z = ga(t, 1, m, NULL); zk = ts(t); zv = CAV(z)-zk;
+        DO(m, atm=nv[i]; at=AT(atm); av=CAV(atm);
+           if (at==t) { memcpy(zv+=zk, av, zk); }
+           else { aconv(CNVCASE(at,t), 1, zv+=zk, av); }
+        );
+    }
+    R z;
 }

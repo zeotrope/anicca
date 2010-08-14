@@ -59,6 +59,6 @@ VO testcases_init(VO) {
     D e0[] = { 1.5, 900, 3 };
     I e1[] = { 1           };
     
-    testcases[0].expected = gen_test_array(3, lpar, gen_farray(e0, LENGTHOF(e0)), rpar);
-    testcases[1].expected = gen_test_array(1, gen_iarray(e1, LENGTHOF(e1)));
+    testcases[0].expected = gtest_array(3, lpar, gfarray(e0, LENGTHOF(e0)), rpar);
+    testcases[1].expected = gtest_array(1, giarray(e1, LENGTHOF(e1)));
 }

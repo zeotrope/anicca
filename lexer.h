@@ -29,10 +29,8 @@ typedef struct _state {
     C effect;
 } ST;
 
-A parse_literal(I n, C *s);
-A parse_verb(I n, C *s);
-A noun_index(I n, C *s);
-MONAD(token_index);
-DYAD(tokens);
+static A parse_literal(I n, C *s);
+static MONAD(token_index);
+MONAD(tokens);
 
 #endif
