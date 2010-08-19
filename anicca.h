@@ -19,12 +19,12 @@ typedef double        D;
 typedef void          VO;
 typedef void*         VP;
 
-#define ZR(z) ((z).real)
-#define ZI(z) ((z).imaginary)
+#define ZR(z) ((z).re)
+#define ZI(z) ((z).img)
 
 typedef struct _complex {
-    D real;
-    D imaginary;
+    D re;
+    D img;
 } Z;
 
 #define AT(a) ((a)->type)
@@ -83,7 +83,7 @@ typedef A(*AF3)(A, A, A);
 #define DMONAD(name) A name(A y, A self)
 #define DDYAD(name)  A name(A x, A y, A self)
 
-A zero; A one;
+A zero; A one; A zone;
 A mark;
 A lpar; A rpar;
 

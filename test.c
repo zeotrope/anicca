@@ -6,39 +6,39 @@
 #include "util.h"
 
 B eq_shape(A x, A y) {
-    if (AR(x) != AR(y)) return 0;
-    if (AS(x) == AS(y)) return 1;
-    if (AS(x) == NULL || AS(y) == NULL) return 0;
-    DO(AR(x), if (AS(x)[i] != AS(y)[i]) return 0);
+    if (AR(x) != AR(y)) R 0;
+    if (AS(x) == AS(y)) R 1;
+    if (AS(x) == NULL || AS(y) == NULL) R 0;
+    DO(AR(x), if (AS(x)[i] != AS(y)[i]) R 0);
 
-    return 1;
+    R 1;
 }
 
 B eq(A x, A y) {
-    if (x == y) return 1;
-    if (x == NULL || y == NULL) return 0;
+    if (x == y) R 1;
+    if (x == NULL || y == NULL) R 0;
     if (AT(x) != AT(y) || AN(x) != AN(y) || !eq_shape(x, y))
-        return 0;
+        R 0;
     /* TODO: make it work for rank > 1 */
     NOUN_SWITCH(AT(x),
                 DO(AN(x), B *xbv = AV(x); B *ybv = AV(y);
-                   if (xbv[i] != ybv[i]) return 0),
+                   if (xbv[i] != ybv[i]) R 0),
                 DO(AN(x), C *xcv = AV(x); C *ycv = AV(y);
-                   if (xcv[i] != ycv[i]) return 0),
+                   if (xcv[i] != ycv[i]) R 0),
                 DO(AN(x), I *xiv = AV(x); I *yiv = AV(y);
-                   if (xiv[i] != yiv[i]) return 0),
+                   if (xiv[i] != yiv[i]) R 0),
                 DO(AN(x), D *xfv = AV(x); D *yfv = AV(y);
-                   if (xfv[i] != yfv[i]) return 0),
+                   if (xfv[i] != yfv[i]) R 0),
                 DO(AN(x), Z *xzv = AV(x); Z *yzv = AV(y);
                    if (ZR(xzv[i]) != ZR(yzv[i]) ||
-                       ZI(xzv[i]) != ZI(yzv[i])) return 0),
+                       ZI(xzv[i]) != ZI(yzv[i])) R 0),
                 DO(AN(x), A *xbv = AV(x); A *ybv = AV(y);
-                   if (!eq(xbv[i], ybv[i])) return 0),
-                return 1,       /* MARK, no value */
-                return 1,       /* LPAR, no value */
-                return 1,       /* RPAR, no value */
-                return 0);      /* unknown type, shouldn't happen */
-    return 1;
+                   if (!eq(xbv[i], ybv[i])) R 0),
+                R 1,       /* MARK, no value */
+                R 1,       /* LPAR, no value */
+                R 1,       /* RPAR, no value */
+                R 0);      /* unknown type, shouldn't happen */
+    R 1;
 }
 
 
@@ -50,9 +50,9 @@ B run_test(const C *input, A expected) {
         println(z);
         printf(" expected: ");
         println(expected);
-        return 0;
+        R 0;
     }
-    return 1;
+    R 1;
 }
 
 VO testcases_init(VO) {

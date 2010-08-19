@@ -42,18 +42,18 @@ UC verb_name(I n, C *s) {
     I i, j;
 
     switch (n) {
-    case 1: return *s;
+    case 1: R *s;
     case 2: {
         d = s[1];
         i = d==CDOT ? 1 : d==CCOL ? 2 : 0;
         if (i > 0) {
             t = memchr(verbname[0], *s, BASE);
             j = t - verbname[0];
-            return verbname[i][j];
+            R verbname[i][j];
         }
     }
     }
-    return *s;
+    R *s;
 }
 
 static UC primindx[256] = {
@@ -98,7 +98,7 @@ static P primitives[NPRIM+1] = {
     /* 16  ;  59  */ {VERB, NULL,       NULL,    0, 0, 0, 0},
     /* 17  <  60  */ {VERB, box,        lthan,   0, 0, 0, 0},
     /* 18  =  61  */ {VERB, NULL,       equal,   0, 0, 0, 0},
-    /* 19  >  62  */ {VERB, NULL,       gthan,   0, 0, 0, 0},
+    /* 19  >  62  */ {VERB, unbox,      gthan,   0, 0, 0, 0},
     /* 20  ?  63  */ {VERB, NULL,       NULL,    0, 0, 0, 0},
     /* 21  @  64  */ {CONJ, NULL,       atsign,  0, 0, 0, 0},
     /* 22  A. 65  */ {VERB, NULL,       NULL,    0, 0, 0, 0},
@@ -113,7 +113,7 @@ static P primitives[NPRIM+1] = {
     /* 31  [  91  */ {VERB, same,       left,    0, 0, 0, 0},
     /* 32  \  92  */ {ADV,  NULL,       NULL,    0, 0, 0, 0},
     /* 33  ]  93  */ {VERB, same,       right,   0, 0, 0, 0},
-    /* 34  ^  94  */ {VERB, expntl,     NULL,    0, 0, 0, 0},
+    /* 34  ^  94  */ {VERB, expntl,     power,   0, 0, 0, 0},
     /* 35  `  96  */ {CONJ, NULL,       NULL,    0, 0, 0, 0},
     /* 36  a. 97  */ {VERB, NULL,       NULL,    0, 0, 0, 0},
     /* 37  b. 98  */ {ADV,  NULL,       NULL,    0, 0, 0, 0},
@@ -121,7 +121,7 @@ static P primitives[NPRIM+1] = {
     /* 39  e. 101 */ {VERB, NULL,       NULL,    0, 0, 0, 0},
     /* 40  f. 102 */ {ADV,  NULL,       NULL,    0, 0, 0, 0},
     /* 41  i. 105 */ {VERB, iota,       NULL,    0, 0, 0, 0},
-    /* 42  j. 106 */ {VERB, NULL,       NULL,    0, 0, 0, 0},
+    /* 42  j. 106 */ {VERB, imaginary,  complex, 0, 0, 0, 0},
     /* 43  o. 111 */ {VERB, NULL,       NULL,    0, 0, 0, 0},
     /* 44  p. 112 */ {VERB, NULL,       NULL,    0, 0, 0, 0},
     /* 45  q. 113 */ {VERB, NULL,       NULL,    0, 0, 0, 0},
@@ -206,12 +206,11 @@ A primitive_lookup(UC id) {
     case NOUN: break;
     case ADV:
     case VERB:
-    case CONJ: return fdef(id, t, p->f1, p->f2, NULL, NULL, NULL, \
-                        p->lr, p->mr, p->rr, p->inv);
-    case LPAR: return lpar;
-    case RPAR: return rpar;
-    default:   return mark;
+    case CONJ: R fdef(id,t,p->f1,p->f2,NULL,NULL,NULL,p->lr,p->mr,p->rr,p->inv);
+    case LPAR: R lpar;
+    case RPAR: R rpar;
+    default:   R mark;
     }
 
-    return mark;
+    R mark;
 }

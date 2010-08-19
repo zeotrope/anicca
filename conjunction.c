@@ -18,27 +18,16 @@ DYAD(amper) {
         v = VAV(y);
         z = CDERV(CAMPR, compose, compose2, x, y, VLR(v), VMR(v), VRR(v));
     }
-    return z;
+    R z;
 }
 
-DMONAD(bond) { DECL_FG;
-    z = AT(f)&NOUN ? df2(f, y, g) : df2(y, g, f);
-    return z;
-}
+DMONAD(bond) { DECL_FG; z = AT(f)&NOUN ? df2(f,y,g) : df2(y,g,f); R z; }
 
-DDYAD(bond2) { DECL_FG;
-    return z;
-}
+DDYAD(bond2) { DECL_FG; R z; }
 
-DMONAD(compose) { DECL_FG;
-    z = df1(df1(y, g), f);
-    return z;
-}
+DMONAD(compose) { DECL_FG; z = df1(df1(y,g),f); R z; }
 
-DDYAD(compose2) { DECL_FG;
-    z = df2(df1(x, g), df1(y, g), f);
-    return z;
-}
+DDYAD(compose2) { DECL_FG; z = df2(df1(x,g), df1(y,g),f); R z; }
 
 DYAD(atsign) {
     V *v; A z;
@@ -46,62 +35,49 @@ DYAD(atsign) {
         v = VAV(y);
         z = CDERV(CAT, atop, atop2, x, y, VLR(v), VMR(v), VRR(v));
     }
-    return z;
+    R z;
 }
 
-DMONAD(atop) {
-    A z;
-    z = compose(y, self);
-    return z;
-}
+DMONAD(atop) { A z; z = compose(y,self); R z; }
 
-DDYAD(atop2) { DECL_FG;
-    z = df1(df2(x, y, g), f);
-    return z;
-}
+DDYAD(atop2) { DECL_FG; z = df1(df2(x,y,g),f); R z; }
 
-DMONAD(hook) { DECL_FG;
-    z = df2(y, df1(y, g), f);
-    return z;
-}
+DMONAD(hook) { DECL_FG; z = AT(f)&NOUN ? df2(f,y,g) : df2(y,df1(y,g),f); R z; }
 
-DDYAD(hook2) { DECL_FG;
-    z = df2(x, df1(y, g), f);
-    return z;
-}
+DDYAD(hook2) { DECL_FG; z = AT(f)&NOUN ? df2(f,y,g) : df2(x,df1(y,g),f); R z; }
 
 DMONAD(forrk) { DECL_FGH;
     z = (AT(f)&VERB && VID(VAV(f))==CCAP) ? df1(df1(y, h), g) :
         AT(f)&NOUN ? df2(f, df1(y, h), g) :
         df2(df1(y, f), df1(y, h), g);
-    return z;
+    R z;
 }
 
 DDYAD(forrk2) { DECL_FGH;
     z = (AT(f)&VERB && VID(VAV(f))==CCAP) ? df1(df2(x, y, h), g) :
         AT(f)&NOUN ? df2(f, df2(x, y, h), g) :
         df2(df2(x, y, f), df2(x, y, h), g);
-    return z;
+    R z;
 }
 
 DYAD(cartcol) {
     V *v; A z; I xt = AT(x), yt = AT(y);
     ASSERT(xt&VERB && yt&INT, ERDOM);
     v = VAV(xt&VERB ? x : y);
-    z = CDERV(CPOWR, power, power2, x, y, VLR(v), VMR(v), VRR(v));
-    return z;
+    z = CDERV(CPOWR, cpower, cpower2, x, y, VLR(v), VMR(v), VRR(v));
+    R z;
 }
 
-DMONAD(power) { DECL_FG;
+DMONAD(cpower) { DECL_FG;
     I n = *IAV(g); A temp;
     DO(n, temp = y; y = df1(temp, f); a_free(temp));
     z = y;
-    return z;
+    R z;
 }
 
-DDYAD(power2) { DECL_FG;
+DDYAD(cpower2) { DECL_FG;
     I n = *IAV(g); A temp;
     DO(n, temp = y; y = df2(x, temp, f); a_free(temp));
     z = y;
-    return z;
+    R z;
 }

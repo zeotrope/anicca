@@ -23,15 +23,12 @@ MONAD(fact) { MONAD_PROLOG;
        DO(temp, r *= temp--);
        v[i] = r;
     );
-    return z;
+    R z;
 }
 
-DYAD(outof) { A z;
-    z = divide(fact(y), times(fact(x), fact(minus(y, x))));
-    return z;
-}
+DYAD(outof) { A z; z = divide(fact(y),times(fact(x),fact(minus(y,x)))); R z; }
 
-MONAD(tally) { A z; z = sint(AN(y)); return z; }
+MONAD(tally) { A z; z = sint(AN(y)); R z; }
 
 DYAD(copy) { DYAD_PROLOG;
     I n = 0, itm, cnt;
@@ -42,12 +39,12 @@ DYAD(copy) { DYAD_PROLOG;
     DO(xn, cnt = xv[i]; itm = yv[i];
        if (cnt>0) { DO(cnt, *v++ = itm); }
     );
-    return z;
+    R z;
 }
 
-MONAD(reciprocal) { A z = divide(one, y); return z; }
+MONAD(reciprocal) { A z = divide(one, y); R z; }
 
-DYAD(divide) { A z = va2(CPERC, x, y); return z; }
+DYAD(divide) { A z = va2(CPERC,x,y); R z; }
 
 MONAD(signum) { A z;
     switch (AT(y)) {
@@ -55,20 +52,18 @@ MONAD(signum) { A z;
     case INT:  z = sex1(y, INT, isignum); break;
     case FLT:  z = sex1(y, INT, dsignum); break;
     }
-    return z;
+    R z;
 }
 
-DYAD(times) { A z = va2(CSTAR, x, y); return z; }
+DYAD(times) { A z = va2(CSTAR,x,y); R z; }
 
-MONAD(square) { A z = times(y, y); return z;  }
+MONAD(square) { A z = times(y,y); R z;  }
 
-MONAD(conjugate) { MONAD_PROLOG;
-    return z;
-}
+MONAD(conjugate) { A z; R z; }
 
-DYAD(plus) { A z = va2(CPLUS, x, y); return z; }
+DYAD(plus) { A z = va2(CPLUS,x,y); R z; }
 
-MONAD(duble) { A z = plus(y, y); return z; }
+MONAD(duble) { A z = plus(y, y); R z; }
 
 DYAD(append) {
     I xt=AT(x), yt=AT(y), xr=AR(x), yr=AR(y);
@@ -87,74 +82,68 @@ DYAD(append) {
         v += k*xn;
         memcpy(v, yv, k*yn);
     } else { a_signal(ERDOM); }
-    return z;
+    R z;
 }
 
-MONAD(negate) { A z = minus(zero, y); return z; }
+MONAD(negate) { A z = minus(zero, y); R z; }
 
-DYAD(minus) { A z = va2(CSUBT, x, y); return z; }
+DYAD(minus) { A z = va2(CSUBT,x,y); R z; }
 
-MONAD(not) { A z = minus(one, y); return z; }
+MONAD(not) { A z = minus(one, y); R z; }
 
-DYAD(link) {
-    A z; return z;
-}
+DYAD(link) { A z; R z; }
 
-MONAD(box) { A z = ga(BOX, 0, 1, NULL); *AAV(z) = y; return z; }
+MONAD(box) { A z = sbox(y); R z; }
 
-DYAD(lthan) { A z = va2(CLT, x, y); return z; }
+DYAD(lthan) { A z = va2(CLT,x,y); R z; }
 
-MONAD(decrement) { A z = minus(y, one); return z; }
+MONAD(decrement) { A z = minus(y, one); R z; }
 
-DYAD(equal) { A z = va2(CEQ, x, y); return z; }
+DYAD(equal) { A z = va2(CEQ,x,y); R z; }
 
-MONAD(unbox) { A z;
-    return z;
-}
+MONAD(unbox) { A z = ca(*AAV(y)); R z; }
 
-DYAD(gthan) { A z = va2(CGT, x, y); return z; }
+DYAD(gthan) { A z = va2(CGT,x,y); R z; }
 
-MONAD(increment) { A z = plus(y, one); return z; }
+MONAD(increment) { A z = plus(y, one); R z; }
 
-MONAD(roll) {
-    A z; return z;
-}
+MONAD(roll) { A z; R z; }
 
-DYAD(deal) {
-    A z; return z;
-}
+DYAD(deal) { A z; R z; }
 
 MONAD(indices) { MONAD_PROLOG;
     z = ga(INT, AR(y), yn, AS(y));
     v = IAV(z);
-    return z;
+    R z;
 }
 
 MONAD(expntl) {
     I yn = AN(y), *yv = IAV(y);
     A z = ga(FLT, AR(y), yn, AS(y)); D *v = DAV(z);
     DO(yn, v[i] = exp((D)yv[i]));
-    return z;
+    R z;
 }
+
+MONAD(same) { A z = ca(y); R z; }
+
+DYAD(left) { A z = ca(x); R z; }
+
+DYAD(right) { A z = ca(y); R z; }
+
+DYAD(power) { A z = va2(CPOW,x,y); R z; }
 
 MONAD(iota) { A z;
     I yr = AR(y), n = *IAV(y), *v;
     z = ga(INT, 1, n, AS(y));
     v = IAV(z);
     DO(n, v[i] = i);
-    return z;
+    R z;
 }
 
-MONAD(same) { A z = ca(y); return z; }
+MONAD(imaginary) { A z = times(zone,y); R z; }
 
-DYAD(left) { A z = ca(x); return z; }
+DYAD(complex) { A z = plus(x,imaginary(y)); R z; }
 
-DYAD(right) { A z = ca(y); return z; }
+DYAD(residue) { A z; R z; }
 
-DYAD(residue) {
-    A z; return z;
-}
-
-MONAD(tail) { A z;
-    return z;
-}
+MONAD(tail) { A z; R z; }

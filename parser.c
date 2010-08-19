@@ -7,14 +7,14 @@
 #include "function.h"
 #include "parser.h"
 
-ACTION(monad)  { return df1(stack[e], stack[b]);              }
-ACTION(dyad)   { return df2(stack[b], stack[e], stack[b+1]);  }
-ACTION(adverb) { return df1(stack[b], stack[e]);              }
-ACTION(conjun) { return df2(stack[b], stack[e], stack[b+1]);  }
-ACTION(fork)   { return dfrk(stack[b], stack[b+1], stack[e]); }
-ACTION(bident) { return dhk(stack[b], stack[e]);              }
-ACTION(is)     { A z; return z;                               }
-ACTION(paren)  { return stack[b+1];                           }
+ACTION(monad)  { R df1(stack[e], stack[b]);              }
+ACTION(dyad)   { R df2(stack[b], stack[e], stack[b+1]);  }
+ACTION(adverb) { R df1(stack[b], stack[e]);              }
+ACTION(conjun) { R df2(stack[b], stack[e], stack[b+1]);  }
+ACTION(fork)   { R dfrk(stack[b],stack[b+1], stack[e]);  }
+ACTION(bident) { R dhk(stack[b], stack[e]);              }
+ACTION(is)     { A z; R z;                               }
+ACTION(paren)  { R stack[b+1];                           }
 
 #define CASES 9
 
@@ -64,7 +64,5 @@ A parse(A tokens) {
     /*printf("m: %d j: %d\n", m, j);
       println(tokens);*/
     if (m>2) { a_signal(ERSYNTX); };
-    z = stack[j];
-
-    return z;
+    z = stack[j]; R z;
 }

@@ -20,10 +20,7 @@
   input: Length of string, Pointer to string.
   output: Array of type string with length (n-2).
 */
-static A parse_literal(I n, C *s) {
-    A z = gstr(n-=2, s++);
-    R z;
-}
+static A parse_literal(I n, C *s) { A z = gstr(n-=2, ++s); R z; }
 
 #define DCOL 9
 #define DROW 10
@@ -56,11 +53,8 @@ static MONAD(token_index) {
     A z = ga(INT, 1, n+n, NULL);
     v = IAV(z);
 
-    DO(n,
-       t = chartype[str[i]];
-       pr = dfa[s][t];
-       e = pr.effect;
-       sn = pr.new;
+    DO(n, t = chartype[str[i]]; pr = dfa[s][t];
+       e = pr.effect; sn = pr.new;
 
        switch (e) {
        case EO: break;
@@ -70,14 +64,12 @@ static MONAD(token_index) {
        case EV: {
            if (!vec) { v[k++] = j; v[k] = i-j; jv = j; }
            else      { v[k] = i-jv; }
-           j = i; vec = 1;
-           break;
+           j = i; vec = 1; break;
        }
        case EZ: {
            if (!vec) { v[k++] = j; v[k] = i-j; jv = j; }
            else      { v[k] = i-jv; }
-           j = -1; vec = 1;
-           break;
+           j = -1; vec = 1; break;
        }
        case ES: goto end; break;
        }
@@ -86,9 +78,7 @@ static MONAD(token_index) {
        s = sn;
     );
   end:
-    ra(z, INT, k);
-    AN(z) = k;
-    R z;
+    ra(z, INT, k); AN(z) = k; R z;
 }
 
 /*
@@ -119,6 +109,5 @@ MONAD(tokens) {
        else { *av++ = v; }
     );
 
-    DO(4, *av++ = mark);
-    R z;
+    DO(4, *av++ = mark); R z;
 }

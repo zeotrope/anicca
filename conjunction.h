@@ -18,8 +18,8 @@ DDYAD(atop2);
 DMONAD(hook);
 DDYAD(hook2);
 DYAD(cartcol);
-DMONAD(power);
-DDYAD(power2);
+DMONAD(cpower);
+DDYAD(cpower2);
 DMONAD(forrk);
 DDYAD(forrk2);
 

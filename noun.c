@@ -1,3 +1,5 @@
+#include <ctype.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,10 +12,8 @@
 #include "convert.h"
 #include "util.h"
 #include "verb.h"
-/*#include "atom.h"*/
 #include "lexer.h"
 #include "noun.h"
-
 
 #define NCOL 3
 #define NROW 5
@@ -41,11 +41,8 @@ static A noun_index(I n, C *s) {
     ST pr; A z = ga(INT, 1, m, NULL);
     v = IAV(z);
 
-    DO(n,
-       t = nountype[s[i]];
-       pr = noun[st][t];
-       e = pr.effect;
-       st = pr.new;
+    DO(n, t = nountype[s[i]]; pr = noun[st][t];
+       e = pr.effect; st = pr.new;
 
        switch (e) {
        case EO: break;
@@ -55,55 +52,64 @@ static A noun_index(I n, C *s) {
        }
     );
   end_noun:
-    ra(z, INT, k);
-    AN(z) = k;
-    R z;
+    ra(z, INT, k); AN(z) = k; R z;
 }
 
-NPARSE(base) {
-    parse_pieul(n,s,y);
-    if (*s=='b') { parse_pieul(n,s,y); }
+NPARSE(base) { C *s;
+    parse_pieul(n,sp,y); s=*sp;
+    if (*s=='b') { parse_pieul(n,sp,y); }
     R 1;
 }
 
-NPARSE(pieul) {
-    parse_cmpx(n,s,y);
-    if (*s=='p')      { parse_cmpx(n,s,y); }
-    else if (*s=='x') { parse_cmpx(n,s,y); }
-    R 1;
-}
-
-NPARSE(cmpx) {
-    parse_exp(n,s,y);
-    if (*s=='a') { s++;
-        if (*s=='d')      { parse_exp(n,s,y); }
-        else if (*s=='r') { parse_exp(n,s,y); }
-    }
-    else if (*s=='j') { parse_exp(n,s,y); }
-    R 1;
-}
-
-NPARSE(exp) {
-    parse_rat(n,s,y);
-    if (*s=='e') {
-        ASSERT(parse_rat(n,s++,y),ERILLNUM);
+NPARSE(pieul) {C *s=*sp, *e; I k; A p, q, x;
+    parse_cmpx(n,sp,y); e=*sp;
+    if (*e=='p')      { parse_cmpx(n,sp,y); }
+    else if (*e=='x') {
+        e++; p=*y; *y=sbool(0); k=n-(I)(e-s); *sp=e;
+        ASSERT(parse_cmpx(k,sp,y),ERILLNUM);
+        q=*y; *y=times(p,expntl(q));
     }
     R 1;
 }
 
-NPARSE(rat) {
-    parse_num(n,s,y);
-    if (*s=='r') { parse_num(n,s,y); }
+NPARSE(cmpx) { C *s=*sp, *e; I k; A p, q, x;
+    parse_exp(n,sp,y); e=*sp;
+    if (*e=='a') {
+        if (*e=='d')      { parse_exp(n,sp,y); }
+        else if (*e=='r') { parse_exp(n,sp,y); }
+    }
+    else if (*e=='j') {
+        e++; p=*y; *y=sbool(0); k=n-(I)(e-s); *sp=e;
+        ASSERT(parse_exp(n,sp,y),ERILLNUM);
+        q=*y; *y=complex(p,q);
+    }
+    R 1;
+}
+
+NPARSE(exp) { C *s=*sp, *e; I k; A p, q, x;
+    parse_rat(n,sp,y); e=*sp;
+    if (*e=='e') {
+        e++; p=*y; *y=sbool(0); k=n-(I)(e-s); *sp=e;
+        ASSERT(parse_rat(k,sp,y),ERILLNUM);
+        q=*y; *y=times(p,power(sint(10),q));
+    }
+    R 1;
+}
+
+NPARSE(rat) { C *s=*sp;
+    parse_num(n,sp,y);
+    if (*s=='r') { parse_num(n,sp,y); }
     R 1;
 }
 
 NPARSE(num) {
-    C c = *s, *d=memchr(s,'.',n), *e;
-    I si = (*s==CUNDS) ? 1 : 0, iv; D dv; A w = *y;
+    C c=**sp, *s=*sp, *d=memchr(s,'.',n), *e;
+    I si=1, iv; D dv; A w = *y;
+    if (c==CUNDS) { si=-1; s++; }
     if (n==1&&(c==CZERO||c==CONE)) { *BAV(w)=c-CZERO; e=s+1; }
-    else if (d) { w=conv(FLT,w); dv=strtod(s,&e);    *DAV(w)=si ? -(dv) : dv; }
-    else        { w=conv(INT,w); iv=strtol(s,&e,10); *IAV(w)=si ? -(iv) : iv; }
-    *y=w; s=e; R 1;
+    else if (d) { w=conv(FLT,w); dv=a_strtod(n,s,&e); *DAV(w)=si*dv; }
+    else        { w=conv(INT,w); iv=a_strtoi(n,s,&e); *IAV(w)=si*iv; }
+    *y=w; *sp=e; R 1;
 }
 
 A parse_noun(I n, C *s) {
@@ -112,8 +118,8 @@ A parse_noun(I n, C *s) {
     I m=AN(y)/2, t=0, ak, at, j, wi, wl, zk, *indx=IAV(y), *iv;
     nouns = ga(BOX, 1, m, NULL); nv = AAV(nouns);
     DO(m, j=i+i; wi=indx[j]; wl=indx[j+1]; ws=&s[wi];
-       atm = nv[i] = ga(BOOL, 0, 1, NULL);
-       ASSERT(parse_num(wl,ws,&atm),ERILLNUM);
+       atm = nv[i] = sbool(0);
+       ASSERT(parse_pieul(wl,&ws,&atm),ERILLNUM);
        t=MAX(at=AT(atm),t); nv[i]=atm;
     );
 

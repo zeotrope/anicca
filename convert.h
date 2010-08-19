@@ -27,7 +27,10 @@
 */
 B cbTi(I n, I *iv, B *bv);
 B cbTd(I n, D *dv, B *bv);
+B cbTz(I n, Z *zv, B *bv);
 B ciTd(I n, D *dv, I *iv);
+B ciTz(I n, Z *zv, I *iv);
+B cdTz(I n, Z *zv, D *dv);
 
 B aconv(I cv, I n, VP z, VP y);
 A conv(I t, A y);

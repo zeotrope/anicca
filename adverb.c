@@ -13,35 +13,21 @@ MONAD(slash) {
     ASSERT(AT(y)&VERB, ERDOM);
     v = VAV(y);
     z = ADERV(CFWSL, insert, table, y, VLR(v), VMR(v), VRR(v));
-    return z;
+    R z;
 }
 
-DMONAD(insert) {
-    A z = tail(y);
-    I r, n = AN(y), k = n-2;
-    if (n==1) { return z; }
-    return z;
-}
+DMONAD(insert) { A z; R z; }
 
-DDYAD(table) {
-    A z;
-    return z;
-}
+DDYAD(table) { A z; R z; }
 
 MONAD(tilde) {
     V *v; A z;
     ASSERT(AT(y)&VERB, ERDOM);
     v = VAV(y);
     z = ADERV(CTILDE, reflex, passive, y, VLR(v), VMR(v), VRR(v));
-    return z;
+    R z;
 }
 
-DMONAD(reflex) { DECL_F;
-    z = df2(y, y, f);
-    return z;
-}
+DMONAD(reflex) { DECL_F; z = df2(y, y, f); R z; }
 
-DDYAD(passive) { DECL_F;
-    z = df2(y, x, f);
-    return z;
-}
+DDYAD(passive) { DECL_F; z = df2(y, x, f); R z; }

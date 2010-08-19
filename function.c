@@ -9,23 +9,23 @@
 DMONAD(df1) {
     V *v = VAV(self);
     A z = VF(v)&&VDF1(v) ? v->df1(y, self) : v->f1(y);
-    return z;
+    R z;
 }
 
 DDYAD(df2) {
     V *v = VAV(self);
     A z = VF(v)&&VDF2(v) ? v->df2(x, y, self) : v->f2(x, y);
-    return z;
+    R z;
 }
 
 DMONAD(dhk) {
     V *v = VAV(y);
-    return ddef(CHOOK,VERB,hook,hook2,y,self,NULL,VLR(v),VMR(v),VRR(v),0);
+    R ddef(CHOOK,VERB,hook,hook2,y,self,NULL,VLR(v),VMR(v),VRR(v),0);
 }
 
 DDYAD(dfrk) {
     V *v = VAV(x);
-    return ddef(CFORK,VERB,forrk,forrk2,x,y,self,VLR(v),VMR(v),VRR(v),0);
+    R ddef(CFORK,VERB,forrk,forrk2,x,y,self,VLR(v),VMR(v),VRR(v),0);
 }
 
 /*
@@ -68,7 +68,7 @@ A sex1(A y, I zt, SF f1) {
     C *yv = CAV(y), *zv = CAV(z);
     zv -= zk; yv -= k;
     DO(yn, f1(zv+=zk,  yv+=k));
-    return z;
+    R z;
 }
 
 /*
@@ -89,7 +89,7 @@ A sex2(A x, A y, I zt, SF f2) {
     A z = ga(zt, b ? yr : xr, m*n, b ? ys : xs);
     C *xv = CAV(x), *yv = CAV(y), *zv = CAV(z);
     ado(b, m, n, k, zk, zv, xv, yv, f2);
-    return z;
+    R z;
 }
 
 A fdef(UC id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv) {
@@ -101,12 +101,12 @@ A fdef(UC id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv) {
     VLR(v) = lr; VMR(v) = mr; VRR(v) = rr;
     VIR(v) = inv;
     VID(v) = id;
-    return z;
+    R z;
 }
 
 A ddef(UC id, I t, AF2 df1, AF3 df2, A f, A g, A h, I lr, I mr, I rr, I inv) {
     A z = fdef(id, t, NULL, NULL, f, g, h, lr, mr, rr, inv);
     V *v = VAV(z);
     VDF1(v) = df1; VDF2(v) = df2;
-    return z;
+    R z;
 }

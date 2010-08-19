@@ -16,7 +16,8 @@
 #include "util.h"
 
 I main(I argc, C *argv[]) {
+    A y, z;
     a_init();
     a_repl("   ");
-    return 0;
+    R 0;
 }

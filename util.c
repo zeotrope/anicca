@@ -11,15 +11,18 @@
 #include "util.h"
 
 VO print(A y) {
-    C *cv; I *iv; D *fv; V *vv; A *bv;
+    C *cv; I yn=AN(y), *iv; D *dv; Z *zv; V *vv; A *bv;
 
-    if (!y) { printf("NULL"); return; }
+    if (!y) { printf("NULL"); R; }
 
     switch (AT(y)) {
-    case BOOL: { cv = BAV(y); DO(AN(y), printf("%d ", (I)cv[i])); break; }
-    case CHAR: { cv = CAV(y); DO(AN(y), printf("%c", cv[i]));     break; }
-    case INT:  { iv = IAV(y); DO(AN(y), printf("%d ", iv[i]));    break; }
-    case FLT:  { fv = DAV(y); DO(AN(y), printf("%lf ", fv[i]));   break; }
+    case BOOL: { cv=BAV(y); DO(yn, printf("%d ", (I)cv[i])); break; }
+    case CHAR: { cv=CAV(y); DO(yn, printf("%c",  cv[i]));    break; }
+    case INT:  { iv=IAV(y); DO(yn, printf("%d ", iv[i]));    break; }
+    case FLT:  { dv=DAV(y); DO(yn, printf("%lf ",dv[i]));    break; }
+    case CMPX: {
+        zv=ZAV(y); DO(yn, printf("%lfj%lf ",ZR(zv[i]),ZI(zv[i]))); break;
+    }
 /* TODO?: fancy line drawings */
     case BOX: {
         bv = AAV(y);
@@ -52,10 +55,23 @@ VO println(A y) {
 }
 
 VO a_init(VO) {
-    zero = sint(0); one = sint(1);
+    zero=sbool(0); one=sbool(1); zone=scmpx(0,1);
     mark = ga(MARK, 0, 0, NULL);
     lpar = ga(LPAR, 0, 0, NULL);
     rpar = ga(RPAR, 0, 0, NULL);
+}
+
+I a_strtoi(I n, C *s, C **e) { I v=0, i;
+    for (i=0;isdigit(*s)&&(i<n);i++) { v=(10*v)+(*s++-'0'); }
+    *e=s; R v;
+}
+
+D a_strtod(I n, C *s, C**e) {
+    C *d=memchr(s,'.',n); I k=d-s, m=n-(k+1); D p=1, a, b, v;
+    a=(D)a_strtoi(k,s,e); s=*e;
+    if (*s=='.') { s++; }
+    b=(D)a_strtoi(m,s,e);
+    DO(m, p*=10); v = (a + b/(D)p); R v;
 }
 
 A eval(const C *str) {
@@ -64,7 +80,7 @@ A eval(const C *str) {
     y = tokens(w);
     z = parse(y);
     a_free(w); a_free(y);
-    return z;
+    R z;
 }
 
 VO a_repl(const C *s) {

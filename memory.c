@@ -8,11 +8,7 @@
 #include "function.h"
 #include "memory.h"
 
-VP a_malloc(I size) {
-    V *m = malloc(size);
-    ASSERT(m, ERALLOC);
-    return m;
-}
+VP a_malloc(I size) { V *m = malloc(size); ASSERT(m, ERALLOC); R m; }
 
 VO a_free(A y) {
     if (AN(y)>0) { free(AV(y)); if (AR(y)>0) { free(AS(y)); } }
@@ -22,23 +18,32 @@ VO a_free(A y) {
 I ts(I type) {
     switch (type) {
     case BOOL:
-    case CHAR: return sizeof(C); break;
-    case INT:  return sizeof(I); break;
-    case FLT:  return sizeof(D); break;
-    case CMPX: return sizeof(Z); break;
-    case BOX:  return sizeof(A); break;
+    case CHAR: R sizeof(C); break;
+    case INT:  R sizeof(I); break;
+    case FLT:  R sizeof(D); break;
+    case CMPX: R sizeof(Z); break;
+    case BOX:  R sizeof(A); break;
     case ADV:
     case CONJ:
-    case VERB: return sizeof(V); break;
+    case VERB: R sizeof(V); break;
     }
-    return sizeof(int);
+    R sizeof(int);
 }
 
-A schar(C c) { A z; z = ga(CHAR, 0, 1, NULL); *CAV(z) = c; R z; }
+A schar(C c) { A z = ga(CHAR,0,1,NULL); *CAV(z) = c; R z; }
 
-A sint(I i)  { A z; z = ga(INT, 0, 1, NULL); *IAV(z) = i; R z; }
+A sbool(B b) { A z = ga(BOOL,0,1,NULL); *BAV(z) = b; R z; }
 
-A sflt(D d)  { A z; z = ga(FLT, 0, 1, NULL); *DAV(z) = d; R z; }
+A sint(I i)  { A z = ga(INT,0,1,NULL); *IAV(z) = i; R z; }
+
+A sflt(D d)  { A z = ga(FLT,0,1,NULL); *DAV(z) = d; R z; }
+
+A scmpx(D r, D i) { A z = ga(CMPX,0,1,NULL); Z *zv=ZAV(z);
+    zv->re=r; zv->img=i;
+    R z;
+}
+
+A sbox(A y)  { A z; z = ga(BOX,0,1,NULL); *AAV(z) = y; R z; }
 
 A ga(I t, I r, I n, I *s) {
     A z = (A)a_malloc(sizeof(struct _array));
@@ -50,7 +55,7 @@ A ga(I t, I r, I n, I *s) {
 
 A gstr(I n, const C *str) {
     A z;
-    ASSERT(n<=0,ERDOM);
+    ASSERT(n>0,ERDOM);
     if (n==1) { z = schar(*str); }
     else { z = ga(CHAR, 1, n, NULL); strncpy(CAV(z), str, n); }
     R z;
@@ -87,6 +92,4 @@ A ca(A y) {
     R z;
 }
 
-VO ra(A y, I t, I n) {
-    AN(y) = n; AV(y) = realloc(AV(y), ts(t)*n);
-}
+VO ra(A y, I t, I n) { AN(y) = n; AV(y) = realloc(AV(y), ts(t)*n); }
