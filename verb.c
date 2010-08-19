@@ -7,12 +7,14 @@
 #include "char.h"
 #include "error.h"
 #include "memory.h"
+#include "util.h"
 #include "convert.h"
 #include "function.h"
-#include "verb.h"
+#include "lexer.h"
+#include "parser.h"
 #include "verb-scalar1.h"
 #include "verb-atomic.h"
-#include "util.h"
+#include "verb.h"
 
 MONAD(fact) { MONAD_PROLOG;
     I temp, r;
@@ -145,5 +147,7 @@ MONAD(imaginary) { A z = times(zone,y); R z; }
 DYAD(complex) { A z = plus(x,imaginary(y)); R z; }
 
 DYAD(residue) { A z; R z; }
+
+MONAD(execute) { A z = parse(tokens(y)); R z; }
 
 MONAD(tail) { A z; R z; }

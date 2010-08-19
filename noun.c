@@ -55,60 +55,40 @@ static A noun_index(I n, C *s) {
     ra(z, INT, k); AN(z) = k; R z;
 }
 
-NPARSE(base) { C *s;
-    parse_pieul(n,sp,y); s=*sp;
-    if (*s=='b') { parse_pieul(n,sp,y); }
+NPARSE(base) { NPROLOG(pieul);
+    if (*e=='b') { ; }
     R 1;
 }
 
-NPARSE(pieul) {C *s=*sp, *e; I k; A p, q, x;
-    parse_cmpx(n,sp,y); e=*sp;
-    if (*e=='p')      { parse_cmpx(n,sp,y); }
-    else if (*e=='x') {
-        e++; p=*y; *y=sbool(0); k=n-(I)(e-s); *sp=e;
-        ASSERT(parse_cmpx(k,sp,y),ERILLNUM);
-        q=*y; *y=times(p,expntl(q));
-    }
+NPARSE(pieul) { NPROLOG(cmpx);
+    if (*e=='p')      { ; }
+    else if (*e=='x') { NBODY(cmpx,times(p,expntl(q))); }
     R 1;
 }
 
-NPARSE(cmpx) { C *s=*sp, *e; I k; A p, q, x;
-    parse_exp(n,sp,y); e=*sp;
+NPARSE(cmpx) { NPROLOG(exp);
     if (*e=='a') {
-        if (*e=='d')      { parse_exp(n,sp,y); }
-        else if (*e=='r') { parse_exp(n,sp,y); }
+        if (*e=='d')      { NBODY(exp,complex(p,q)); }
+        else if (*e=='r') { NBODY(exp,complex(p,q));  }
     }
-    else if (*e=='j') {
-        e++; p=*y; *y=sbool(0); k=n-(I)(e-s); *sp=e;
-        ASSERT(parse_exp(n,sp,y),ERILLNUM);
-        q=*y; *y=complex(p,q);
-    }
+    else if (*e=='j') { NBODY(exp,complex(p,q)); }
     R 1;
 }
 
-NPARSE(exp) { C *s=*sp, *e; I k; A p, q, x;
-    parse_rat(n,sp,y); e=*sp;
-    if (*e=='e') {
-        e++; p=*y; *y=sbool(0); k=n-(I)(e-s); *sp=e;
-        ASSERT(parse_rat(k,sp,y),ERILLNUM);
-        q=*y; *y=times(p,power(sint(10),q));
-    }
+NPARSE(exp) { NPROLOG(rat);
+    if (*e=='e') { NBODY(rat,times(p,power(ten,q))); }
     R 1;
 }
 
-NPARSE(rat) { C *s=*sp;
-    parse_num(n,sp,y);
-    if (*s=='r') { parse_num(n,sp,y); }
+NPARSE(rat) { NPROLOG(num);
+    if (*e=='r') { ; }
     R 1;
 }
 
-NPARSE(num) {
-    C c=**sp, *s=*sp, *d=memchr(s,'.',n), *e;
-    I si=1, iv; D dv; A w = *y;
-    if (c==CUNDS) { si=-1; s++; }
+NPARSE(num) { C c=**sp, *s=*sp, *d=memchr(s,'.',n), *e; A w = *y;
     if (n==1&&(c==CZERO||c==CONE)) { *BAV(w)=c-CZERO; e=s+1; }
-    else if (d) { w=conv(FLT,w); dv=a_strtod(n,s,&e); *DAV(w)=si*dv; }
-    else        { w=conv(INT,w); iv=a_strtoi(n,s,&e); *IAV(w)=si*iv; }
+    else if (d) { w=conv(FLT,w); *DAV(w)=a_strtod(n,s,&e); }
+    else        { w=conv(INT,w); *IAV(w)=a_strtoi(n,s,&e); }
     *y=w; *sp=e; R 1;
 }
 

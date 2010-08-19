@@ -134,7 +134,7 @@ static P primitives[NPRIM+1] = {
     /* 52  }  125 */ {VERB, NULL,       NULL,    0, 0, 0, 0},
     /* 53  ~  126 */ {ADV,  tilde,      NULL,    0, 0, 0, 0},
     /* 54  !. 1   */ {CONJ, NULL,       NULL,    0, 0, 0, 0},
-    /* 55  ". 2   */ {VERB, NULL,       NULL,    0, 0, 0, 0},
+    /* 55  ". 2   */ {VERB, execute,    NULL,    0, 0, 0, 0},
     /* 56  #. 3   */ {VERB, NULL,       NULL,    0, 0, 0, 0},
     /* 57  $. 4   */ {VERB, NULL,       NULL,    0, 0, 0, 0},
     /* 58  %. 5   */ {VERB, NULL,       NULL,    0, 0, 0, 0},

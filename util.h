@@ -5,16 +5,6 @@
 #define MAX(a,b) ((a>b) ? a : b)
 #define ABS(a)   ((a<0) ? -(a) : a)
 
-/* switch-case on numeric types */
-#define NUMERIC_SWITCH(t, b, i, d, z) { \
-        switch (t) {                    \
-        case BOOL: { b; }               \
-        case INT:  { i; }               \
-        case FLT:  { d; }               \
-        case CMPX: { z; }               \
-        }                               \
-}
-
 /* switch-case on noun types */
 #define NOUN_SWITCH(type, bool, ch, i, flt, cmpx, box, mark, lpar, rpar, def) \
     switch (type) {                                                           \

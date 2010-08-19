@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "anicca.h"
+#include "char.h"
 #include "memory.h"
 #include "function.h"
 #include "verb.h"
@@ -55,23 +56,23 @@ VO println(A y) {
 }
 
 VO a_init(VO) {
-    zero=sbool(0); one=sbool(1); zone=scmpx(0,1);
+    zero=sbool(0); one=sbool(1);
+    ten=sint(10);
+    zone=scmpx(0,1);
     mark = ga(MARK, 0, 0, NULL);
     lpar = ga(LPAR, 0, 0, NULL);
     rpar = ga(RPAR, 0, 0, NULL);
 }
 
-I a_strtoi(I n, C *s, C **e) { I v=0, i;
-    for (i=0;isdigit(*s)&&(i<n);i++) { v=(10*v)+(*s++-'0'); }
-    *e=s; R v;
-}
+I a_strtoi(I n, C *s, C **e) {  R (I)a_strtod(n,s,e); }
 
-D a_strtod(I n, C *s, C**e) {
-    C *d=memchr(s,'.',n); I k=d-s, m=n-(k+1); D p=1, a, b, v;
-    a=(D)a_strtoi(k,s,e); s=*e;
+D a_strtod(I n, C *s, C**e) { I si=1; D v, p;
+    if (*s==CUNDS) { si=-1; s++; }
+    for (v=0;isdigit(*s);) { v=(10*v)+(*s++-'0'); }
     if (*s=='.') { s++; }
-    b=(D)a_strtoi(m,s,e);
-    DO(m, p*=10); v = (a + b/(D)p); R v;
+    for (p=1;isdigit(*s);) { v=(10*v)+(*s++-'0'); p*=10; }
+    *e=s;
+    R si*(v/p);
 }
 
 A eval(const C *str) {

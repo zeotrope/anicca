@@ -31,7 +31,7 @@ DECL_SF2(ilthan, B, I);
 DECL_SF2(dlthan, B, D);
 
 DECL_SF2(bpower, B, B);
-DECL_SF2(ipower, I, I);
+DECL_SF2(ipower, D, I);
 DECL_SF2(dpower, D, D);
 
 #endif

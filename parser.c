@@ -7,14 +7,14 @@
 #include "function.h"
 #include "parser.h"
 
-ACTION(monad)  { R df1(stack[e], stack[b]);              }
-ACTION(dyad)   { R df2(stack[b], stack[e], stack[b+1]);  }
-ACTION(adverb) { R df1(stack[b], stack[e]);              }
-ACTION(conjun) { R df2(stack[b], stack[e], stack[b+1]);  }
-ACTION(fork)   { R dfrk(stack[b],stack[b+1], stack[e]);  }
-ACTION(bident) { R dhk(stack[b], stack[e]);              }
-ACTION(is)     { A z; R z;                               }
-ACTION(paren)  { R stack[b+1];                           }
+ACTION(monad)  { R df1(stack[e],  stack[b]);               }
+ACTION(dyad)   { R df2(stack[b],  stack[e],   stack[b+1]); }
+ACTION(adverb) { R df1(stack[b],  stack[e]);               }
+ACTION(conjun) { R df2(stack[b],  stack[e],   stack[b+1]); }
+ACTION(fork)   { R dfrk(stack[b], stack[b+1], stack[e]);   }
+ACTION(bident) { R dhk(stack[b],  stack[e]);               }
+ACTION(is)     { A z; R z;                                 }
+ACTION(paren)  { R stack[b+1];                             }
 
 #define CASES 9
 

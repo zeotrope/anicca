@@ -83,7 +83,9 @@ typedef A(*AF3)(A, A, A);
 #define DMONAD(name) A name(A y, A self)
 #define DDYAD(name)  A name(A x, A y, A self)
 
-A zero; A one; A zone;
+A zero; A one;
+A ten;
+A zone;
 A mark;
 A lpar; A rpar;
 

@@ -45,7 +45,7 @@ SF2(dgthan, B, D, *x > *y)
 /*SF2(jplus, Z, Z, zplus(x,y))*/
 
 SF2(bpower, B, B, *x >= *y)
-SF2(ipower, I, I, (I)pow(*x,*y))
+SF2(ipower, D, I, pow((D)*x,(D)*y))
 SF2(dpower, D, D, pow(*x,*y))
 
 SF2(bresidue, B, B, *x % *y)

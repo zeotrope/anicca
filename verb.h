@@ -42,6 +42,7 @@ MONAD(iota);
 MONAD(imaginary);
 DYAD(complex);
 DYAD(residue);
+MONAD(execute);
 MONAD(tail);
 
 #endif
