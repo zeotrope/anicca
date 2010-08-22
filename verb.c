@@ -68,8 +68,8 @@ DYAD(plus) { A z = va2(CPLUS,x,y); R z; }
 MONAD(duble) { A z = plus(y, y); R z; }
 
 DYAD(append) {
-    I xt=AT(x), yt=AT(y), xr=AR(x), yr=AR(y);
-    I xn=AN(x), yn=AN(y), *xs=AS(x), *ys=AS(y);
+    I xt=AT(x), xn=AN(x), xr=AR(x), *xs=AS(x);
+    I yt=AT(y), yn=AN(y), yr=AR(y), *ys=AS(y);
     I t=MAX(xt,yt), r=MAX(xr,yr), zn=yn+xn, k;
     C *xv, *yv, *v; A p=x, q=y, z;
     if (xt&NUMERIC&&yt&NUMERIC && (xt!=yt)) {
@@ -120,8 +120,8 @@ MONAD(indices) { MONAD_PROLOG;
 }
 
 MONAD(expntl) {
-    I yn = AN(y), *yv = IAV(y);
-    A z = ga(FLT, AR(y), yn, AS(y)); D *v = DAV(z);
+    I yn=AN(y), *yv=IAV(y); D *v;
+    A z=ga(FLT, AR(y), yn, AS(y)); v=DAV(z);
     DO(yn, v[i] = exp((D)yv[i]));
     R z;
 }

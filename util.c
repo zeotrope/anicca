@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,7 +44,7 @@ VO print(A y) {
         };
         break;
     }
-    case MARK: { printf("MARK"); break; }
+    case MARK: { break; }
     case LPAR: { printf("LPAR"); break; }
     case RPAR: { printf("RPAR"); break; }
     default:   { printf("HUH?"); break; }
@@ -51,8 +52,7 @@ VO print(A y) {
 }
 
 VO println(A y) {
-    print(y);
-    printf("\n");
+    if (!(AT(y)&MARK)) { print(y); printf("\n"); }
 }
 
 VO a_init(VO) {

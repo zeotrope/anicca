@@ -8,7 +8,7 @@
 #include "function.h"
 #include "memory.h"
 
-VP a_malloc(I size) { V *m = malloc(size); ASSERT(m, ERALLOC); R m; }
+VP a_malloc(I size) { VP m = malloc(size); ASSERT(m,ERALLOC); R m; }
 
 VO a_free(A y) {
     if (AN(y)>0) { free(AV(y)); if (AR(y)>0) { free(AS(y)); } }
@@ -49,7 +49,7 @@ A ga(I t, I r, I n, I *s) {
     A z = (A)a_malloc(sizeof(struct _array));
     AT(z) = t; AC(z) = 1; AR(z) = r;
     AN(z) = n; AS(z) = s;
-    if (n > 0) { AV(z) = a_malloc(ts(t)*n); }
+    if (n>0) { AV(z) = a_malloc(ts(t)*n); }
     R z;
 }
 

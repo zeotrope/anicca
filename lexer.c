@@ -15,13 +15,6 @@
 #include "primitive.h"
 #include "lexer.h"
 
-/*
-  parse_literal
-  input: Length of string, Pointer to string.
-  output: Array of type string with length (n-2).
-*/
-static A parse_literal(I n, C *s) { A z = gstr(n-=2, ++s); R z; }
-
 #define DCOL 9
 #define DROW 10
 
@@ -38,6 +31,13 @@ static ST dfa[DROW][DCOL] = {
 /*SZ*/ {{SZ,EO},{SZ,EO},{SZ,EO},{SZ,EO},{SZ,EO},{SZ,EO},{SZ,EO},{SZ,EO},{SZ,EO}}
        /* CX      CS      CA      CN      CB      C9      CD      CC      CQ   */
 };
+
+/*
+  parse_literal
+  input: Length of string, Pointer to string.
+  output: Array of type string with length (n-2).
+*/
+static A parse_literal(I n, C *s) { A z = gstr(n-=2, ++s); R z; }
 
 /*
   token_index
