@@ -87,9 +87,12 @@ A eval(const C *str) {
 VO a_repl(const C *s) {
     C *v, str[100]; A z;
     while (1) {
-        printf(s, "%s\n");
-        fgets(str, 100, stdin);
+        printf("%s", s);
+        v = fgets(str, sizeof(str), stdin);
+        if (!v) break;
+
         v = strndup(str, strlen(str)-1); /* remove carriage return */
         println(z = eval(v));
+        free(v);
     }
 }
