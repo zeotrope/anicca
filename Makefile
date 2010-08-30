@@ -5,7 +5,11 @@ OBJS=  memory.o util.o error.o convert.o noun.o function.o verb.o       \
 
 CFLAGS=-ansi -pedantic -g3
 
-all: anicca
+all: anicca TAGS
+
+tags: TAGS
+TAGS: *.c *.h
+	etags --regex='/^[A-Z0-9]+(\([a-zA-Z0-9_]+\))[ \t]*{/\1/' *.c *.h
 
 anicca: $(OBJS)
 	$(CC) -o $@ $(OBJS) -lm
@@ -28,5 +32,7 @@ error.o:        error.c error.h
 util.o:         util.c util.h
 memory.o:       memory.c memory.h
 
-.PHONY clean:
-	rm -rf *~ *.o anicca
+clean:
+	rm -rf *~ *.o anicca TAGS
+
+.PHONY: clean tags
