@@ -18,7 +18,8 @@ VO a_free(A y) {
 I ts(I type) {
     switch (type) {
     case BOOL:
-    case CHAR: R sizeof(C); break;
+    case CHAR:
+    case NAME: R sizeof(C); break;
     case INT:  R sizeof(I); break;
     case FLT:  R sizeof(D); break;
     case CMPX: R sizeof(Z); break;

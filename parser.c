@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "anicca.h"
+#include "util.h"
 #include "error.h"
 #include "function.h"
 #include "parser.h"
@@ -15,6 +16,9 @@ ACTION(fork)   { R dfrk(stack[b], stack[b+1], stack[e]);   }
 ACTION(bident) { R dhk(stack[b],  stack[e]);               }
 ACTION(is)     { A z; R z;                                 }
 ACTION(paren)  { R stack[b+1];                             }
+ACTION(move)   { A z=stack[MAX(0,e)];
+    R AT(z)&NAME ? one : z;
+}
 
 #define CASES 9
 
@@ -36,13 +40,13 @@ static PT grammar[CASES] = {
    output: An array, the result of a successful parse.
 */
 A parse(A tokens) {
-    I  b, c, d, e, p, q, n = AN(tokens), j = n-4, m = j,*t;
     PF action;
     A *top, *stack = AAV(tokens), z;
+    I  b, c, d, e, p, q, n=AN(tokens)-4, j=n,*t;
 
     do {
-        top = &stack[j];
-        /*printf("m: %d j: %d ", m, j); print(tokens);*/
+        top=&stack[j];
+        /*printf("n: %d j: %d ", n, j); print(tokens);*/
         for (c=0; c<CASES; c++) {
             t = grammar[c].t;
             if (AT(top[0])&t[0] && AT(top[1])&t[1] &&
@@ -50,19 +54,22 @@ A parse(A tokens) {
         }
 
         if (c<CASES) {
-            b = grammar[c].b; p = b+j;
-            e = grammar[c].e; q = e+j;
+            b=grammar[c].b; p=j+b;
+            e=grammar[c].e; q=j+e;
             /*printf(" b: %d e: %d c: %d\n", p, q, c);*/
             action = grammar[c].act;
             top[e] = action(b, e, top);
-            DO(p, stack[--q] = stack[--p]);
-            m -= e-b; j += e;
+            DO(p, stack[--q]=stack[--p]);
+            n-=e-b; j+=e;
         }
-        else { j--; }
+        else {
+            stack[j-1]=move(j,j-1,stack);
+            j--;
+        }
         /*printf("\n");*/
-    } while (j>=0 && m>2);
-    /*printf("m: %d j: %d\n", m, j);
+    } while (j>=0 && n>2);
+    /*printf("n: %d j: %d\n", n, j);
       println(tokens);*/
-    if (m>2) { a_signal(ERSYNTX); };
+    if (n>2) { a_signal(ERSYNTX); };
     z = stack[j]; R z;
 }

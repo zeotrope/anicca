@@ -2,13 +2,13 @@
 #include <stdlib.h>
 
 #include "anicca.h"
+#include "util.h"
 #include "error.h"
 #include "memory.h"
 #include "convert.h"
 #include "function.h"
 #include "verb-scalar2.h"
 #include "verb-atomic.h"
-#include "util.h"
 
 static UC vaindx[256] = {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

@@ -19,6 +19,7 @@ VO print(A y) {
 
     switch (AT(y)) {
     case BOOL: { cv=BAV(y); DO(yn, printf("%d ", (I)cv[i])); break; }
+    case NAME:
     case CHAR: { cv=CAV(y); DO(yn, printf("%c",  cv[i]));    break; }
     case INT:  { iv=IAV(y); DO(yn, printf("%d ", iv[i]));    break; }
     case FLT:  { dv=DAV(y); DO(yn, printf("%lf ",dv[i]));    break; }

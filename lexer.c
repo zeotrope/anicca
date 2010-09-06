@@ -34,10 +34,22 @@ static ST dfa[DROW][DCOL] = {
 
 /*
   parse_literal
-  input: Length of string, Pointer to string.
+  input: (1)Length of string, (2)Pointer to string.
   output: Array of type string with length (n-2).
 */
-static A parse_literal(I n, C *s) { A z = gstr(n-=2, ++s); R z; }
+static A parse_literal(I n, C *s) { A z=gstr(n-=2,++s); R z; }
+
+/*
+  parse_name
+  input: (1)Length of string, (2)Pointer to string.
+  output: Array of type name.
+ */
+static A parse_name(I n, C *s) {
+    /*check valid name*/
+    A z=ga(NAME,0,n,NULL);
+    strncpy(CAV(z),s,n);
+    R z;
+}
 
 /*
   token_index
@@ -47,38 +59,37 @@ static A parse_literal(I n, C *s) { A z = gstr(n-=2, ++s); R z; }
     length token 2, ..., start index token n, length token n].
 */
 static MONAD(token_index) {
-    C e, sn, t, s = SS, vec = 0, *str = CAV(y);
-    I i, jv, j = 0, k = 0, n = AN(y), *v;
+    C e, sn, t, s=SS, vec=0, *str=CAV(y);
+    I i, jv, j=0, k=0, n=AN(y), *v;
     ST pr;
-    A z = ga(INT, 1, n+n, NULL);
-    v = IAV(z);
+    A z=ga(INT,1,n+n,NULL); v=IAV(z);
 
-    DO(n, t = chartype[str[i]]; pr = dfa[s][t];
-       e = pr.effect; sn = pr.new;
+    DO(n, t=chartype[str[i]]; pr=dfa[s][t];
+       e=pr.effect; sn=pr.new;
 
        switch (e) {
        case EO: break;
-       case EN: { j = i; break; }
+       case EN: { j=i; break; }
        case EW: { v[k++] = j; v[k++] = i-j; j = i;  break; }
        case EY: { v[k++] = j; v[k++] = i-j; j = -1; break; }
        case EV: {
            if (!vec) { v[k++] = j; v[k] = i-j; jv = j; }
            else      { v[k] = i-jv; }
-           j = i; vec = 1; break;
+           j=i; vec=1; break;
        }
        case EZ: {
            if (!vec) { v[k++] = j; v[k] = i-j; jv = j; }
            else      { v[k] = i-jv; }
-           j = -1; vec = 1; break;
+           j=-1; vec=1; break;
        }
        case ES: goto end; break;
        }
 
-       if (vec && sn != S9 && sn != SS) { vec = 0; k++; }
-       s = sn;
+       if (vec && sn!=S9 && sn!=SS) { vec=0; k++; }
+       s=sn;
     );
   end:
-    ra(z, INT, k); AN(z) = k; R z;
+    ra(z,INT,k); AN(z)=k; R z;
 }
 
 /*
@@ -101,8 +112,9 @@ MONAD(tokens) {
        if (AT(v)&MARK) {
            switch (t) {
            case CS:
-           case C9: { *av++ = parse_noun(wl, s);    break; }
-           case CQ: { *av++ = parse_literal(wl, s); break; }
+           case C9: { *av++ = parse_noun(wl,s);    break; }
+           case CQ: { *av++ = parse_literal(wl,s); break; }
+           case CA: { *av++ = parse_name(wl,s);    break; }
            default: break; /* error */
            }
        }

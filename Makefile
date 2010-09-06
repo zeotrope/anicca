@@ -10,19 +10,19 @@ all: anicca
 anicca: $(OBJS)
 	$(CC) -o $@ $(OBJS) -lm
 
-anicca.o:       anicca.c anicca.h
+anicca.o:       anicca.c anicca.h types.h char.h table.h
 test.o:         test.c test.h
 parser.o:       parser.c parser.h
-lexer.o:        lexer.c lexer.h char.h table.h primitive.h
-conjunction:    conjunction.c conjunction.h function.h
-adverb.o:       adverb.c adverb.h function.h
+lexer.o:        lexer.c lexer.h
+conjunction:    conjunction.c conjunction.h
+adverb.o:       adverb.c adverb.h
 verb.o:         verb.c verb.h
 verb-scalar1.o: verb-scalar1.c verb-scalar1.h
 verb-scalar2.o: verb-scalar2.c verb-scalar2.h
 verb-atomic.o:  verb-atomic.c verb-atomic.h
-primitive.o:    primitive.c primitive.h verb.h
+primitive.o:    primitive.c primitive.h
 function.o:     function.c function.h
-noun.o:         noun.c noun.h util.h
+noun.o:         noun.c noun.h
 convert.o:      convert.c convert.h
 error.o:        error.c error.h
 util.o:         util.c util.h

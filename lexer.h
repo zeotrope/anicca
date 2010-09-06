@@ -30,6 +30,7 @@ typedef struct _state {
 } ST;
 
 static A parse_literal(I n, C *s);
+static A parse_name(I n, C *s);
 static MONAD(token_index);
 MONAD(tokens);
 

@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -38,11 +39,11 @@ static UC verbname[PUNC][BASE] = {
 
 
 UC verb_name(I n, C *s) {
-    UC d, *t;
+    UC c=*s, d, *t;
     I i, j;
 
     switch (n) {
-    case 1: R *s;
+    case 1: R isalpha(c) ? 0 : c;
     case 2: {
         d = s[1];
         i = d==CDOT ? 1 : d==CCOL ? 2 : 0;
@@ -52,8 +53,9 @@ UC verb_name(I n, C *s) {
             R verbname[i][j];
         }
     }
+    default: R 0;
     }
-    R *s;
+    R 0;
 }
 
 static UC primindx[256] = {
@@ -197,10 +199,10 @@ static P primitives[NPRIM+1] = {
     /* 115 ~: 165 */ {VERB, NULL,       NULL,    0, 0, 0, 0}
 };
 
-A primitive_lookup(UC id) {
-    A z;
-    P *p = &primitives[primindx[id]];
-    I t = p->type;
+A primitive_lookup(UC id) { A z; P *p; I t;
+    if (id==0||id>165) { return mark; }
+    p = &primitives[primindx[id]];
+    t = p->type;
 
     switch (t) {
     case NOUN: break;
@@ -211,6 +213,5 @@ A primitive_lookup(UC id) {
     case RPAR: R rpar;
     default:   R mark;
     }
-
     R mark;
 }
