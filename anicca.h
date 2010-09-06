@@ -73,7 +73,8 @@ typedef A(*AF3)(A, A, A);
 #define ASGN (1L<<12)
 #define MARK (1L<<13)
 
-#define NUMERIC (BOOL | INT | FLT | CMPX)
+#define INTEGER (BOOL | INT)
+#define NUMERIC (INTEGER | FLT | CMPX)
 #define NOUN    (NUMERIC | CHAR | BOX)
 #define FUNC    (VERB | CONJ | ADV)
 

@@ -18,7 +18,7 @@
 
 MONAD(fact) { MONAD_PROLOG;
     I temp, r;
-    ASSERT(AT(y)&INT, ERDOM);
+    ASSERT(AT(y)&INTEGER, ERDOM);
     z = ga(INT, AR(y), yn, AS(y));
     v = IAV(z);
     DO(yn, r = 1; temp = yv[i];
