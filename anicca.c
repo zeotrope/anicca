@@ -7,6 +7,7 @@
 #include "memory.h"
 #include "convert.h"
 #include "function.h"
+#include "symbol.h"
 #include "verb.h"
 #include "adverb.h"
 #include "conjunction.h"

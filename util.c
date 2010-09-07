@@ -7,6 +7,7 @@
 #include "char.h"
 #include "memory.h"
 #include "function.h"
+#include "symbol.h"
 #include "verb.h"
 #include "lexer.h"
 #include "parser.h"
@@ -52,17 +53,15 @@ VO print(A y) {
     }
 }
 
-VO println(A y) {
-    if (!(AT(y)&MARK)) { print(y); printf("\n"); }
-}
+VO println(A y) { if (!(AT(y)&MARK)) { print(y); printf("\n"); } }
 
 VO a_init(VO) {
     zero=sbool(0); one=sbool(1);
-    ten=sint(10);
-    zone=scmpx(0,1);
-    mark = ga(MARK, 0, 0, NULL);
-    lpar = ga(LPAR, 0, 0, NULL);
-    rpar = ga(RPAR, 0, 0, NULL);
+    ten=sint(10);  zone=scmpx(0,1);
+    mark = gsa(MARK, 0, 0, NULL);
+    lpar = gsa(LPAR, 0, 0, NULL);
+    rpar = gsa(RPAR, 0, 0, NULL);
+    symbinit();
 }
 
 I a_strtoi(I n, C *s, C **e) {  R (I)a_strtod(n,s,e); }

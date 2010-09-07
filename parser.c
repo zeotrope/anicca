@@ -6,18 +6,19 @@
 #include "util.h"
 #include "error.h"
 #include "function.h"
+#include "symbol.h"
 #include "parser.h"
 
-ACTION(monad)  { R df1(stack[e],  stack[b]);               }
-ACTION(dyad)   { R df2(stack[b],  stack[e],   stack[b+1]); }
-ACTION(adverb) { R df1(stack[b],  stack[e]);               }
-ACTION(conjun) { R df2(stack[b],  stack[e],   stack[b+1]); }
-ACTION(fork)   { R dfrk(stack[b], stack[b+1], stack[e]);   }
-ACTION(bident) { R dhk(stack[b],  stack[e]);               }
-ACTION(is)     { A z; R z;                                 }
-ACTION(paren)  { R stack[b+1];                             }
-ACTION(move)   { A z=stack[MAX(0,e)];
-    R AT(z)&NAME ? one : z;
+ACTION(monad)  { R df1(stack[e],    stack[b]);                }
+ACTION(dyad)   { R df2(stack[b],    stack[e],   stack[b+1]);  }
+ACTION(adverb) { R df1(stack[b],    stack[e]);                }
+ACTION(conjun) { R df2(stack[b],    stack[e],   stack[b+1]);  }
+ACTION(fork)   { R dfrk(stack[b],   stack[b+1], stack[e]);    }
+ACTION(bident) { R dhk(stack[b],    stack[e]);                }
+ACTION(is)     { R symbis(stack[b], stack[e],   global);      }
+ACTION(paren)  { R stack[b+1];                                }
+ACTION(move)   { A x=stack[MAX(0,b)], y=stack[e];
+    R AT(x)&NAME ? (ASGN&AT(y) ? x : symbfind(x,global)) : x;
 }
 
 #define CASES 9
@@ -63,7 +64,7 @@ A parse(A tokens) {
             n-=e-b; j+=e;
         }
         else {
-            stack[j-1]=move(j,j-1,stack);
+            stack[j-1]=move(j-1,j,stack);
             j--;
         }
         /*printf("\n");*/

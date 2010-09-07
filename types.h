@@ -25,11 +25,11 @@ typedef struct _complex {
 #define AS(a) ((a)->shape)
 #define AV(a) ((a)->value)
 
-#define BAV(a) ((B *)AV(a))
-#define CAV(a) ((C *)AV(a))
-#define IAV(a) ((I *)AV(a))
-#define DAV(a) ((D *)AV(a))
-#define ZAV(a) ((Z *)AV(a))
+#define BAV(a)  ((B *)AV(a))
+#define CAV(a)  ((C *)AV(a))
+#define IAV(a)  ((I *)AV(a))
+#define DAV(a)  ((D *)AV(a))
+#define ZAV(a)  ((Z *)AV(a))
 
 typedef struct _array {
     I type;
@@ -63,6 +63,7 @@ typedef A(*AF3)(A, A, A);
 #define RPAR (1L<<11)
 #define ASGN (1L<<12)
 #define MARK (1L<<13)
+#define SYMB (1L<<14)
 
 #define NUMERIC (BOOL | INT | FLT | CMPX)
 #define NOUN    (NUMERIC | CHAR | BOX)

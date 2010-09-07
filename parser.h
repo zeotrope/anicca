@@ -23,6 +23,7 @@ ACTION(fork);
 ACTION(bident);
 ACTION(is);
 ACTION(paren);
+ACTION(move);
 
 A parse(A tokens);
 

@@ -150,7 +150,7 @@ static P primitives[NPRIM+1] = {
     /* 66  :. 13  */ {CONJ, NULL,       NULL,    0, 0, 0, 0},
     /* 67  ;. 14  */ {CONJ, NULL,       NULL,    0, 0, 0, 0},
     /* 68  <. 15  */ {VERB, NULL,       NULL,    0, 0, 0, 0},
-    /* 69  =. 16  */ {VERB, NULL,       NULL,    0, 0, 0, 0},
+    /* 69  =. 16  */ {ASGN, NULL,       NULL,    0, 0, 0, 0},
     /* 70  >. 17  */ {VERB, NULL,       NULL,    0, 0, 0, 0},
     /* 71  ?. 18  */ {VERB, NULL,       NULL,    0, 0, 0, 0},
     /* 72  @. 19  */ {CONJ, NULL,       NULL,    0, 0, 0, 0},
@@ -175,7 +175,7 @@ static P primitives[NPRIM+1] = {
     /* 91  :: 141 */ {CONJ, NULL,       NULL,    0, 0, 0, 0},
     /* 92  ;: 142 */ {VERB, NULL,       NULL,    0, 0, 0, 0},
     /* 93  <: 143 */ {VERB, decrement,  NULL,    0, 0, 0, 0},
-    /* 94  =: 144 */ {VERB, NULL,       NULL,    0, 0, 0, 0},
+    /* 94  =: 144 */ {ASGN, NULL,       NULL,    0, 0, 0, 0},
     /* 95  >: 145 */ {VERB, increment,  NULL,    0, 0, 0, 0},
     /* 96  @: 146 */ {CONJ, NULL,       NULL,    0, 0, 0, 0},
     /* 97  D: 147 */ {CONJ, NULL,       NULL,    0, 0, 0, 0},
@@ -200,9 +200,9 @@ static P primitives[NPRIM+1] = {
 };
 
 A primitive_lookup(UC id) { A z; P *p; I t;
-    if (id==0||id>165) { return mark; }
-    p = &primitives[primindx[id]];
-    t = p->type;
+    if (id<=0||id>165) { return mark; }
+    p=&primitives[primindx[id]];
+    t=p->type;
 
     switch (t) {
     case NOUN: break;
@@ -211,6 +211,7 @@ A primitive_lookup(UC id) { A z; P *p; I t;
     case CONJ: R fdef(id,t,p->f1,p->f2,NULL,NULL,NULL,p->lr,p->mr,p->rr,p->inv);
     case LPAR: R lpar;
     case RPAR: R rpar;
+    case ASGN: R scalar(t,id==CALCL);
     default:   R mark;
     }
     R mark;

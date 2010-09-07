@@ -5,6 +5,7 @@ VP a_malloc(I n);
 VO a_free(A);
 I ts(I t);
 
+A scalar(I t, I v);
 A schar(C c);
 A sbool(B b);
 A sint(I i);
@@ -12,8 +13,8 @@ A sflt(D d);
 A scmpx(D r, D i);
 A sbox(A y);
 
-A gs(I t, I v);
 A ga(I t, I r, I n, I *s);
+A gsa(I t, I r, I n, I *s);
 A gstr(I n, const C *);
 A giarray(I *ints, I n);
 A gfarray(D *d, I n);
