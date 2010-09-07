@@ -34,7 +34,7 @@ typedef struct _verb {
     V *v = VAV(self); A f = VF(v), g = VG(v), h = VH(v), z;
 
 #define VDEF(id, f1, f2, l, m, r, i) \
-    fdef(id, VERB, f1, f2, NULL, NULL, NULL. l, m, r, i)
+    fdef(id, VERB, f1, f2, NULL, NULL, NULL, l, m, r, i)
 
 DMONAD(df1);
 DDYAD(df2);
