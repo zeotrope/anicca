@@ -13,8 +13,7 @@
 #include "parser.h"
 #include "util.h"
 
-VO print(A y) {
-    C *cv; I yn=AN(y), *iv; D *dv; Z *zv; V *vv; A *bv;
+VO print(A y) { C *cv; I yn=AN(y), *iv; D *dv; Z *zv; V *vv; A *bv; SY *sy;
 
     if (!y) { printf("NULL"); R; }
 
@@ -29,7 +28,7 @@ VO print(A y) {
     }
 /* TODO?: fancy line drawings */
     case BOX: {
-        bv = AAV(y);
+        bv=AAV(y);
         DO(AN(y), printf("(<");
            print(bv[i]);
            printf(")%s", (i+1 == AN(y))?"":",")
@@ -37,13 +36,22 @@ VO print(A y) {
         break;
     }
     case VERB: case ADV: case CONJ: {
-        vv = VAV(y);
-        printf("%c", vv->id);
+        vv=VAV(y);
+        printf("%c ", vv->id);
         if (VF(vv)) { print(vv->f);
             if (VG(vv)) { print(vv->g);
                 if (VH(vv)) { print(vv->h); };
             }
         };
+        break;
+    }
+    case SYMB: {
+        sy=SYAV(y);
+        DO(AN(y), printf("(<");
+           printf("nm: "); print(sy->name); printf(" vl: "); print(sy->value);
+           printf(")%s", (i+1 == AN(y))?"":",");
+           sy++;
+        );
         break;
     }
     case LPAR: { printf("LPAR"); break; }
@@ -57,11 +65,15 @@ VO print(A y) {
 VO println(A y) { if (!(AT(y)&MARK)) { print(y); printf("\n"); } }
 
 VO a_init(VO) {
-    zero=sbool(0); one=sbool(1);
-    ten=sint(10);  zone=scmpx(0,1);
-    mark = gsa(MARK, 0, 0, NULL);
-    lpar = gsa(LPAR, 0, 0, NULL);
-    rpar = gsa(RPAR, 0, 0, NULL);
+    zero=sbool(0);       rsta(zero);
+    one=sbool(1);        rsta(one);
+    ten=sint(10);        rsta(ten);
+    zone=scmpx(0,1);     rsta(zone);
+    alcl=scalar(ASGN,0); rsta(alcl);
+    agbl=scalar(ASGN,1); rsta(agbl);
+    mark=gsa(MARK, 0, 0, NULL);
+    lpar=gsa(LPAR, 0, 0, NULL);
+    rpar=gsa(RPAR, 0, 0, NULL);
     symbinit();
 }
 
@@ -78,9 +90,9 @@ D a_strtod(I n, C *s, C**e) { I si=1; D v, p;
 
 A eval(const C *str) {
     A w, y, z;
-    w = gstr(strlen(str)+1, str);
-    y = tokens(w);
-    z = parse(y);
+    w=gstr(strlen(str)+1,str);
+    y=tokens(w);
+    z=parse(y);
     /*freea(w); freea(y);*/
     a_free(w); a_free(y);
     R z;
@@ -89,12 +101,11 @@ A eval(const C *str) {
 VO a_repl(const C *s) {
     C *v, str[100]; A z;
     while (1) {
-        printf("%s", s);
-        v = fgets(str, sizeof(str), stdin);
-        if (!v) break;
-
-        v = strndup(str, strlen(str)-1); /* remove carriage return */
-        println(z = eval(v));
+        printf("%s",s);
+        v = fgets(str,sizeof(str),stdin);
+        if (!v) { break; }
+        v=strndup(str,strlen(str)-1); /* remove carriage return */
+        println(z=eval(v));
         free(v);
     }
 }

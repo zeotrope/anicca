@@ -211,7 +211,7 @@ A primitive_lookup(UC id) { A z; P *p; I t;
     case CONJ: R fdef(id,t,p->f1,p->f2,NULL,NULL,NULL,p->lr,p->mr,p->rr,p->inv);
     case LPAR: R lpar;
     case RPAR: R rpar;
-    case ASGN: R scalar(t,id==CAGBL);
+    case ASGN: R (id==CAGBL ? agbl : alcl);
     default:   R mark;
     }
     R mark;

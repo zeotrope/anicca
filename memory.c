@@ -21,7 +21,9 @@ B a_free(A y) {
 
 MONAD(freea) { traverse(y,freea); a_free(y); R one; }
 
-MONAD(refa) { traverse(y,refa); AC(y)++; R one; }
+MONAD(refa)  { traverse(y,refa); AC(y)++; R one; }
+
+MONAD(rsta)  { traverse(y,rsta); AC(y)=INT_MAX; R one; }
 
 A traverse(A y, AF1 f1) { V *v; A *a; SY *sy; I n=AN(y);
     RZ(y);
@@ -80,10 +82,10 @@ A ga(I t, I r, I n, I *s) { I k; A z=(A)a_malloc(sizeof(struct _array));
 
 A gsa(I t, I r, I n, I *s) { A z=ga(t,r,n,s); AC(z)=INT_MAX; R z; }
 
-A gstr(I n, const C *str) { A z;
+A gstr(I n, const C *s) { A z;
     ASSERT(n>0,ERDOM);
-    if (n==1) { z=schar(*str); }
-    else { z=ga(CHAR,1,n,NULL); strncpy(CAV(z), str, n); }
+    if (n==1) { z=schar(*s); }
+    else { z=ga(CHAR,1,n,NULL); strncpy(CAV(z),s,n); }
     R z;
 }
 
@@ -96,6 +98,13 @@ A gfarray(D *d, I n) { A z; D *zv;
     z=ga(FLT,1,n,NULL);
     zv=AV(z);
     DO(n, zv[i]=d[i]);
+    R z;
+}
+
+A gnm(I n, C *s) { A z;
+    ASSERT(vldnm(n,s),ERILLNAME);
+    z=ga(NAME,1,n,NULL);
+    strncpy(CAV(z),s,n);
     R z;
 }
 

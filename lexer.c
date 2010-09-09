@@ -44,13 +44,7 @@ static A parse_literal(I n, C *s) { A z=gstr(n-=2,++s); R z; }
   input: (1)Length of string, (2)Pointer to string.
   output: Array of type name.
  */
-static A parse_name(I n, C *s) { A z;
-    ASSERT(vldnm(n,s),ERILLNAME);
-    z=ga(NAME,0,n,NULL);
-    strncpy(CAV(z),s,n);
-    R z;
-}
-
+static A parse_name(I n, C *s) { A z=gnm(n,s); R z; }
 /*
   token_index
   input:  Boxed string to be lexed.

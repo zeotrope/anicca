@@ -4,6 +4,9 @@
 VP a_malloc(I n);
 B a_free(A);
 MONAD(freea);
+MONAD(refa);
+MONAD(rsta);
+
 I ts(I t);
 
 C charf(A y);
@@ -25,6 +28,7 @@ A gsa(I t, I r, I n, I *s);
 A gstr(I n, const C *);
 A giarray(I *ints, I n);
 A gfarray(D *d, I n);
+A gnm(I n, C *s);
 A gtest_array(I n, ...);
 
 MONAD(ca);

@@ -3,7 +3,7 @@ HDRS= types.h char.h table.h
 
 OBJS= memory.o util.o error.o convert.o noun.o function.o symbol.o verb.o \
       verb-scalar1.o verb-scalar2.o verb-atomic.o primitive.o adverb.o    \
-	  conjunction.o lexer.o parser.o test.o anicca.o
+      conjunction.o lexer.o parser.o test.o anicca.o
 
 CFLAGS=-ansi -pedantic -O3
 

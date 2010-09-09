@@ -23,8 +23,8 @@ B vldnm(I n, C *s) {
   input:  (1)Symbol name, (2)Symbol table, (3)Assignment.
   output: Position in symbol table.
 */
-static I probe(A x, A symb, B is) { A s; SY *tbl=SYAV(symb);
-    C *nm=CAV(x); I n=AN(x), m=AN(symb);
+static I probe(A y, A symb, B is) { A s; SY *tbl=SYAV(symb);
+    C *nm=CAV(y); I n=AN(y), m=AN(symb);
     I k=256*(n+nm[0]+nm[n-1]);
     I i=k%m;
     if (is) { while (tbl[i].value) { i+=i>0?-1:m; } }
@@ -50,15 +50,15 @@ DYAD(symbfind) { SY *tbl=SYAV(y);
 */
 MONAD(symblg) { A z; R z; }
 
-static B nmclr(A x, A symb) {
-    I i=probe(x,symb,0);
+static I nmclr(A y, A symb) {
+    I i=probe(y,symb,0);
     SY *sy=SYAV(symb)+i;
     B v=sy->value&&(sy->value!=mark);
     if (v) {
         a_free(sy->name);  sy->name=NULL;
         a_free(sy->value); sy->value=NULL;
     }
-    R 1;
+    R i;
 }
 
 /*
@@ -67,11 +67,12 @@ static B nmclr(A x, A symb) {
   output: Stored symbol.
 */
 DDYAD(symbis) { A z; SY *sy; I i;
-    if (nmclr(x,self)) {
-        i=probe(x,self,1);
+    if ((i=nmclr(x,self))>0) {
+        /*i=probe(x,self,1);*/
         sy=SYAV(self)+i;
-        a_free(sy->name);  sy->name=x;
-        a_free(sy->value); sy->value=y;
+        sy->name=x;  refa(sy->name);
+        sy->value=y; refa(sy->value);
     }
+    else { a_signal(ERASGN); }
     R y;
 }

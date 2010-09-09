@@ -9,20 +9,15 @@
 } while(0)
 
 #define R      return
-#define RZ(a)  if (!a) { return 0; }
+#define RZ(a)  if (!(a)) { return 0; }
 
 #include "types.h"
+#include "globals.h"
 
 #define MONAD(name) A name(A y)
 #define DYAD(name)  A name(A x, A y)
 
 #define DMONAD(name) A name(A y, A self)
 #define DDYAD(name)  A name(A x, A y, A self)
-
-A zero; A one;
-A ten;
-A zone;
-A mark;
-A lpar; A rpar;
 
 #endif

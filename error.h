@@ -9,6 +9,7 @@ typedef enum {
     ERSYNTAX,
     ERILLNUM,
     ERILLNAME,
+    ERASGN,
     ERVALUE,
     ERALLOC,
     NERRS
@@ -22,6 +23,7 @@ static C *errors[NERRS] = {
     "syntax error",
     "ill-formed number",
     "ill-formed name",
+    "assignment error",
     "value error",
     "allocation error"
 };
