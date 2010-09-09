@@ -16,8 +16,7 @@
 #include "verb-atomic.h"
 #include "verb.h"
 
-MONAD(fact) { MONAD_PROLOG;
-    I temp, r;
+MONAD(fact) { MONAD_PROLOG; I temp, r;
     ASSERT(AT(y)&INT, ERDOM);
     z = ga(INT, AR(y), yn, AS(y));
     v = IAV(z);

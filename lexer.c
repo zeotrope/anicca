@@ -44,9 +44,9 @@ static A parse_literal(I n, C *s) { A z=gstr(n-=2,++s); R z; }
   input: (1)Length of string, (2)Pointer to string.
   output: Array of type name.
  */
-static A parse_name(I n, C *s) {
-    /*check valid name*/
-    A z=ga(NAME,0,n,NULL);
+static A parse_name(I n, C *s) { A z;
+    ASSERT(vldnm(n,s),ERILLNAME);
+    z=ga(NAME,0,n,NULL);
     strncpy(CAV(z),s,n);
     R z;
 }
@@ -89,7 +89,7 @@ static MONAD(token_index) {
        s=sn;
     );
   end:
-    ra(z,INT,k); AN(z)=k; R z;
+    z=ra(z,INT,k); R z;
 }
 
 /*

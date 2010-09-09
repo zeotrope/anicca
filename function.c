@@ -6,25 +6,21 @@
 #include "function.h"
 #include "conjunction.h"
 
-DMONAD(df1) {
-    V *v = VAV(self);
+DMONAD(df1) { V *v = VAV(self);
     A z = VF(v)&&VDF1(v) ? v->df1(y, self) : v->f1(y);
     R z;
 }
 
-DDYAD(df2) {
-    V *v = VAV(self);
+DDYAD(df2) { V *v = VAV(self);
     A z = VF(v)&&VDF2(v) ? v->df2(x, y, self) : v->f2(x, y);
     R z;
 }
 
-DMONAD(dhk) {
-    V *v = VAV(y);
+DMONAD(dhk) { V *v = VAV(y);
     R ddef(CHOOK,VERB,hook,hook2,y,self,NULL,VLR(v),VMR(v),VRR(v),0);
 }
 
-DDYAD(dfrk) {
-    V *v = VAV(x);
+DDYAD(dfrk) { V *v = VAV(x);
     R ddef(CFORK,VERB,forrk,forrk2,x,y,self,VLR(v),VMR(v),VRR(v),0);
 }
 

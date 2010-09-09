@@ -8,8 +8,7 @@
 #include "verb.h"
 #include "adverb.h"
 
-MONAD(slash) {
-    V *v; A z;
+MONAD(slash) { V *v; A z;
     ASSERT(AT(y)&VERB, ERDOM);
     v = VAV(y);
     z = ADERV(CFWSL, insert, table, y, VLR(v), VMR(v), VRR(v));
@@ -20,8 +19,7 @@ DMONAD(insert) { A z; R z; }
 
 DDYAD(table) { A z; R z; }
 
-MONAD(tilde) {
-    V *v; A z;
+MONAD(tilde) { V *v; A z;
     ASSERT(AT(y)&VERB, ERDOM);
     v = VAV(y);
     z = ADERV(CTILDE, reflex, passive, y, VLR(v), VMR(v), VRR(v));

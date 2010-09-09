@@ -17,7 +17,7 @@ ACTION(fork)   { R dfrk(stack[b],   stack[b+1], stack[e]);    }
 ACTION(bident) { R dhk(stack[b],    stack[e]);                }
 ACTION(is)     { R symbis(stack[b], stack[e],   global);      }
 ACTION(paren)  { R stack[b+1];                                }
-ACTION(move)   { A x=stack[MAX(0,b)], y=stack[e];
+ACTION(move)   { A x=stack[b], y=stack[e];
     R AT(x)&NAME ? (ASGN&AT(y) ? x : symbfind(x,global)) : x;
 }
 
@@ -43,11 +43,13 @@ static PT grammar[CASES] = {
 A parse(A tokens) {
     PF action;
     A *top, *stack = AAV(tokens), z;
-    I  b, c, d, e, p, q, n=AN(tokens)-4, j=n,*t;
+    I  b, c, d, e, i, p, q, n=AN(tokens)-4, j=n,*t;
 
     do {
         top=&stack[j];
-        /*printf("n: %d j: %d ", n, j); print(tokens);*/
+#ifdef DEBUG
+        printf("n: %d j: %d ", n, j); print(tokens);
+#endif
         for (c=0; c<CASES; c++) {
             t = grammar[c].t;
             if (AT(top[0])&t[0] && AT(top[1])&t[1] &&
@@ -57,20 +59,29 @@ A parse(A tokens) {
         if (c<CASES) {
             b=grammar[c].b; p=j+b;
             e=grammar[c].e; q=j+e;
-            /*printf(" b: %d e: %d c: %d\n", p, q, c);*/
+#ifdef DEBUG
+            printf(" b: %d e: %d c: %d\n", p, q, c);
+#endif
             action = grammar[c].act;
-            top[e] = action(b, e, top);
+            top[e] = action(b,e,top);
             DO(p, stack[--q]=stack[--p]);
             n-=e-b; j+=e;
         }
         else {
-            stack[j-1]=move(j-1,j,stack);
-            j--;
+            do {
+                i=MAX(0,j-1);
+                stack[i]=move(i,j,stack);
+                j--;
+            } while (NEXC&AT(stack[j]));
         }
-        /*printf("\n");*/
+#ifdef DEBUG
+        printf("\n");
+#endif
     } while (j>=0 && n>2);
-    /*printf("n: %d j: %d\n", n, j);
-      println(tokens);*/
-    if (n>2) { a_signal(ERSYNTX); };
+#ifdef DEBUG
+    printf("n: %d j: %d\n", n, j);
+    println(tokens);
+#endif
+    if (n>2) { a_signal(ERSYNTAX); };
     z = stack[j]; R z;
 }

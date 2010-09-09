@@ -81,7 +81,7 @@ static UC primindx[256] = {
 #define NPRIM 116
 
 static P primitives[NPRIM+1] = {
-    /* 0      0   */ {0,    NULL,       NULL,    0, 0, 0, 0},
+    /* 0      0   */ {MARK, NULL,       NULL,    0, 0, 0, 0},
     /* 1   !  33  */ {VERB, fact,       outof,   0, 0, 0, 0},
     /* 2   "  34  */ {CONJ, NULL,       NULL,    0, 0, 0, 0},
     /* 3   #  35  */ {VERB, tally,      copy,    0, 0, 0, 0},
@@ -201,7 +201,7 @@ static P primitives[NPRIM+1] = {
 
 A primitive_lookup(UC id) { A z; P *p; I t;
     if (id<=0||id>165) { return mark; }
-    p=&primitives[primindx[id]];
+    p=primitives+primindx[id];
     t=p->type;
 
     switch (t) {
@@ -211,7 +211,7 @@ A primitive_lookup(UC id) { A z; P *p; I t;
     case CONJ: R fdef(id,t,p->f1,p->f2,NULL,NULL,NULL,p->lr,p->mr,p->rr,p->inv);
     case LPAR: R lpar;
     case RPAR: R rpar;
-    case ASGN: R scalar(t,id==CALCL);
+    case ASGN: R scalar(t,id==CAGBL);
     default:   R mark;
     }
     R mark;

@@ -8,7 +8,8 @@
         }                      \
 } while(0)
 
-#define R return
+#define R      return
+#define RZ(a)  if (!a) { return 0; }
 
 #include "types.h"
 

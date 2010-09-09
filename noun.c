@@ -51,7 +51,7 @@ static A noun_index(I n, C *s) {
        }
     );
   end_noun:
-    ra(z, INT, k); AN(z) = k; R z;
+    z=ra(z,INT,k); R z;
 }
 
 NPARSE(base) { NPROLOG(pieul);

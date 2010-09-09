@@ -1,33 +1,22 @@
 
-OBJS=  memory.o util.o error.o convert.o noun.o function.o symbol.o verb.o \
-       verb-scalar1.o verb-scalar2.o verb-atomic.o primitive.o adverb.o    \
-	   conjunction.o lexer.o parser.o test.o anicca.o
+HDRS= types.h char.h table.h
 
-CFLAGS=-ansi -pedantic -g3
+OBJS= memory.o util.o error.o convert.o noun.o function.o symbol.o verb.o \
+      verb-scalar1.o verb-scalar2.o verb-atomic.o primitive.o adverb.o    \
+	  conjunction.o lexer.o parser.o test.o anicca.o
+
+CFLAGS=-ansi -pedantic -O3
 
 all: anicca
 
-anicca: $(OBJS)
+anicca: $(HDRS) $(OBJS)
 	$(CC) -o $@ $(OBJS) -lm
 
-anicca.o:       anicca.c anicca.h types.h char.h table.h
-test.o:         test.c test.h
-parser.o:       parser.c parser.h
-lexer.o:        lexer.c lexer.h
-conjunction:    conjunction.c conjunction.h
-adverb.o:       adverb.c adverb.h
-verb.o:         verb.c verb.h
-verb-scalar1.o: verb-scalar1.c verb-scalar1.h
-verb-scalar2.o: verb-scalar2.c verb-scalar2.h
-verb-atomic.o:  verb-atomic.c verb-atomic.h
-primitive.o:    primitive.c primitive.h
-symbol.o:       symbol.c symbol.h
-function.o:     function.c function.h
-noun.o:         noun.c noun.h
-convert.o:      convert.c convert.h
-error.o:        error.c error.h
-util.o:         util.c util.h
-memory.o:       memory.c memory.h
+debug: CFLAGS = -ansi -pedantic -g3 -DDEBUG
+debug: anicca
+
+.o: .c .h
+	$(CC) -c $<
 
 .PHONY clean:
 	rm -rf *~ *.o anicca

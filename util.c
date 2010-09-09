@@ -46,9 +46,10 @@ VO print(A y) {
         };
         break;
     }
-    case MARK: { break; }
     case LPAR: { printf("LPAR"); break; }
     case RPAR: { printf("RPAR"); break; }
+    case ASGN: { intf(y) ? printf("=:") : printf("=."); break; }
+    case MARK: { break; }
     default:   { printf("HUH?"); break; }
     }
 }
@@ -80,6 +81,7 @@ A eval(const C *str) {
     w = gstr(strlen(str)+1, str);
     y = tokens(w);
     z = parse(y);
+    /*freea(w); freea(y);*/
     a_free(w); a_free(y);
     R z;
 }

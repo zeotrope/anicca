@@ -6,8 +6,10 @@ typedef enum {
     ERRANK,
     ERLEN,
     ERLEXER,
-    ERSYNTX,
+    ERSYNTAX,
     ERILLNUM,
+    ERILLNAME,
+    ERVALUE,
     ERALLOC,
     NERRS
 } ERRS;
@@ -19,6 +21,8 @@ static C *errors[NERRS] = {
     "lexical error",
     "syntax error",
     "ill-formed number",
+    "ill-formed name",
+    "value error",
     "allocation error"
 };
 

@@ -11,9 +11,10 @@ typedef struct _parse_table {
     I b, e;
 } PT;
 
-#define AVN  (ADV | VERB | NOUN)
-#define CAVN (CONJ | ADV | VERB | NOUN)
+#define AVN  (ADV  | VERB | NOUN)
+#define CAVN (CONJ | ADV  | VERB | NOUN)
 #define EDGE (MARK | ASGN | LPAR)
+#define NEXC (~(EDGE | AVN  | NAME))
 
 ACTION(monad);
 ACTION(dyad);

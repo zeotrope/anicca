@@ -12,8 +12,7 @@ B ciTd(I n, D *dv, I *iv) { DO(n, dv[i]=(D)iv[i]); R 1; }
 B ciTz(I n, Z *zv, I *iv) { DO(n, ZR(zv[i])=(D)iv[i]; ZI(zv[i])=0); R 1; }
 B cdTz(I n, Z *zv, D *dv) { DO(n, ZR(zv[i])=dv[i];    ZI(zv[i])=0); R 1; }
 
-B aconv(I cv, I n, VP z, VP y) {
-    B *bv; I *iv; D *dv; Z *zv;
+B aconv(I cv, I n, VP z, VP y) { B *bv; I *iv; D *dv; Z *zv;
     switch(cv) {
     case BtI: bv=(B*)y; iv=(I*)z; cbTi(n,iv,bv); break;
     case BtD: bv=(B*)y; dv=(D*)z; cbTd(n,dv,bv); break;
