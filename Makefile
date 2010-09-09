@@ -9,6 +9,11 @@ CFLAGS=-ansi -pedantic -O3
 
 all: anicca
 
+tags: TAGS
+TAGS: *.c *.h		      # "MONAD(func)" tags "func", not "MONAD"
+	etags --regex='/^[A-Z0-9]+(\([a-zA-Z0-9_]+\))[ \t]*{/\1/' *.c *.h \
+	--output=- | sed '/^\(static \)\?[A-Z0-9]\+([^a-zA-Z0-9_]/d' > TAGS
+
 anicca: $(HDRS) $(OBJS)
 	$(CC) -o $@ $(OBJS) -lm
 
@@ -18,5 +23,7 @@ debug: anicca
 .o: .c .h
 	$(CC) -c $<
 
-.PHONY clean:
-	rm -rf *~ *.o anicca
+clean:
+	rm -rf *~ *.o anicca TAGS
+
+.PHONY: clean tags all

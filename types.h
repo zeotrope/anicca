@@ -65,6 +65,7 @@ typedef A(*AF3)(A, A, A);
 #define MARK (1L<<13)
 #define SYMB (1L<<14)
 
+#define INTEGER (BOOL | INT)
 #define NUMERIC (BOOL | INT | FLT | CMPX)
 #define NOUN    (NUMERIC | CHAR | BOX)
 #define FUNC    (VERB | CONJ | ADV)
