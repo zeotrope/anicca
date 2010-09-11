@@ -3,10 +3,8 @@
 #include <string.h>
 
 #include "anicca.h"
-#include "char.h"
-#include "memory.h"
-#include "function.h"
 #include "verb.h"
+#include "verb-scalar.h"
 #include "adverb.h"
 #include "conjunction.h"
 #include "primitive.h"

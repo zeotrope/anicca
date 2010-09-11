@@ -1,9 +1,6 @@
 #include <stdlib.h>
 
 #include "anicca.h"
-#include "error.h"
-#include "char.h"
-#include "function.h"
 #include "conjunction.h"
 
 DYAD(amper) { V *v; A z; I xt = AT(x), yt = AT(y);

@@ -2,8 +2,6 @@
 #include <string.h>
 
 #include "anicca.h"
-#include "error.h"
-#include "memory.h"
 #include "symbol.h"
 
 A local;

@@ -4,13 +4,10 @@
 #include <string.h>
 
 #include "anicca.h"
-#include "error.h"
-#include "memory.h"
-#include "char.h"
 #include "table.h"
 #include "convert.h"
 #include "util.h"
-#include "verb.h"
+#include "verb-scalar.h"
 #include "lexer.h"
 #include "noun.h"
 

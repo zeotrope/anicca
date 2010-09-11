@@ -1,5 +1,5 @@
-#ifndef _VERB_SCALAR2_H
-#define _VERB_SCALAR2_H
+#ifndef _SCALAR2_H
+#define _SCALAR2_H
 
 #define SF2(name, zt, yt, exp) \
     VO name(zt *z, yt *x, yt *y) { *z=(exp); }
@@ -25,6 +25,7 @@ DECL_SF2(jplus, Z, Z);
 DECL_SF2(bminus, I, B);
 DECL_SF2(iminus, I, I);
 DECL_SF2(dminus, D, D);
+DECL_SF2(jminus, Z, Z);
 
 DECL_SF2(blthan, B, B);
 DECL_SF2(ilthan, B, I);

@@ -21,6 +21,7 @@ typedef struct _verb_atomic {
 #define VRD (1<<7)
 #define VRZ (1<<8)
 
+A va1(C id, A y);
 A va2(C id, A x, A y);
 
 #endif

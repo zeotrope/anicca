@@ -11,13 +11,17 @@
 #define R      return
 #define RZ(a)  if (!(a)) { return 0; }
 
-#include "types.h"
-#include "globals.h"
-
 #define MONAD(name) A name(A y)
 #define DYAD(name)  A name(A x, A y)
 
 #define DMONAD(name) A name(A y, A self)
 #define DDYAD(name)  A name(A x, A y, A self)
+
+#include "types.h"
+#include "globals.h"
+#include "char.h"
+#include "error.h"
+#include "memory.h"
+#include "function.h"
 
 #endif

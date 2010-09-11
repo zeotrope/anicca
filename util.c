@@ -4,9 +4,6 @@
 #include <string.h>
 
 #include "anicca.h"
-#include "char.h"
-#include "memory.h"
-#include "function.h"
 #include "symbol.h"
 #include "verb.h"
 #include "lexer.h"

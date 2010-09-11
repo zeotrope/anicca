@@ -1,10 +1,6 @@
 #include <stdlib.h>
 
 #include "anicca.h"
-#include "error.h"
-#include "memory.h"
-#include "char.h"
-#include "function.h"
 #include "verb.h"
 #include "adverb.h"
 

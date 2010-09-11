@@ -1,7 +1,6 @@
 #include <stdio.h>
 
 #include "anicca.h"
-#include "memory.h"
 #include "test.h"
 #include "util.h"
 

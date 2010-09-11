@@ -1,7 +1,7 @@
 #include <math.h>
 
 #include "anicca.h"
-#include "verb-scalar2.h"
+#include "scalar2.h"
 
 SF2(bdivide, D, B, *x / (D)*y)
 SF2(idivide, D, I, *x / (D)*y)
@@ -12,8 +12,8 @@ SF2(jdivide, Z, Z, zdivide(*x,*y))
 SF2(btimes, B, B, *x * *y)
 SF2(itimes, I, I, *x * *y)
 SF2(dtimes, D, D, *x * *y)
-static Z ztimes(Z x, Z y) { D a=ZR(x),b=ZR(y),c=ZI(x),d=ZI(y); Z z;
-    ZR(z)=a*c-b*d; ZI(z)=b*c+a*d;
+static Z ztimes(Z x, Z y) { D a=ZR(x),b=ZR(y),c=ZI(x),d=ZI(y);
+    Z z; ZR(z)=a*c-b*d; ZI(z)=b*c+a*d;
     R z;
 }
 SF2(jtimes, Z, Z, ztimes(*x,*y))
@@ -27,7 +27,8 @@ SF2(jplus, Z, Z, zplus(*x,*y))
 SF2(bminus, I, B, *x - *y)
 SF2(iminus, I, I, *x - *y)
 SF2(dminus, D, D, *x - *y)
-/*SF2(jplus, Z, Z, zplus(x,y))*/
+static Z zminus(Z x, Z y) { Z z; ZR(z)=ZR(x)-ZR(y); ZI(z)=ZI(x)-ZI(y); R z; }
+SF2(jminus, Z, Z, zminus(*x,*y))
 
 SF2(blthan, B, B, *x < *y)
 SF2(ilthan, B, I, *x < *y)

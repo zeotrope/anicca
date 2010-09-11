@@ -4,9 +4,6 @@
 #include <ctype.h>
 
 #include "anicca.h"
-#include "error.h"
-#include "memory.h"
-#include "char.h"
 #include "table.h"
 #include "noun.h"
 #include "verb.h"

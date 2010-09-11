@@ -22,8 +22,10 @@ typedef struct _complex {
 #define AC(a) ((a)->count)
 #define AR(a) ((a)->rank)
 #define AN(a) ((a)->num)
+#define AH    4L
 #define AS(a) ((a)->shape)
 #define AV(a) ((a)->value)
+/* #define AV(a)  */
 
 #define BAV(a)  ((B *)AV(a))
 #define CAV(a)  ((C *)AV(a))
@@ -40,7 +42,7 @@ typedef struct _array {
     VP value;
 } *A;
 
-#define AAV(a) ((A *)AV(a))
+#define AAV(a)    ((A *)AV(a))
 
 typedef VO(*SF)();
 typedef A(*AF)();
@@ -65,9 +67,10 @@ typedef A(*AF3)(A, A, A);
 #define MARK (1L<<13)
 #define SYMB (1L<<14)
 
+#define IS1BYTE (BOOL | CHAR)
 #define INTEGER (BOOL | INT)
-#define NUMERIC (BOOL | INT | FLT | CMPX)
-#define NOUN    (NUMERIC | CHAR | BOX)
+#define NUMERIC (BOOL | INT  | FLT | CMPX)
+#define NOUN    (CHAR | BOX  | NUMERIC)
 #define FUNC    (VERB | CONJ | ADV)
 
 #endif

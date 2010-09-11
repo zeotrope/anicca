@@ -4,8 +4,6 @@
 
 #include "anicca.h"
 #include "util.h"
-#include "error.h"
-#include "function.h"
 #include "symbol.h"
 #include "parser.h"
 
@@ -48,7 +46,7 @@ A parse(A tokens) {
     do {
         top=&stack[j];
 #ifdef DEBUG
-        printf("n: %d j: %d ", n, j); print(tokens);
+        printf("n: %d j: %d ",n,j); print(tokens);
 #endif
         for (c=0; c<CASES; c++) {
             t = grammar[c].t;
@@ -60,7 +58,7 @@ A parse(A tokens) {
             b=grammar[c].b; p=j+b;
             e=grammar[c].e; q=j+e;
 #ifdef DEBUG
-            printf(" b: %d e: %d c: %d\n", p, q, c);
+            printf(" b: %d e: %d c: %d\n",p,q,c);
 #endif
             action = grammar[c].act;
             top[e] = action(b,e,top);
@@ -79,7 +77,7 @@ A parse(A tokens) {
 #endif
     } while (j>=0 && n>2);
 #ifdef DEBUG
-    printf("n: %d j: %d\n", n, j);
+    printf("n: %d j: %d ",n,j);
     println(tokens);
 #endif
     if (n>2) { a_signal(ERSYNTAX); };

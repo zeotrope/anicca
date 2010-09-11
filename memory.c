@@ -5,25 +5,20 @@
 #include <stdarg.h>
 
 #include "anicca.h"
-#include "error.h"
-#include "function.h"
 #include "symbol.h"
-#include "memory.h"
 
 VP a_malloc(I size) { VP m=calloc(size,1); ASSERT(m,ERALLOC); R m; }
 
-B a_free(A y) {
+MONAD(a_free) {
     RZ(y);
     if (AN(y)>0) { free(AV(y)); if (AR(y)>0) { free(AS(y)); } }
     free(y);
-    R 1;
+    R one;
 }
 
-MONAD(freea) { traverse(y,freea); a_free(y); R one; }
-
-MONAD(refa)  { traverse(y,refa); AC(y)++; R one; }
-
-MONAD(rsta)  { traverse(y,rsta); AC(y)=INT_MAX; R one; }
+MONAD(freea) { traverse(y,freea);       R a_free(y); }
+MONAD(refa)  { RZ(y); traverse(y,refa); AC(y)++;       R y; }
+MONAD(rsta)  { RZ(y); traverse(y,rsta); AC(y)=INT_MAX; R y; }
 
 A traverse(A y, AF1 f1) { V *v; A *a; SY *sy; I n=AN(y);
     RZ(y);
@@ -126,4 +121,9 @@ MONAD(ca) { A z;
     R z;
 }
 
-A ra(A y, I t, I n) { RZ(y); AN(y)=n; AV(y)=realloc(AV(y), ts(t)*n); R y; }
+A ra(A y, I t, I n) { A z;
+    RZ(y);
+    z=ca(y); AN(z)=n;
+    AV(z)=realloc(AV(y), ts(t)*n);
+    R z;
+}

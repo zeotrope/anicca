@@ -2,11 +2,12 @@
 #define _MEMORY_H
 
 VP a_malloc(I n);
-B a_free(A);
+MONAD(a_free);
 MONAD(freea);
 MONAD(refa);
 MONAD(rsta);
 
+A traverse(A y, AF1 f1);
 I ts(I t);
 
 C charf(A y);
@@ -22,7 +23,6 @@ A sflt(D d);
 A scmpx(D r, D i);
 MONAD(sbox);
 
-A traverse(A y, AF1 f1);
 A ga(I t, I r, I n, I *s);
 A gsa(I t, I r, I n, I *s);
 A gstr(I n, const C *);

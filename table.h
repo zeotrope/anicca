@@ -15,7 +15,7 @@ typedef enum {
 } CHARTYPE;
 
 /* Noun Mapping */
-static C nountype[256] = {
+static C nountype[256]={
     /*0*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CS,CX,CX,CX,CX,CX,CX,
     /*1*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
     /*2*/ CS,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CA,CX, /* !"#$%&'()*+,-./*/
@@ -34,7 +34,7 @@ static C nountype[256] = {
          /*0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f*/
 };
 
-static C chartype[256] = {
+static C chartype[256]={
     /*0*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CS,CX,CX,CX,CX,CX,CX,
     /*1*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
     /*2*/ CS,CX,CX,CX,CX,CX,CX,CQ,CX,CX,CX,CX,CX,CX,CD,CX, /* !"#$%&'()*+,-./*/
