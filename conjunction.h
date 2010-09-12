@@ -20,7 +20,7 @@ DDYAD(hook2);
 DYAD(cartcol);
 DMONAD(cpower);
 DDYAD(cpower2);
-DMONAD(forrk);
-DDYAD(forrk2);
+DMONAD(folk);
+DDYAD(folk2);
 
 #endif

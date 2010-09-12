@@ -20,7 +20,7 @@ ACTION(monad);
 ACTION(dyad);
 ACTION(adverb);
 ACTION(conjun);
-ACTION(fork);
+ACTION(trident);
 ACTION(bident);
 ACTION(is);
 ACTION(paren);

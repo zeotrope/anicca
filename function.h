@@ -41,7 +41,6 @@ DDYAD(df2);
 DMONAD(dhk);
 DDYAD(dfrk);
 
-static VO ado(I b, I m, I n, I k, I zk, C *zv, C *xv, C *yv, SF f2);
 A sex1(A y, I zt, SF f1);
 A sex2(A x, A y, I zt, SF f2);
 A fdef(UC id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv);

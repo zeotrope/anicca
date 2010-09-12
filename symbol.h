@@ -12,10 +12,8 @@ typedef struct _symbol {
 
 B symbinit(VO);
 B vldnm(I n, C *s);
-static I probe(A y, A symb, B is);
 DYAD(symbfind);
 MONAD(symblg);
-static I nmclr(A y, A symb);
 DDYAD(symbis);
 
 #define NTWPRM 6

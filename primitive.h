@@ -11,4 +11,20 @@ typedef struct _primitive {
 UC verb_name(I n, C *s);
 A primitive_lookup(UC c);
 
+typedef enum {
+    CX, /* Other */
+    CS, /* Space */
+    CA, /* Alpha */
+    CN, /* "N"   */
+    CB, /* "B"   */
+    C9, /* Num   */
+    CD, /* "."   */
+    CC, /* ":"   */
+    CQ, /* "'"   */
+    END = -1
+} CHARTYPE;
+
+UC ntype(UC id);
+UC ctype(UC id);
+
 #endif

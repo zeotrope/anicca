@@ -36,8 +36,8 @@ MONAD(freea)  { RZ(y); traverse(y,freea);               R a_free(y); }
 MONAD(refa)   { RZ(y); traverse(y,refa); AC(y)++;       R y;         }
 MONAD(rsta)   { RZ(y); traverse(y,rsta); AC(y)=INT_MAX; R y;         }
 
-A traverse(A y, AF1 f1) { V *v; A *a; SY *sy; I n=AN(y);
-    RZ(y);
+A traverse(A y, AF1 f1) { V *v; A *a; SY *sy; I n;
+    RZ(y); n=AN(y);
     switch (AT(y)) {
     case ADV:
     case CONJ:
@@ -94,7 +94,8 @@ MONAD(gcpush) {
 
 A ga(I t, I r, I n, I *s) { I k=WP(t,r,n); A z=a_malloc(k);
     AT(z)=t; AC(z)=1; AR(z)=r; AN(z)=n;
-    if (r&&s) { memcpy(AS(z),s,r); }
+    if (r==1)      { *AS(z)=n;        }
+    else if (r&&s) { ICPY(AS(z),s,r); }
     gcpush(z);
     R z;
 }
@@ -140,16 +141,16 @@ A gtest_array(I n, ...) {
 
 /*-Misc Array------------------------------------------------------------------*/
 
-MONAD(ca) { I t=AT(y), r=AR(y), n=AN(y), k=n*ts(t); A z;
+MONAD(ca) { MONAD_PROLOG; I k=yn*ts(yt);
     RZ(y);
-    z=ga(t,r,n,AS(y));
-    memcpy(AV(z),AV(y),k);
+    z=ga(yt,yr,yn,ys);
+    MC(AV(z),AV(y),k);
     R z;
 }
 
-A ra(A y, I t, I n) { I yt=AT(y), r=AR(y), yn=AN(y), k=(yn>n?n:yn)*ts(t); A z;
+A ra(A y, I t, I n) { MONAD_PROLOG; I k=(yn>n?n:yn)*ts(t);
     RZ(y); ASSERT(t>=yt, ERDOM);
-    z=ga(t,r,n,NULL);
-    memcpy(AV(z),AV(y),k);
+    z=ga(t,yr,n,NULL);
+    MC(AV(z),AV(y),k);
     R z;
 }

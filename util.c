@@ -65,12 +65,12 @@ A eval(const C *str) { A w, z;
 }
 
 VO a_repl(const C *s) { C *v, str[100]; A z;
-    while (1) {
+    do {
         printf("%s",s);
-        v = fgets(str,SIZ(str),stdin);
+        v=fgets(str,SIZ(str),stdin);
         if (!v) { break; }
         v=strndup(str,strlen(str)-1); /* remove carriage return */
         println(z=eval(v));
         free(v);
-    }
+    } while (v);
 }

@@ -4,6 +4,9 @@
 #define SIZ(s) (sizeof(s))
 #define SIZI   SIZ(I)
 
+#define MC(d,s,n)   memcpy(d,s,n)
+#define ICPY(d,s,n) memcpy(d,s,n*SIZI)
+
 #define NOBJS   1000L
 #define NMEMMAX INT_MAX
 

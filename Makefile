@@ -1,11 +1,12 @@
 
-HDRS= types.h char.h table.h
+HDRS= types.h char.h
 
 OBJS= memory.o util.o print.o error.o convert.o function.o  scalar1.o scalar2.o \
       noun.o symbol.o verb.o verb-scalar.o verb-atomic.o primitive.o adverb.o   \
       conjunction.o lexer.o parser.o test.o anicca.o
 
-CFLAGS=-ansi -pedantic -O3
+CSTD=-ansi -pedantic
+CFLAGS=$(CSTD) -O3
 
 all: anicca
 
@@ -17,7 +18,7 @@ TAGS: *.c *.h		      # "MONAD(func)" tags "func", not "MONAD"
 anicca: $(HDRS) $(OBJS)
 	$(CC) -o $@ $(OBJS) -lm
 
-debug: CFLAGS = -ansi -pedantic -g3 -DDEBUG
+debug: CFLAGS = $(CSTD) -g3 -DDEBUG
 debug: anicca
 
 .o: .c .h

@@ -14,14 +14,7 @@
     q=*y, *y=(func);                         \
 } while (0)
 
-static A noun_index(I n, C *s);
-NPARSE(atom);
-NPARSE(base);
-NPARSE(pieul);
-NPARSE(cmpx);
-NPARSE(exp);
-NPARSE(rat);
-NPARSE(num);
+A noun_index(I n, C *s);
 A parse_noun(I n, C *s);
 
 #endif

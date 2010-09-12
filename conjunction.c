@@ -39,14 +39,14 @@ DMONAD(hook) { DECL_FG; z = AT(f)&NOUN ? df2(f,y,g) : df2(y,df1(y,g),f); R z; }
 
 DDYAD(hook2) { DECL_FG; z = AT(f)&NOUN ? df2(f,y,g) : df2(x,df1(y,g),f); R z; }
 
-DMONAD(forrk) { DECL_FGH;
+DMONAD(folk) { DECL_FGH;
     z = (AT(f)&VERB && VID(VAV(f))==CCAP) ? df1(df1(y, h), g) :
         AT(f)&NOUN ? df2(f, df1(y, h), g) :
         df2(df1(y, f), df1(y, h), g);
     R z;
 }
 
-DDYAD(forrk2) { DECL_FGH;
+DDYAD(folk2) { DECL_FGH;
     z = (AT(f)&VERB && VID(VAV(f))==CCAP) ? df1(df2(x, y, h), g) :
         AT(f)&NOUN ? df2(f, df2(x, y, h), g) :
         df2(df2(x, y, f), df2(x, y, h), g);

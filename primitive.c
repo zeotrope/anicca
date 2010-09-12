@@ -75,7 +75,6 @@ static UC primindx[256] = {
      /*0   1   2   3   4   5   6   7   8   9   a   b   c   d   e   f*/
 };
 
-
 #define NPRIM 116
 
 static P primitives[NPRIM+1] = {
@@ -83,7 +82,7 @@ static P primitives[NPRIM+1] = {
     /* 1   !  33  */ {VERB, fact,       outof,   0, 0, 0, 0},
     /* 2   "  34  */ {CONJ, NULL,       NULL,    0, 0, 0, 0},
     /* 3   #  35  */ {VERB, tally,      copy,    0, 0, 0, 0},
-    /* 4   $  36  */ {VERB, NULL,       NULL,    0, 0, 0, 0},
+    /* 4   $  36  */ {VERB, shape,      reshape, 0, 0, 0, 0},
     /* 5   %  37  */ {VERB, reciprocal, divide,  0, 0, 0, 0},
     /* 6   &  38  */ {CONJ, NULL,       amper,   0, 0, 0, 0},
     /* 7   (  40  */ {LPAR, NULL,       NULL,    0, 0, 0, 0},
@@ -214,3 +213,47 @@ A primitive_lookup(UC id) { A z; P *p; I t;
     }
     R mark;
 }
+
+
+/* Noun Mapping */
+static UC nountype[256]={
+    /*0*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CS,CX,CX,CX,CX,CX,CX,
+    /*1*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+    /*2*/ CS,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CA,CX, /* !"#$%&'()*+,-./*/
+    /*3*/ CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CX,CX,CX,CX,CX, /*0123456789:;<=>?*/
+    /*4*/ CX,CX,CX,CX,CX,CA,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX, /*@ABCDEFGHIJKLMNO*/
+    /*5*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CA, /*PQRSTUVWXYZ[\]^_*/
+    /*6*/ CX,CA,CA,CX,CA,CA,CX,CX,CX,CX,CA,CX,CX,CX,CX,CX, /*`abcdefghijklmno*/
+    /*7*/ CA,CX,CA,CX,CX,CX,CX,CX,CA,CX,CX,CX,CX,CX,CX,CX, /*pqrstuvwxyz{|}~ */
+    /*8*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+    /*9*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+    /*a*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+    /*b*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+    /*c*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+    /*d*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+    /*e*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX
+         /*0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f*/
+};
+
+UC ntype(UC id) { UC t=nountype[id]; R t; }
+
+static UC chartype[256]={
+    /*0*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CS,CX,CX,CX,CX,CX,CX,
+    /*1*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+    /*2*/ CS,CX,CX,CX,CX,CX,CX,CQ,CX,CX,CX,CX,CX,CX,CD,CX, /* !"#$%&'()*+,-./*/
+    /*3*/ C9,C9,C9,C9,C9,C9,C9,C9,C9,C9,CC,CX,CX,CX,CX,CX, /*0123456789:;<=>?*/
+    /*4*/ CX,CA,CB,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CN,CA, /*@ABCDEFGHIJKLMNO*/
+    /*5*/ CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CX,CX,CX,CX,C9, /*PQRSTUVWXYZ[\]^_*/
+    /*6*/ CX,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA, /*`abcdefghijklmno*/
+    /*7*/ CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CA,CX,CX,CX,CX,CX, /*pqrstuvwxyz{|}~ */
+    /*8*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+    /*9*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+    /*a*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+    /*b*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+    /*c*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+    /*d*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,
+    /*e*/ CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX,CX
+         /*0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f*/
+};
+
+UC ctype(UC id) { UC t=chartype[id]; R t; }

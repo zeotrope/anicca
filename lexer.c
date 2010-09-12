@@ -4,13 +4,12 @@
 #include <ctype.h>
 
 #include "anicca.h"
-#include "table.h"
-#include "noun.h"
 #include "verb.h"
 #include "adverb.h"
 #include "conjunction.h"
-#include "primitive.h"
+#include "noun.h"
 #include "lexer.h"
+#include "primitive.h"
 
 #define DCOL 9
 #define DROW 10
@@ -55,22 +54,22 @@ static MONAD(token_index) {
     ST pr;
     A z=ga(INT,1,n+n,NULL); v=IAV(z);
 
-    DO(n, t=chartype[str[i]]; pr=dfa[s][t];
+    DO(n, t=ctype(str[i]); pr=dfa[s][t];
        e=pr.effect; sn=pr.new;
 
        switch (e) {
        case EO: break;
        case EN: { j=i; break; }
-       case EW: { v[k++] = j; v[k++] = i-j; j = i;  break; }
-       case EY: { v[k++] = j; v[k++] = i-j; j = -1; break; }
+       case EW: { v[k++]=j; v[k++]=i-j; j=i;  break; }
+       case EY: { v[k++]=j; v[k++]=i-j; j=-1; break; }
        case EV: {
-           if (!vec) { v[k++] = j; v[k] = i-j; jv = j; }
-           else      { v[k] = i-jv; }
+           if (!vec) { v[k++]=j; v[k]=i-j; jv=j; }
+           else      { v[k]=i-jv; }
            j=i; vec=1; break;
        }
        case EZ: {
-           if (!vec) { v[k++] = j; v[k] = i-j; jv = j; }
-           else      { v[k] = i-jv; }
+           if (!vec) { v[k++]=j; v[k]=i-j; jv=j; }
+           else      { v[k]=i-jv; }
            j=-1; vec=1; break;
        }
        case ES: goto end; break;
@@ -94,10 +93,10 @@ MONAD(tokens) {
     A  x=token_index(y), z, v, *av;
     I n=AN(x)/2, *indx=IAV(x), j, ws, wl, t;
 
-    z = ga(BOX, 1, n+5, NULL); av = AAV(z); *av++ = mark;
+    z = ga(BOX,1,n+5,NULL); av = AAV(z); *av++ = mark;
 
     DO(n, j=i+i; ws=indx[j]; wl=indx[j+1];
-       s=&str[ws]; c=*s;  t=chartype[c];
+       s=&str[ws]; c=*s; t=ctype(c);
        vn=verb_name(wl,s); v=primitive_lookup(vn);
 
        if (AT(v)&MARK) {
@@ -109,8 +108,8 @@ MONAD(tokens) {
            default: break; /* error */
            }
        }
-       else { *av++ = v; }
+       else { *av++=v; }
     );
 
-    DO(4, *av++ = mark); R z;
+    DO(4, *av++=mark); R z;
 }

@@ -14,6 +14,14 @@
 #define MONAD(name) A name(A y)
 #define DYAD(name)  A name(A x, A y)
 
+#define MONAD_PROLOG \
+    I yt=AT(y), yr=AR(y), yn=AN(y), *ys=AS(y); A z
+
+#define DYAD_PROLOG \
+    I xt=AT(x), xn=AN(x), xr=AR(x), *xs=AS(x); \
+    I yt=AT(y), yn=AN(y), yr=AR(y), *ys=AS(y); \
+    A z /* More declarations or assignment */
+
 #define DMONAD(name) A name(A y, A self)
 #define DDYAD(name)  A name(A x, A y, A self)
 

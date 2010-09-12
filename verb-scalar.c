@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "anicca.h"
 #include "scalar1.h"
 #include "verb-atomic.h"
@@ -48,10 +50,9 @@ MONAD(increment) { A z=plus(y,one); R z; }
 
 MONAD(roll) { A z; R z; }
 
-MONAD(expntl) {
-    I yn=AN(y), *yv=IAV(y); D *v;
-    A z=ga(FLT, AR(y), yn, AS(y)); v=DAV(z);
-    DO(yn, v[i] = exp((D)yv[i]));
+MONAD(expntl) { MONAD_PROLOG; I *v=IAV(y); D *d;
+    z=ga(FLT,yr,yn,ys); d=DAV(z);
+    DO(yn, v[i]=exp((D)v[i]));
     R z;
 }
 

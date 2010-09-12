@@ -18,7 +18,7 @@ DMONAD(dhk) { V *v = VAV(y);
 }
 
 DDYAD(dfrk) { V *v = VAV(x);
-    R ddef(CFORK,VERB,forrk,forrk2,x,y,self,VLR(v),VMR(v),VRR(v),0);
+    R ddef(CFORK,VERB,folk,folk2,x,y,self,VLR(v),VMR(v),VRR(v),0);
 }
 
 /*
@@ -37,7 +37,7 @@ DDYAD(dfrk) { V *v = VAV(x);
       Nothing returned.
       Mutation of zv with the result of applying f2.
 */
-VO ado(I b, I m, I n, I k, I zk, C *zv, C *xv, C *yv, SF f2) {
+static VO ado(I b, I m, I n, I k, I zk, C *zv, C *xv, C *yv, SF f2) {
     zv-=zk; xv-=k; yv-=k;
     if (n==1)   { DO(m,              f2(zv+=zk, xv+=k, yv+=k));  }
     else if (b) { DO(m, xv+=k; DO(n, f2(zv+=zk, xv,    yv+=k))); }

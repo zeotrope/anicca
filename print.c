@@ -9,13 +9,13 @@ VO print(A y) { C *cv; I yn=AN(y), *iv; D *dv; Z *zv; V *vv; A *bv; SY *sy;
     if (!y) { printf("NULL"); R; }
 
     switch (AT(y)) {
-    case BOOL: { cv=BAV(y); DO(yn, printf("%d ", (I)cv[i])); break; }
+    case BOOL: { cv=BAV(y); DO(yn, printf("%d ",(I)cv[i])); break; }
     case NAME:
-    case CHAR: { cv=CAV(y); DO(yn, printf("%c",  cv[i]));    break; }
-    case INT:  { iv=IAV(y); DO(yn, printf("%d ", iv[i]));    break; }
-    case FLT:  { dv=DAV(y); DO(yn, printf("%lf ",dv[i]));    break; }
+    case CHAR: { cv=CAV(y); DO(yn, printf("%c",cv[i]));     break; }
+    case INT:  { iv=IAV(y); DO(yn, printf("%d ",iv[i]));    break; }
+    case FLT:  { dv=DAV(y); DO(yn, printf("%f ",dv[i]));    break; }
     case CMPX: {
-        zv=ZAV(y); DO(yn, printf("%lfj%lf ",ZR(zv[i]),ZI(zv[i]))); break;
+        zv=ZAV(y); DO(yn, printf("%fj%f ",ZR(zv[i]),ZI(zv[i]))); break;
     }
 /* TODO?: fancy line drawings */
     case BOX: {

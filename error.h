@@ -18,22 +18,6 @@ typedef enum {
     NERRS
 } ERRS;
 
-static C *errors[NERRS] = {
-    "domain error",
-    "rank error",
-    "length error",
-    "limit error",
-    "lexical error",
-    "syntax error",
-    "ill-formed number",
-    "ill-formed name",
-    "assignment error",
-    "value error",
-    "conversion error",
-    "memory limit",
-    "allocation error"
-};
-
 #define ASSERT(cond, err) \
     if (!(cond)) { a_signal(err); }
 
