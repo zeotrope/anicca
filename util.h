@@ -22,9 +22,21 @@
 
 #define LENGTHOF(array) (sizeof(array)/sizeof(*array))
 
-VO print(A y);
-VO println(A y);
+C charf(A y);
+C charl(A y);
+I intf(A y);
+I intl(A y);
+
+A scalar(I t, I v);
+A schar(C c);
+A sbool(B b);
+A sint(I i);
+A sflt(D d);
+A scmpx(D r, D i);
+MONAD(sbox);
+
 VO a_init(VO);
+VO a_clean(VO);
 I a_strtoi(I n, C *s, C **e);
 D a_strtod(I n, C *s, C **e);
 C *strndup(const C *s, UI n);

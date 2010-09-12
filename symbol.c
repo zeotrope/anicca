@@ -7,8 +7,11 @@
 A local;
 A global;
 
+I twprimes[NTWPRM]={31,61,103,241,523,883};
+
 B symbinit(VO) {
-    global=gsa(SYMB,1,101,NULL);
+    local=gsa(SYMB,1,twprimes[2],NULL);
+    global=gsa(SYMB,1,twprimes[3],NULL);
     R 1;
 }
 
@@ -38,7 +41,7 @@ static I probe(A y, A symb, B is) { A s; SY *tbl=SYAV(symb);
 DYAD(symbfind) { SY *tbl=SYAV(y);
     A z=tbl[probe(x,y,0)].value;
     ASSERT(z,ERVALUE);
-    R z;
+    R ca(z);
 }
 
 /*
@@ -53,8 +56,8 @@ static I nmclr(A y, A symb) {
     SY *sy=SYAV(symb)+i;
     B v=sy->value&&(sy->value!=mark);
     if (v) {
-        a_free(sy->name);  sy->name=NULL;
-        a_free(sy->value); sy->value=NULL;
+        freea(sy->name);  sy->name=NULL;
+        freea(sy->value); sy->value=NULL;
     }
     R i;
 }

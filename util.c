@@ -10,58 +10,24 @@
 #include "parser.h"
 #include "util.h"
 
-VO print(A y) { C *cv; I yn=AN(y), *iv; D *dv; Z *zv; V *vv; A *bv; SY *sy;
+C charf(A z) { C *v=CAV(z); R v[0];       }
+C charl(A z) { C *v=CAV(z); R v[AN(z)-1]; }
+I intf(A z)  { I *v=IAV(z); R v[0];       }
+I intl(A z)  { I *v=IAV(z); R v[AN(z)-1]; }
 
-    if (!y) { printf("NULL"); R; }
-
-    switch (AT(y)) {
-    case BOOL: { cv=BAV(y); DO(yn, printf("%d ", (I)cv[i])); break; }
-    case NAME:
-    case CHAR: { cv=CAV(y); DO(yn, printf("%c",  cv[i]));    break; }
-    case INT:  { iv=IAV(y); DO(yn, printf("%d ", iv[i]));    break; }
-    case FLT:  { dv=DAV(y); DO(yn, printf("%lf ",dv[i]));    break; }
-    case CMPX: {
-        zv=ZAV(y); DO(yn, printf("%lfj%lf ",ZR(zv[i]),ZI(zv[i]))); break;
-    }
-/* TODO?: fancy line drawings */
-    case BOX: {
-        bv=AAV(y);
-        DO(AN(y), printf("(<");
-           print(bv[i]);
-           printf(")%s", (i+1 == AN(y))?"":",")
-        );
-        break;
-    }
-    case VERB: case ADV: case CONJ: {
-        vv=VAV(y);
-        printf("%c ", vv->id);
-        if (VF(vv)) { print(vv->f);
-            if (VG(vv)) { print(vv->g);
-                if (VH(vv)) { print(vv->h); };
-            }
-        };
-        break;
-    }
-    case SYMB: {
-        sy=SYAV(y);
-        DO(AN(y), printf("(<");
-           printf("nm: "); print(sy->name); printf(" vl: "); print(sy->value);
-           printf(")%s", (i+1 == AN(y))?"":",");
-           sy++;
-        );
-        break;
-    }
-    case LPAR: { printf("LPAR"); break; }
-    case RPAR: { printf("RPAR"); break; }
-    case ASGN: { intf(y) ? printf("=:") : printf("=."); break; }
-    case MARK: { break; }
-    default:   { printf("HUH?"); break; }
-    }
+A scalar(I t, I v) { A z=ga(t,0,1,NULL);    *IAV(z)=v; R z; }
+A schar(C c)       { A z=ga(CHAR,0,1,NULL); *CAV(z)=c; R z; }
+A sbool(B b)       { A z=ga(BOOL,0,1,NULL); *BAV(z)=b; R z; }
+A sint(I i)        { A z=ga(INT,0,1,NULL);  *IAV(z)=i; R z; }
+A sflt(D d)        { A z=ga(FLT,0,1,NULL);  *DAV(z)=d; R z; }
+A scmpx(D r, D i)  { A z=ga(CMPX,0,1,NULL);
+    Z *zv=ZAV(z); zv->re=r; zv->img=i;
+    R z;
 }
-
-VO println(A y) { if (!(AT(y)&MARK)) { print(y); printf("\n"); } }
+MONAD(sbox)        { A z=ga(BOX,0,1,NULL);  *AAV(z)=y; R z; }
 
 VO a_init(VO) {
+    gcinit();
     zero=sbool(0);       rsta(zero);
     one=sbool(1);        rsta(one);
     ten=sint(10);        rsta(ten);
@@ -72,6 +38,13 @@ VO a_init(VO) {
     lpar=gsa(LPAR, 0, 0, NULL);
     rpar=gsa(RPAR, 0, 0, NULL);
     symbinit();
+}
+
+VO a_clean(VO) {
+    freea(zero); freea(one);
+    freea(ten);  freea(zone);
+    freea(alcl); freea(agbl);
+    freea(mark); freea(lpar);
 }
 
 I a_strtoi(I n, C *s, C **e) {  R (I)a_strtod(n,s,e); }
@@ -85,21 +58,16 @@ D a_strtod(I n, C *s, C**e) { I si=1; D v, p;
     R si*(v/p);
 }
 
-A eval(const C *str) {
-    A w, y, z;
+A eval(const C *str) { A w, z;
     w=gstr(strlen(str)+1,str);
-    y=tokens(w);
-    z=parse(y);
-    /*freea(w); freea(y);*/
-    a_free(w); a_free(y);
+    z=parse(tokens(w));
     R z;
 }
 
-VO a_repl(const C *s) {
-    C *v, str[100]; A z;
+VO a_repl(const C *s) { C *v, str[100]; A z;
     while (1) {
         printf("%s",s);
-        v = fgets(str,sizeof(str),stdin);
+        v = fgets(str,SIZ(str),stdin);
         if (!v) { break; }
         v=strndup(str,strlen(str)-1); /* remove carriage return */
         println(z=eval(v));

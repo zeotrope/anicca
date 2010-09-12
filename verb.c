@@ -61,7 +61,7 @@ DYAD(left) { A z=ca(x); R z; }
 DYAD(right) { A z=ca(y); R z; }
 
 MONAD(iota) { A z; I yr=AR(y), n=*IAV(y), *v;
-    z = ga(INT, 1, n, AS(y));
+    z = ga(INT,1,n,AS(y));
     v = IAV(z);
     DO(n, v[i] = i);
     R z;

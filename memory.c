@@ -5,20 +5,36 @@
 #include <stdarg.h>
 
 #include "anicca.h"
+#include "util.h"
 #include "symbol.h"
 
-VP a_malloc(I size) { VP m=calloc(size,1); ASSERT(m,ERALLOC); R m; }
+I mtop;     /* Position of current     */
+I nmem;     /* Total objects in memory */
+I bytes;    /* Bytes currently in use  */
+I totbytes; /* Total bytes allocated   */
+
+A memory;   /* Array of Objects        */
+A *objs;    /* Pointer to objects      */
+
+A a_malloc(I size) { I k=size*SIZI; A z;
+    ASSERT(k<NMEMMAX,ERMEMLT);
+    z=calloc(size,SIZI);
+    ASSERT(z,ERALLOC);
+    totbytes=bytes+=k;
+    R z;
+}
 
 MONAD(a_free) {
     RZ(y);
-    if (AN(y)>0) { free(AV(y)); if (AR(y)>0) { free(AS(y)); } }
+    if (--AC(y)) { R zero; }
+    bytes-=SIZI*WP(AT(y),AR(y),AN(y));
     free(y);
     R one;
 }
 
-MONAD(freea) { traverse(y,freea);       R a_free(y); }
-MONAD(refa)  { RZ(y); traverse(y,refa); AC(y)++;       R y; }
-MONAD(rsta)  { RZ(y); traverse(y,rsta); AC(y)=INT_MAX; R y; }
+MONAD(freea)  { RZ(y); traverse(y,freea);               R a_free(y); }
+MONAD(refa)   { RZ(y); traverse(y,refa); AC(y)++;       R y;         }
+MONAD(rsta)   { RZ(y); traverse(y,rsta); AC(y)=INT_MAX; R y;         }
 
 A traverse(A y, AF1 f1) { V *v; A *a; SY *sy; I n=AN(y);
     RZ(y);
@@ -36,42 +52,50 @@ I ts(I type) {
     switch (type) {
     case BOOL:
     case CHAR:
-    case NAME: R sizeof(C);  break;
+    case NAME: R SIZ(C);
     case MARK:
     case LPAR:
     case RPAR:
     case ASGN:
-    case INT:  R sizeof(I);  break;
-    case FLT:  R sizeof(D);  break;
-    case CMPX: R sizeof(Z);  break;
-    case BOX:  R sizeof(A);  break;
+    case INT:  R SIZI;
+    case FLT:  R SIZ(D);
+    case CMPX: R SIZ(Z);
+    case BOX:  R SIZ(A);
     case ADV:
     case CONJ:
-    case VERB: R sizeof(V);  break;
-    case SYMB: R sizeof(SY); break;
+    case VERB: R SIZ(V);
+    case SYMB: R SIZ(SY);
+    default:   R SIZI;
     }
-    R sizeof(I);
 }
 
-C charf(A z) { C *v=CAV(z); R v[0];       }
-C charl(A z) { C *v=CAV(z); R v[AN(z)-1]; }
-I intf(A z)  { I *v=IAV(z); R v[0];       }
-I intl(A z)  { I *v=IAV(z); R v[AN(z)-1]; }
+/*-Garbage Collection----------------------------------------------------------*/
 
-A scalar(I t, I v) { A z=ga(t,0,1,NULL);    *IAV(z)=v; R z; }
-A schar(C c)       { A z=ga(CHAR,0,1,NULL); *CAV(z)=c; R z; }
-A sbool(B b)       { A z=ga(BOOL,0,1,NULL); *BAV(z)=b; R z; }
-A sint(I i)        { A z=ga(INT,0,1,NULL);  *IAV(z)=i; R z; }
-A sflt(D d)        { A z=ga(FLT,0,1,NULL);  *DAV(z)=d; R z; }
-A scmpx(D r, D i)  { A z=ga(CMPX,0,1,NULL);
-    Z *zv=ZAV(z); zv->re=r; zv->img=i;
-    R z;
+A gcinit(VO) { I k=WP(BOX,1,NOBJS); A memory;
+    nmem=mtop=bytes=totbytes=0;
+    memory=a_malloc(k);
+    AT(memory)=BOX; AR(memory)=1;
+    AN(memory)=*AS(memory)=NOBJS;
+    objs=AAV(memory);
+    R memory;
 }
-MONAD(sbox)        { A z=ga(BOX,0,1,NULL);  *AAV(z)=y; R z; }
 
-A ga(I t, I r, I n, I *s) { I k; A z=(A)a_malloc(sizeof(struct _array));
-    AT(z)=t; AC(z)=1; AR(z)=r; AN(z)=n; AS(z)=s;
-    if (n>0) { AV(z)=a_malloc(k=ts(t)*n); }
+MONAD(gcpush) {
+    RZ(y);
+    traverse(y,gcpush);
+    ASSERT(nmem<NOBJS,ERMEMLT);
+    objs[mtop++]=y;
+    nmem++;
+    R y;
+}
+
+
+/*-Generation Functions--------------------------------------------------------*/
+
+A ga(I t, I r, I n, I *s) { I k=WP(t,r,n); A z=a_malloc(k);
+    AT(z)=t; AC(z)=1; AR(z)=r; AN(z)=n;
+    if (r&&s) { memcpy(AS(z),s,r); }
+    gcpush(z);
     R z;
 }
 
@@ -91,7 +115,7 @@ A giarray(I *ints, I n) { A z=ga(INT,1,n,NULL); I *zv=IAV(z);
 
 A gfarray(D *d, I n) { A z; D *zv;
     z=ga(FLT,1,n,NULL);
-    zv=AV(z);
+    zv=DAV(z);
     DO(n, zv[i]=d[i]);
     R z;
 }
@@ -114,16 +138,18 @@ A gtest_array(I n, ...) {
     R z;
 }
 
-MONAD(ca) { A z;
+/*-Misc Array------------------------------------------------------------------*/
+
+MONAD(ca) { I t=AT(y), r=AR(y), n=AN(y), k=n*ts(t); A z;
     RZ(y);
-    z=ga(AT(y),AR(y),AN(y),AS(y));
-    memcpy(AV(z),AV(y),AN(y)*ts(AT(y)));
+    z=ga(t,r,n,AS(y));
+    memcpy(AV(z),AV(y),k);
     R z;
 }
 
-A ra(A y, I t, I n) { A z;
-    RZ(y);
-    z=ca(y); AN(z)=n;
-    AV(z)=realloc(AV(y), ts(t)*n);
+A ra(A y, I t, I n) { I yt=AT(y), r=AR(y), yn=AN(y), k=(yn>n?n:yn)*ts(t); A z;
+    RZ(y); ASSERT(t>=yt, ERDOM);
+    z=ga(t,r,n,NULL);
+    memcpy(AV(z),AV(y),k);
     R z;
 }

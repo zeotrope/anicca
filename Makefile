@@ -1,8 +1,8 @@
 
 HDRS= types.h char.h table.h
 
-OBJS= memory.o util.o error.o convert.o function.o  scalar1.o scalar2.o noun.o \
-      symbol.o verb.o verb-scalar.o verb-atomic.o primitive.o adverb.o         \
+OBJS= memory.o util.o print.o error.o convert.o function.o  scalar1.o scalar2.o \
+      noun.o symbol.o verb.o verb-scalar.o verb-atomic.o primitive.o adverb.o   \
       conjunction.o lexer.o parser.o test.o anicca.o
 
 CFLAGS=-ansi -pedantic -O3

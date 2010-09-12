@@ -18,6 +18,8 @@ MONAD(symblg);
 static I nmclr(A y, A symb);
 DDYAD(symbis);
 
+#define NTWPRM 6
+
 A local;
 A global;
 

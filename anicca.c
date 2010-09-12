@@ -16,5 +16,6 @@
 I main(I argc, C *argv[]) {
     a_init();
     a_repl("   ");
+    a_clean();
     R 0;
 }

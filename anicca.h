@@ -9,7 +9,7 @@
 } while(0)
 
 #define R      return
-#define RZ(a)  if (!(a)) { return 0; }
+#define RZ(a)  if (!(a)) { R 0; }
 
 #define MONAD(name) A name(A y)
 #define DYAD(name)  A name(A x, A y)
@@ -23,5 +23,6 @@
 #include "error.h"
 #include "memory.h"
 #include "function.h"
+#include "print.h"
 
 #endif

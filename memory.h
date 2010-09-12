@@ -1,7 +1,15 @@
 #ifndef _MEMORY_H
 #define _MEMORY_H
 
-VP a_malloc(I n);
+#define SIZ(s) (sizeof(s))
+#define SIZI   SIZ(I)
+
+#define NOBJS   1000L
+#define NMEMMAX INT_MAX
+
+#define WP(t,r,n) (AH+r+((SIZI-1)+!!(IS1BYTE&t)+(n*ts(t)))/SIZI)
+
+A a_malloc(I n);
 MONAD(a_free);
 MONAD(freea);
 MONAD(refa);
@@ -10,18 +18,8 @@ MONAD(rsta);
 A traverse(A y, AF1 f1);
 I ts(I t);
 
-C charf(A y);
-C charl(A y);
-I intf(A y);
-I intl(A y);
-
-A scalar(I t, I v);
-A schar(C c);
-A sbool(B b);
-A sint(I i);
-A sflt(D d);
-A scmpx(D r, D i);
-MONAD(sbox);
+A gcinit(VO);
+MONAD(gcpush);
 
 A ga(I t, I r, I n, I *s);
 A gsa(I t, I r, I n, I *s);
@@ -33,6 +31,5 @@ A gtest_array(I n, ...);
 
 MONAD(ca);
 A ra(A y, I t, I n);
-
 
 #endif

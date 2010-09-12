@@ -20,18 +20,18 @@ B eq(A x, A y) {
         R 0;
     /* TODO: make it work for rank > 1 */
     NOUN_SWITCH(AT(x),
-                DO(AN(x), B *xbv = AV(x); B *ybv = AV(y);
+                DO(AN(x), B *xbv = BAV(x); B *ybv = BAV(y);
                    if (xbv[i] != ybv[i]) R 0),
-                DO(AN(x), C *xcv = AV(x); C *ycv = AV(y);
+                DO(AN(x), C *xcv = CAV(x); C *ycv = CAV(y);
                    if (xcv[i] != ycv[i]) R 0),
-                DO(AN(x), I *xiv = AV(x); I *yiv = AV(y);
+                DO(AN(x), I *xiv = IAV(x); I *yiv = IAV(y);
                    if (xiv[i] != yiv[i]) R 0),
-                DO(AN(x), D *xfv = AV(x); D *yfv = AV(y);
+                DO(AN(x), D *xfv = DAV(x); D *yfv = DAV(y);
                    if (xfv[i] != yfv[i]) R 0),
-                DO(AN(x), Z *xzv = AV(x); Z *yzv = AV(y);
+                DO(AN(x), Z *xzv = ZAV(x); Z *yzv = ZAV(y);
                    if (ZR(xzv[i]) != ZR(yzv[i]) ||
                        ZI(xzv[i]) != ZI(yzv[i])) R 0),
-                DO(AN(x), A *xbv = AV(x); A *ybv = AV(y);
+                DO(AN(x), A *xbv = AAV(x); A *ybv = AAV(y);
                    if (!eq(xbv[i], ybv[i])) R 0),
                 R 1,       /* MARK, no value */
                 R 1,       /* LPAR, no value */
