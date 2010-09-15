@@ -83,12 +83,12 @@ A sex2(A x, A y, I zt, SF f2) {
     R z;
 }
 
-A rank1ex(A y, I r, AF f1) { A z; R z; }
+A rank1ex(A y, A self, I r, AF1 f1) { A z; R z; }
 
-A rank2ex(A x, A y, I lr, I rr, AF f2) { A z; R z; }
+A rank2ex(A x, A y, A self, I lr, I rr, AF f2) { A z; R z; }
 
 A fdef(UC id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv) {
-    A z=ga(t, 0, 1, NULL);
+    A z=ga(t,0,1,NULL);
     V *v=VAV(z);
     VF1(v)=f1;    VF2(v)=f2;
     VDF1(v)=NULL; VDF2(v)=NULL;
@@ -100,7 +100,7 @@ A fdef(UC id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv) {
 }
 
 A ddef(UC id, I t, AF2 df1, AF3 df2, A f, A g, A h, I lr, I mr, I rr, I inv) {
-    A z=fdef(id, t, NULL, NULL, f, g, h, lr, mr, rr, inv);
+    A z=fdef(id,t,NULL,NULL,f,g,h,lr,mr,rr,inv);
     V *v=VAV(z);
     VDF1(v)=df1; VDF2(v)=df2;
     R z;

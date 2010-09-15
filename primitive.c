@@ -33,18 +33,15 @@ static UC verbname[PUNC][BASE] = {
 };
 
 
-UC verb_name(I n, C *s) {
-    UC c=*s, d, *t;
-    I i, j;
-
+UC verb_name(I n, C *s) { UC c=*s, d, *t; I i, j;
     switch (n) {
     case 1: R isalpha(c) ? 0 : c;
     case 2: {
-        d = s[1];
-        i = d==CDOT ? 1 : d==CCOL ? 2 : 0;
-        if (i > 0) {
-            t = memchr(verbname[0], *s, BASE);
-            j = t - verbname[0];
+        d=s[1];
+        i=(d==CDOT ? 1 : d==CCOL ? 2 : 0);
+        if (i>0) {
+            t = memchr(verbname[0],c,BASE);
+            j = t-verbname[0];
             R verbname[i][j];
         }
     }

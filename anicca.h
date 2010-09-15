@@ -20,10 +20,16 @@
 #define DYAD_PROLOG \
     I xt=AT(x), xn=AN(x), xr=AR(x), *xs=AS(x); \
     I yt=AT(y), yn=AN(y), yr=AR(y), *ys=AS(y); \
-    A z /* More declarations or assignment */
+    A z
 
 #define DMONAD(name) A name(A y, A self)
 #define DDYAD(name)  A name(A x, A y, A self)
+
+#define MRANK(y,r,f,s) \
+    if (AR(y)>r) { R rank1ex(y,s,r,f); }
+
+#define DRANK(x,y,r,f,s) \
+    if (AR(x)>r||AR(y)>r) { R rank2ex(x,y,s,r,f); }
 
 #include <stdio.h>
 #include <stdlib.h>

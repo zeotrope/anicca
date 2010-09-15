@@ -34,9 +34,10 @@ VO a_init(VO) {
     zone=scmpx(0,1);     rsta(zone);
     alcl=scalar(ASGN,0); rsta(alcl);
     agbl=scalar(ASGN,1); rsta(agbl);
-    mark=gsa(MARK, 0, 0, NULL);
-    lpar=gsa(LPAR, 0, 0, NULL);
-    rpar=gsa(RPAR, 0, 0, NULL);
+    ace=gsa(BOX,0,0,NULL);
+    mark=gsa(MARK,0,0, NULL);
+    lpar=gsa(LPAR,0,0, NULL);
+    rpar=gsa(RPAR,0,0, NULL);
     symbinit();
 }
 
