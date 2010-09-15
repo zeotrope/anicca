@@ -1,16 +1,20 @@
 #ifndef _MEMORY_H
 #define _MEMORY_H
 
-#define SIZ(s) (sizeof(s))
-#define SIZI   SIZ(I)
+#define SIZ(s)    (sizeof(s))
+#define SIZI      SIZ(I)
+#define SIZT(t,n) (n*ts(t))
 
-#define MC(d,s,n)   memcpy(d,s,n)
-#define ICPY(d,s,n) memcpy(d,s,n*SIZI)
+#define MC(d,s,n)     memcpy(d,s,n)
+#define ICPY(d,s,n)   MC(d,s,n*SIZI)
+#define TCPY(d,s,t,n) MC(d,s,SIZT(t,n))
+#define WCPY(d,s,t,n) MC(d,s,SIZI*WV(t,n))
 
 #define NOBJS   1000L
 #define NMEMMAX INT_MAX
 
-#define WP(t,r,n) (AH+r+((SIZI-1)+!!(IS1BYTE&t)+(n*ts(t)))/SIZI)
+#define WV(t,n)   ((SIZI-1)+!!(IS1BYTE&t)+(n*ts(t))/SIZI)
+#define WP(t,r,n) (AH+r+WV(t,n))
 
 A a_malloc(I n);
 MONAD(a_free);

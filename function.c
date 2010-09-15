@@ -1,5 +1,3 @@
-#include <stdlib.h>
-
 #include "anicca.h"
 #include "conjunction.h"
 
@@ -84,6 +82,10 @@ A sex2(A x, A y, I zt, SF f2) {
     ado(b, m, n, k, zk, zv, xv, yv, f2);
     R z;
 }
+
+A rank1ex(A y, I r, AF f1) { A z; R z; }
+
+A rank2ex(A x, A y, I lr, I rr, AF f2) { A z; R z; }
 
 A fdef(UC id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv) {
     A z=ga(t, 0, 1, NULL);

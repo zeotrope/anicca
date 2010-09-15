@@ -1,5 +1,3 @@
-#include <stdlib.h>
-
 #include "anicca.h"
 #include "verb.h"
 #include "adverb.h"

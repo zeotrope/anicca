@@ -15,4 +15,6 @@ DECL_SF1(jfact, Z, Z);
 DECL_SF1(isignum, I, I);
 DECL_SF1(dsignum, I, D);
 
+I iprod(I n, I *iv);
+
 #endif

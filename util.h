@@ -1,7 +1,7 @@
 #ifndef _UTIL_H
 #define _UTIL_H
 
-#define MIN(a,b) ((a<b) ? b : a)
+#define MIN(a,b) ((a>b) ? b : a)
 #define MAX(a,b) ((a>b) ? a : b)
 #define ABS(a)   ((a<0) ? -(a) : a)
 
@@ -39,7 +39,7 @@ VO a_init(VO);
 VO a_clean(VO);
 I a_strtoi(I n, C *s, C **e);
 D a_strtod(I n, C *s, C **e);
-C *strndup(const C *s, UI n);
+C *strndup(const C *s, size_t n);
 A eval(const C *str);
 VO a_repl(const C *str);
 

@@ -8,3 +8,5 @@ DECL_SF1(jfact, Z, Z) { }
 
 SF1(isignum, I, I, *y < 0 ? -1 : *y > 0 ? 1 : 0)
 SF1(dsignum, I, D, *y < 0 ? -1 : *y > 0 ? 1 : 0)
+
+I iprod(I n, I *iv) { I z=1; DO(n, z*=*iv++); R z; }

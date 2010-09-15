@@ -25,6 +25,10 @@
 #define DMONAD(name) A name(A y, A self)
 #define DDYAD(name)  A name(A x, A y, A self)
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "types.h"
 #include "globals.h"
 #include "char.h"

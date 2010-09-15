@@ -1,6 +1,3 @@
-#include <stdlib.h>
-#include <string.h>
-
 #include "anicca.h"
 #include "symbol.h"
 

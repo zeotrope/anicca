@@ -1,7 +1,4 @@
 #include <limits.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <stdarg.h>
 
 #include "anicca.h"
@@ -80,15 +77,13 @@ A gcinit(VO) { I k=WP(BOX,1,NOBJS); A memory;
     R memory;
 }
 
-MONAD(gcpush) {
-    RZ(y);
+MONAD(gcpush) { RZ(y);
     traverse(y,gcpush);
     ASSERT(nmem<NOBJS,ERMEMLT);
     objs[mtop++]=y;
     nmem++;
     R y;
 }
-
 
 /*-Generation Functions--------------------------------------------------------*/
 
@@ -141,14 +136,14 @@ A gtest_array(I n, ...) {
 
 /*-Misc Array------------------------------------------------------------------*/
 
-MONAD(ca) { MONAD_PROLOG; I k=yn*ts(yt);
+MONAD(ca) { MONAD_PROLOG; I k=SIZT(yt,yn);
     RZ(y);
     z=ga(yt,yr,yn,ys);
     MC(AV(z),AV(y),k);
     R z;
 }
 
-A ra(A y, I t, I n) { MONAD_PROLOG; I k=(yn>n?n:yn)*ts(t);
+A ra(A y, I t, I n) { MONAD_PROLOG; I k=SIZT(t,(yn>n?n:yn));
     RZ(y); ASSERT(t>=yt, ERDOM);
     z=ga(t,yr,n,NULL);
     MC(AV(z),AV(y),k);

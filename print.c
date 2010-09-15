@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "anicca.h"
 #include "symbol.h"
 #include "print.h"

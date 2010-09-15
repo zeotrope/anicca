@@ -1,11 +1,9 @@
 #ifndef _VERB_H
 #define _VERB_H
 
-MONAD(tally);
-DYAD(copy);
-MONAD(shape);
-DYAD(reshape);
-DYAD(append);
+#include "verb-scalar.h"
+#include "verb-struct.h"
+
 MONAD(box);
 MONAD(unbox);
 MONAD(same);
@@ -13,10 +11,7 @@ DYAD(left);
 DYAD(right);
 MONAD(iota);
 MONAD(execute);
-MONAD(head);
-DYAD(take);
-MONAD(behead);
-DYAD(drop);
-MONAD(tail);
+
+I prod(I n, I *iv);
 
 #endif

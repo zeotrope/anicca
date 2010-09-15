@@ -1,10 +1,7 @@
 #include <ctype.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "anicca.h"
 #include "verb.h"
-#include "verb-scalar.h"
 #include "adverb.h"
 #include "conjunction.h"
 #include "primitive.h"
@@ -89,7 +86,7 @@ static P primitives[NPRIM+1] = {
     /* 8   )  41  */ {RPAR, NULL,       NULL,    0, 0, 0, 0},
     /* 9   *  42  */ {VERB, signum,     times,   0, 0, 0, 0},
     /* 10  +  43  */ {VERB, conjugate,  plus,    0, 0, 0, 0},
-    /* 11  ,  44  */ {VERB, NULL,       append,  0, 0, 0, 0},
+    /* 11  ,  44  */ {VERB, ravel,      append,  0, 0, 0, 0},
     /* 12  -  45  */ {VERB, negate,     minus,   0, 0, 0, 0},
     /* 13  .  46  */ {CONJ, NULL,       NULL,    0, 0, 0, 0},
     /* 14  /  47  */ {ADV,  slash,      NULL,    0, 0, 0, 0},
@@ -128,7 +125,7 @@ static P primitives[NPRIM+1] = {
     /* 47  t. 116 */ {ADV,  NULL,       NULL,    0, 0, 0, 0},
     /* 48  u. 117 */ {VERB, NULL,       NULL,    0, 0, 0, 0},
     /* 49  x. 120 */ {VERB, NULL,       NULL,    0, 0, 0, 0},
-    /* 50  {  123 */ {VERB, NULL,       NULL,    0, 0, 0, 0},
+    /* 50  {  123 */ {VERB, NULL,       from,    0, 0, 0, 0},
     /* 51  |  124 */ {VERB, NULL,       residue, 0, 0, 0, 0},
     /* 52  }  125 */ {VERB, NULL,       NULL,    0, 0, 0, 0},
     /* 53  ~  126 */ {ADV,  tilde,      NULL,    0, 0, 0, 0},
@@ -153,9 +150,9 @@ static P primitives[NPRIM+1] = {
     /* 72  @. 19  */ {CONJ, NULL,       NULL,    0, 0, 0, 0},
     /* 73  \. 20  */ {ADV,  NULL,       NULL,    0, 0, 0, 0},
     /* 74  ^. 21  */ {VERB, NULL,       NULL,    0, 0, 0, 0},
-    /* 75  {. 22  */ {VERB, NULL,       NULL,    0, 0, 0, 0},
+    /* 75  {. 22  */ {VERB, head,       take,    0, 0, 0, 0},
     /* 76  |. 23  */ {VERB, NULL,       NULL,    0, 0, 0, 0},
-    /* 77  }. 24  */ {VERB, NULL,       NULL,    0, 0, 0, 0},
+    /* 77  }. 24  */ {VERB, behead,     drop,    0, 0, 0, 0},
     /* 78  ~. 25  */ {VERB, NULL,       NULL,    0, 0, 0, 0},
     /* 79  !: 129 */ {CONJ, NULL,       NULL,    0, 0, 0, 0},
     /* 80  ": 130 */ {VERB, NULL,       NULL,    0, 0, 0, 0},

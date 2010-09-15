@@ -2,8 +2,9 @@
 HDRS= types.h char.h
 
 OBJS= memory.o util.o print.o error.o convert.o function.o  scalar1.o scalar2.o \
-      noun.o symbol.o verb.o verb-scalar.o verb-atomic.o primitive.o adverb.o   \
-      conjunction.o lexer.o parser.o test.o anicca.o
+      noun.o symbol.o verb-atomic.o verb-scalar.o verb-struct.o verb.o          \
+      primitive.o adverb.o conjunction.o conj-rank.o lexer.o parser.o test.o    \
+      anicca.o
 
 CSTD=-ansi -pedantic
 CFLAGS=$(CSTD) -O3
