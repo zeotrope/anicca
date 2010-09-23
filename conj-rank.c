@@ -47,7 +47,8 @@ A cls(A y, I r) { MONAD_PROLOG; I er=efr(r,yr), n=yr-er;
     output: Array of boxes with cell shape x.
   boxr=: ]`(<@$ , [ $: * /@[ }. ])@.(*@#@])
 */
-DYAD(boxr) { DYAD_PROLOG;
+DYAD(boxr) { DYAD_PROLOG; I n=iprod(xn,IAV(x)), bn=n/xn; A *av;
+    z=ga(BOX,1,bn,NULL); av=AAV(z);
     R z;
 }
 

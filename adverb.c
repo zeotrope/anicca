@@ -18,6 +18,6 @@ MONAD(tilde) { V *v=VAV(y); A z;
     R z;
 }
 
-DMONAD(reflex) { DECL_F; z=f2(y,y); R z; }
+DMONAD(reflex) { DECL_F; z=f2(y,y,f); R z; }
 
-DDYAD(passive) { DECL_F; z=f2(y,x); R z; }
+DDYAD(passive) { DECL_F; z=f2(y,x,f); R z; }

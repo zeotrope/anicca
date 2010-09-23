@@ -1,21 +1,19 @@
 #include "anicca.h"
 #include "conjunction.h"
 
-DMONAD(df1) { V *v = VAV(self);
-    A z = VF(v)&&VDF1(v) ? v->df1(y, self) : v->f1(y);
-    R z;
-}
+DMONAD(df1) { V *v=VAV(self); A z=v->f1(y); R z; }
 
-DDYAD(df2) { V *v = VAV(self);
-    A z = VF(v)&&VDF2(v) ? v->df2(x, y, self) : v->f2(x, y);
-    R z;
-}
+DDYAD(df2) { V *v=VAV(self); A z=v->f2(x,y); R z; }
 
-DMONAD(dhk) { V *v = VAV(y);
+DMONAD(ddf1) { V *v=VAV(self); A z=v->f1(y,self); R z; }
+
+DDYAD(ddf2) { V *v=VAV(self); A z=v->f2(x,y,self); R z; }
+
+DMONAD(dhk) { V *v=VAV(y);
     R ddef(CHOOK,VERB,hook,hook2,y,self,NULL,VLR(v),VMR(v),VRR(v),0);
 }
 
-DDYAD(dfrk) { V *v = VAV(x);
+DDYAD(dfrk) { V *v=VAV(x);
     R ddef(CFORK,VERB,folk,folk2,x,y,self,VLR(v),VMR(v),VRR(v),0);
 }
 
@@ -79,7 +77,7 @@ A sex2(A x, A y, I zt, SF f2) {
     I b= xr <= yr, m = b ? xn : yn, n = m ? (b ? yn : xn)/m : 0;
     A z=ga(zt, b ? yr : xr, m*n, b ? ys : xs);
     C *xv=CAV(x), *yv=CAV(y), *zv=CAV(z);
-    ado(b, m, n, k, zk, zv, xv, yv, f2);
+    ado(b,m,n,k,zk,zv,xv,yv,f2);
     R z;
 }
 
@@ -87,21 +85,13 @@ A rank1ex(A y, A self, I r, AF1 f1) { A z; R z; }
 
 A rank2ex(A x, A y, A self, I lr, I rr, AF f2) { A z; R z; }
 
-A fdef(UC id, I t, AF1 f1, AF2 f2, A f, A g, A h, I lr, I mr, I rr, I inv) {
+A fdef(UC id, I t, AF f1, AF f2, A f, A g, A h, I lr, I mr, I rr, I inv) {
     A z=ga(t,0,1,NULL);
     V *v=VAV(z);
-    VF1(v)=f1;    VF2(v)=f2;
-    VDF1(v)=NULL; VDF2(v)=NULL;
+    VF1(v)=f1; VF2(v)=f2;
     VF(v)=f;   VG(v)= g;   VH(v)=h;
     VLR(v)=lr; VMR(v)= mr; VRR(v)=rr;
     VIR(v)=inv;
     VID(v)=id;
-    R z;
-}
-
-A ddef(UC id, I t, AF2 df1, AF3 df2, A f, A g, A h, I lr, I mr, I rr, I inv) {
-    A z=fdef(id,t,NULL,NULL,f,g,h,lr,mr,rr,inv);
-    V *v=VAV(z);
-    VDF1(v)=df1; VDF2(v)=df2;
     R z;
 }

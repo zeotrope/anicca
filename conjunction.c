@@ -1,7 +1,7 @@
 #include "anicca.h"
 #include "conjunction.h"
 
-DYAD(amper) { V *v; A z; I xt = AT(x), yt = AT(y);
+DYAD(amper) { V *v; A z; I xt=AT(x), yt=AT(y);
     if ((xt&VERB&&yt&NOUN)||(xt&NOUN&&yt&VERB)) {
         v=VAV(xt&VERB ? x : y);
         z=CDERV(CAMPR,bond,bond2,x,y,VLR(v),VMR(v),VRR(v));
@@ -13,13 +13,13 @@ DYAD(amper) { V *v; A z; I xt = AT(x), yt = AT(y);
     R z;
 }
 
-DMONAD(bond) { DECL_FG; z=AT(f)&NOUN ? g2(f,y) : f2(y,g); R z; }
+DMONAD(bond) { DECL_FG; z=AT(f)&NOUN ? g2(f,y,g) : f2(y,g,f); R z; }
 
 DDYAD(bond2) { DECL_FG; R z; }
 
-DMONAD(compose) { DECL_FG; z=f1(g1(y)); R z; }
+DMONAD(compose) { DECL_FG; z=f1(g1(y,g),f); R z; }
 
-DDYAD(compose2) { DECL_FG; z=f2(g1(x),g1(y)); R z; }
+DDYAD(compose2) { DECL_FG; z=f2(g1(x,g),g1(y,g),f); R z; }
 
 DYAD(atsign) { V *v=VAV(y); A z;
     if (AT(x)&VERB&&AT(y)&VERB) {
@@ -30,21 +30,21 @@ DYAD(atsign) { V *v=VAV(y); A z;
 
 DMONAD(atop) { A z; z=compose(y,self); R z; }
 
-DDYAD(atop2) { DECL_FG; z=f1(g2(x,y)); R z; }
+DDYAD(atop2) { DECL_FG; z=f1(g2(x,y,g),f); R z; }
 
-DMONAD(hook) { DECL_FG; z=f2(y,g1(y)); R z; }
+DMONAD(hook) { DECL_FG; z=f2(y,g1(y,g),f); R z; }
 
-DDYAD(hook2) { DECL_FG; z=f2(x,g1(y)); R z; }
+DDYAD(hook2) { DECL_FG; z=f2(x,g1(y,g),f); R z; }
 
 DMONAD(folk) { DECL_FGH;
-    z = (AT(f)&VERB&&VID(VAV(f))==CCAP) ? g1(h1(y)) :
-        AT(f)&NOUN ? g2(f,h1(y)) : g2(f1(y),h1(y));
+    z = (AT(f)&VERB&&VID(VAV(f))==CCAP) ? g1(h1(y,h),g) :
+        AT(f)&NOUN ? g2(f,h1(y,h),g) : g2(f1(y,g),h1(y,h),g);
     R z;
 }
 
 DDYAD(folk2) { DECL_FGH;
-    z = (AT(f)&VERB&&VID(VAV(f))==CCAP) ? g1(h2(x,y)) :
-        AT(f)&NOUN ? g2(f,h2(x,y)) : g2(f2(x,y),h2(x,y));
+    z = (AT(f)&VERB&&VID(VAV(f))==CCAP) ? g1(h2(x,y,h),g) :
+        AT(f)&NOUN ? g2(f,h2(x,y,h),g) : g2(f2(x,y,f),h2(x,y,h),g);
     R z;
 }
 

@@ -1,4 +1,3 @@
-#include <limits.h>
 #include <stdarg.h>
 
 #include "anicca.h"
@@ -21,8 +20,7 @@ A a_malloc(I size) { I k=size*SIZI; A z;
     R z;
 }
 
-MONAD(a_free) {
-    RZ(y);
+MONAD(a_free) { RZ(y);
     if (--AC(y)) { R zero; }
     bytes-=SIZI*WP(AT(y),AR(y),AN(y));
     free(y);
@@ -31,7 +29,7 @@ MONAD(a_free) {
 
 MONAD(freea)  { RZ(y); traverse(y,freea);               R a_free(y); }
 MONAD(refa)   { RZ(y); traverse(y,refa); AC(y)++;       R y;         }
-MONAD(rsta)   { RZ(y); traverse(y,rsta); AC(y)=INT_MAX; R y;         }
+MONAD(rsta)   { RZ(y); traverse(y,rsta); AC(y)=CMAX;    R y;         }
 
 A traverse(A y, AF1 f1) { V *v; A *a; SY *sy; I n;
     RZ(y); n=AN(y);
@@ -78,8 +76,8 @@ A gcinit(VO) { I k=WP(BOX,1,NOBJS); A memory;
 }
 
 MONAD(gcpush) { RZ(y);
-    traverse(y,gcpush);
     ASSERT(nmem<NOBJS,ERMEMLT);
+    traverse(y,gcpush);
     objs[mtop++]=y;
     nmem++;
     R y;
@@ -95,7 +93,7 @@ A ga(I t, I r, I n, I *s) { I k=WP(t,r,n); A z=a_malloc(k);
     R z;
 }
 
-A gsa(I t, I r, I n, I *s) { A z=ga(t,r,n,s); AC(z)=INT_MAX; R z; }
+A gsa(I t, I r, I n, I *s) { A z=ga(t,r,n,s); AC(z)=CMAX; R z; }
 
 A gstr(I n, const C *s) { A z;
     ASSERT(n>0,ERDOM);

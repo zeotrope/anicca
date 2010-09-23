@@ -24,8 +24,9 @@ typedef struct _complex {
 #define AN(a) ((a)->num)
 #define AH    4L
 #define AS(a) ((a)->shape)
-/* #define AV(a) ((a)->value) */
 #define AV(a) ((I *)(a)+AH+AR(a))
+
+#define ID(a) (AT(a)&FUNC ? VID(VAV(a)) : NOUN)
 
 typedef struct _array {
     I type;

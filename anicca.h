@@ -1,6 +1,11 @@
 #ifndef _ANICCA_H
 #define _ANICCA_H
 
+#include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #define DO(n, body) do {       \
         I i=0, _t=n;           \
         for (i=0; i<_t; i++) { \
@@ -31,9 +36,8 @@
 #define DRANK(x,y,r,f,s) \
     if (AR(x)>r||AR(y)>r) { R rank2ex(x,y,s,r,f); }
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#define RMAX INT_MAX
+#define CMAX INT_MAX
 
 #include "types.h"
 #include "globals.h"
