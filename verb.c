@@ -23,7 +23,7 @@ DYAD(left) { A z=ca(x); R z; }
 
 DYAD(right) { A z=ca(y); R z; }
 
-MONAD(iota) { MONAD_PROLOG; I n=1, *yv=IAV(y), *v;
+MONAD(iota) { MPROLOG; I n=1, *yv=IAV(y), *v;
     ASSERT(yt&INTEGER,ERDOM);
     DO(yn, n*=*yv++);
     z=ga(INT,yn,n,IAV(y)); v=IAV(z);
@@ -38,3 +38,5 @@ MONAD(execute) { C *v; I yt=AT(y), n=AN(y)+1; A w, z;
     z=parse(tokens(w));
     R z;
 }
+
+MONAD(prod) { A z; R z; }

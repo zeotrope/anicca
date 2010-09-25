@@ -49,8 +49,6 @@ DDYAD(dfrk);
 
 A sex1(A y, I zt, SF f1);
 A sex2(A x, A y, I zt, SF f2);
-A rank1ex(A y, A self, I r, AF1 f1);
-A rank2ex(A x, A y, A self, I l, I r, AF2 f2);
 A fdef(UC id, I t, AF f1, AF f2, A f, A g, A h, I lr, I mr, I rr, I inv);
 
 #define ddef fdef

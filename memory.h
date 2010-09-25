@@ -3,6 +3,7 @@
 
 #define SIZ(s)    (sizeof(s))
 #define SIZI      SIZ(I)
+#define SIZN(t,n) (n*SIZ(t))
 #define SIZT(t,n) (n*ts(t))
 
 #define WV(t,n)   (((SIZI-1)+!!(IS1BYTE&t)+(n*ts(t)))/SIZI)

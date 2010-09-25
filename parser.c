@@ -17,7 +17,7 @@ ACTION(move)    { A x=stack[b], y=stack[e];
 
 #define CASES 9
 
-static PT grammar[CASES] = {
+static PT grammar[CASES]={
     {EDGE,      VERB,      NOUN, ANY,       monad,   1, 2}, /* Monad   */
     {EDGE|AVN,  VERB,      VERB, NOUN,      monad,   2, 3}, /* Monad   */
     {EDGE|AVN,  NOUN,      VERB, NOUN,      dyad,    1, 3}, /* Dyad    */

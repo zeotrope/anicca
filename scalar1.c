@@ -9,4 +9,5 @@ DECL_SF1(jfact, Z, Z) { }
 SF1(isignum, I, I, *y < 0 ? -1 : *y > 0 ? 1 : 0)
 SF1(dsignum, I, D, *y < 0 ? -1 : *y > 0 ? 1 : 0)
 
-I iprod(I n, I *iv) { I z=1; DO(n, z*=*iv++); R z; }
+I iprod(A y) { R iprod2(AN(y),IAV(y)); }
+I iprod2(I n, I *iv) { I z=1; DO(n, z*=*iv++); R z; }

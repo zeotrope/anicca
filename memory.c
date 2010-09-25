@@ -134,14 +134,14 @@ A gtest_array(I n, ...) {
 
 /*-Misc Array------------------------------------------------------------------*/
 
-MONAD(ca) { MONAD_PROLOG; I k=SIZT(yt,yn);
+MONAD(ca) { MPROLOG; I k=SIZT(yt,yn);
     RZ(y);
     z=ga(yt,yr,yn,ys);
     MC(AV(z),AV(y),k);
     R z;
 }
 
-A ra(A y, I t, I n) { MONAD_PROLOG; I k=SIZT(t,(yn>n?n:yn));
+A ra(A y, I t, I n) { MPROLOG; I k=SIZT(t,(yn>n?n:yn));
     RZ(y); ASSERT(t>=yt, ERDOM);
     z=ga(t,yr,n,NULL);
     MC(AV(z),AV(y),k);

@@ -4,63 +4,56 @@
 #include "verb.h"
 #include "conj-rank.h"
 
-/*-Rank Model------------------------------------------------------------------*/
-
 /* rk=: #@$ */
 MONAD(rnk) { R sint(AR(y)); }
 
+/*-Rank Model------------------------------------------------------------------*/
+
 /*
   efr: Effective rank.
-    input:  Ranks x and y.
-    output: Positive rank bounded by y.
   er=: (0>.(+rk))`(<.rk)@.(0<:[)
 */
-static I efr(I x, I y) { R x>0 ? MIN(x,y) : MAX(0,x+y); }
+static I efr(I x, I y) { R x>=0 ? MIN(x,y) : MAX(0,x+y); }
 
 /*
   frm: Frame shape.
-    input:  Array y, Rank r.
-    output: Frame shape.
   fr=: -@er }. $@]
 */
-A frm(A y, I r) { MONAD_PROLOG; I er=efr(r,yr), n=yr-er;
-    z=ga(INT,1,n,NULL);
-    ICPY(IAV(z),ys,n);
+static A frm(A y, I r) { MPROLOG; I er=efr(r,yr), n=yr-er;
+    z=ga(INT,1,n,NULL); ICPY(IAV(z),ys,n);
     R z;
 }
 
 /*
   cls: Cell shape.
-    input:  Array y, Rank r.
-    output: Cell shape.
   cs=: -@er {. $@]
 */
-A cls(A y, I r) { MONAD_PROLOG; I er=efr(r,yr), n=yr-er;
-    z=ga(INT,1,er,NULL);
-    ICPY(IAV(z),n+ys,er);
+static A cls(A y, I r) { MPROLOG; I er=efr(r,yr), n=yr-er;
+    z=ga(INT,1,er,NULL); ICPY(IAV(z),n+ys,er);
     R z;
 }
 
 /*
-  boxr: Recursively box.
-    input:  Shape x, Array y.
-    output: Array of boxes with cell shape x.
-  boxr=: ]`(<@$ , [ $: * /@[ }. ])@.(*@#@])
+   boxr: Box according to cs.
+   boxr=: ]`(<@$ , [ $: * /@[ }. ])@.(*@#@])
 */
-DYAD(boxr) { DYAD_PROLOG; I n=iprod(xn,IAV(x)), bn=n/xn; A *av;
-    z=ga(BOX,1,bn,NULL); av=AAV(z);
+static DYAD(boxr) { DPROLOG; A *zv;
+    I n=iprod(x), m=yn/n, sz=SIZT(yt,n);
+    C *yv=CAV(y)-sz;
+    z=ga(BOX,1,m,NULL); zv=AAV(z);
+    DO(m, *zv=ga(yt,1,n,NULL);
+       MC(AV(*zv),yv+=sz,sz);
+       zv++
+    );
     R z;
 }
 
 /*
   cells: Box array according to frm and cls.
-    input:  Array y, Rank r.
-    output: Boxed Array of shape frm with cells of shape cls.
   cells=: fr $ cs boxr ,@]
 */
-A cells(A y, I r) { A c=cls(y,r), f=frm(y,r), w=ravel(y), z;
-    z=reshape(f,boxr(c,w));
-    R z;
+A cells(A y, I r) { A fr=frm(y,r), cs=cls(y,r), rv=ravel(y), z;
+    R reshape(fr,boxr(cs,rv));
 }
 
 /*-Agreement-------------------------------------------------------------------*/
@@ -71,13 +64,15 @@ A cells(A y, I r) { A c=cls(y,r), f=frm(y,r), w=ravel(y), z;
 /* rag=: frame $ ([: * / rk@] }. $@[) # ,@] */
 /* lag=: rag~ */
 
-/*-Assembly---------------------------------------------------------------------*/
+/*-Assembly--------------------------------------------------------------------*/
 
 /* mrk=: >./@:(rk&>)@, */
 /* crank=: mrk ,:@]^:(-rk)&.> ] */
 /* msh=: >./@:($&>)@, */
 /* cshape=: <@msh {.&.> ] */
 /* asm=: >@cshape@crank */
+
+/*-Rank Conjunctions-----------------------------------------------------------*/
 
 /* rank=: 2 : 0
      'm l r'=: 3&$&.|. y
@@ -86,3 +81,11 @@ A cells(A y, I r) { A c=cls(y,r), f=frm(y,r), w=ravel(y), z;
      [: asm l&cells@[ (lag x&.> rag) r&cells@]
    )
 */
+
+A rank1ex(A y, A self, I r, AF1 f1) { MPROLOG;
+    R z;
+}
+
+A rank2ex(A x, A y, A self, I lr, I rr, AF f2) { DPROLOG;
+    R z;
+}

@@ -19,10 +19,10 @@
 #define MONAD(name) A name(A y)
 #define DYAD(name)  A name(A x, A y)
 
-#define MONAD_PROLOG \
+#define MPROLOG \
     I yt=AT(y), yr=AR(y), yn=AN(y), *ys=AS(y); A z
 
-#define DYAD_PROLOG \
+#define DPROLOG \
     I xt=AT(x), xn=AN(x), xr=AR(x), *xs=AS(x); \
     I yt=AT(y), yn=AN(y), yr=AR(y), *ys=AS(y); \
     A z

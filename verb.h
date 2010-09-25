@@ -11,7 +11,8 @@ DYAD(left);
 DYAD(right);
 MONAD(iota);
 MONAD(execute);
-
-I prod(I n, I *iv);
+MONAD(prod);
+MONAD(min);
+MONAD(max);
 
 #endif

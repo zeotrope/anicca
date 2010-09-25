@@ -1,9 +1,15 @@
 #include "anicca.h"
 #include "conjunction.h"
 
-DMONAD(df1) { V *v=VAV(self); A z=v->f1(y); R z; }
+DMONAD(df1) { V *v=VAV(self);
+    A z=VF(v)&&VDF1(v) ? v->f1(y,self) : v->f1(y);
+    R z;
+}
 
-DDYAD(df2) { V *v=VAV(self); A z=v->f2(x,y); R z; }
+DDYAD(df2) { V *v=VAV(self);
+    A z=VF(v)&&VG(v)&&VDF2(v) ? v->f2(x,y,self) : v->f2(x,y);
+    R z;
+}
 
 DMONAD(ddf1) { V *v=VAV(self); A z=v->f1(y,self); R z; }
 
@@ -80,10 +86,6 @@ A sex2(A x, A y, I zt, SF f2) {
     ado(b,m,n,k,zk,zv,xv,yv,f2);
     R z;
 }
-
-A rank1ex(A y, A self, I r, AF1 f1) { A z; R z; }
-
-A rank2ex(A x, A y, A self, I lr, I rr, AF f2) { A z; R z; }
 
 A fdef(UC id, I t, AF f1, AF f2, A f, A g, A h, I lr, I mr, I rr, I inv) {
     A z=ga(t,0,1,NULL);

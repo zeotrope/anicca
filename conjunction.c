@@ -37,13 +37,13 @@ DMONAD(hook) { DECL_FG; z=f2(y,g1(y,g),f); R z; }
 DDYAD(hook2) { DECL_FG; z=f2(x,g1(y,g),f); R z; }
 
 DMONAD(folk) { DECL_FGH;
-    z = (AT(f)&VERB&&VID(VAV(f))==CCAP) ? g1(h1(y,h),g) :
+    z = (AT(f)&VERB&&ID(f)==CCAP) ? g1(h1(y,h),g) :
         AT(f)&NOUN ? g2(f,h1(y,h),g) : g2(f1(y,g),h1(y,h),g);
     R z;
 }
 
 DDYAD(folk2) { DECL_FGH;
-    z = (AT(f)&VERB&&VID(VAV(f))==CCAP) ? g1(h2(x,y,h),g) :
+    z = (AT(f)&VERB&&ID(f)==CCAP) ? g1(h2(x,y,h),g) :
         AT(f)&NOUN ? g2(f,h2(x,y,h),g) : g2(f2(x,y,f),h2(x,y,h),g);
     R z;
 }
