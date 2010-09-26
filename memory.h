@@ -14,6 +14,7 @@
 
 #define MC(d,s,n)     memcpy(d,s,n)
 #define ICPY(d,s,n)   MC(d,s,n*SIZI)
+#define ASCPY(d,s)    ICPY(AS(d),AS(s),AR(s))
 #define TCPY(d,s,t,n) MC(d,s,SIZT(t,n))
 #define WCPY(d,s,t,n) MC(d,s,SIZI*WV(t,n))
 
@@ -30,6 +31,7 @@ A gcinit(VO);
 MONAD(gcpush);
 
 A ga(I t, I r, I n, I *s);
+A ga2(I t, I r, I n, I *s, VP v);
 A gsa(I t, I r, I n, I *s);
 A gstr(I n, const C *);
 A giarray(I *ints, I n);

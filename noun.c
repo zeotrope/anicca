@@ -21,27 +21,23 @@ static ST noundfa[NROW][NCOL] = {
            /*  CX      CS      CA  */
 };
 
-/*
-  noun_start
-  input:  Length of noun, String of noun.
-  output: Array of size 2n, in the form:
-    [start index token 1, length token 1, start index token 2,
-    length token 2, ..., start index token n, length token n].
-*/
-A noun_index(I n, C *s) {
+/* noun_start
+     input:  Length of noun, String of noun.
+     output: Array of size 2n, in the form:
+       [start index token 1, length token 1, start index token 2,
+       length token 2, ..., start index token n, length token n]. */
+A noun_index(I n, C *s) { A z; ST pr;
     C e, t, st=SS;
     I i, m=1+n, j=0, k=0, *v;
-    ST pr; A z=ga(INT,1,m,NULL);
-    v=IAV(z);
+    z=ga(INT,1,m,NULL); v=IAV(z);
 
     DO(n, t=ntype(s[i]); pr=noundfa[st][t];
        e=pr.effect; st=pr.new;
-
        switch (e) {
-       case EO:                       break;
-       case EN: j=i;                  break;
-       case EW: v[k++]=j; v[k++]=i-j; break;
-       case ES: goto end_noun;        break;
+       case EO:                         break;
+       case EN: { j=i;                  break; }
+       case EW: { v[k++]=j; v[k++]=i-j; break; }
+       case ES: { goto end_noun;        break; }
        }
     );
   end_noun:

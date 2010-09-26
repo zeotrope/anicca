@@ -4,6 +4,8 @@
 #include "util.h"
 #include "symbol.h"
 
+/*-----------------------------------------------------------------------------*/
+
 I mtop;     /* Position of current     */
 I nmem;     /* Total objects in memory */
 I bytes;    /* Bytes currently in use  */
@@ -11,6 +13,8 @@ I totbytes; /* Total bytes allocated   */
 
 A memory;   /* Array of Objects        */
 A *objs;    /* Pointer to objects      */
+
+/*-----------------------------------------------------------------------------*/
 
 A a_malloc(I size) { I k=size*SIZI; A z;
     ASSERT(k<NMEMMAX,ERMEMLT);
@@ -93,6 +97,8 @@ A ga(I t, I r, I n, I *s) { I k=WP(t,r,n); A z=a_malloc(k);
     R z;
 }
 
+A ga2(I t, I r, I n, I *s, VP v) { A z=ga(t,r,n,s); TCPY(AV(z),v,t,n); R z; }
+
 A gsa(I t, I r, I n, I *s) { A z=ga(t,r,n,s); AC(z)=CMAX; R z; }
 
 A gstr(I n, const C *s) { A z;
@@ -134,16 +140,15 @@ A gtest_array(I n, ...) {
 
 /*-Misc Array------------------------------------------------------------------*/
 
-MONAD(ca) { MPROLOG; I k=SIZT(yt,yn);
-    RZ(y);
+MONAD(ca) { MPROLOG; RZ(y);
     z=ga(yt,yr,yn,ys);
-    MC(AV(z),AV(y),k);
+    TCPY(AV(z),AV(y),yt,yn);
     R z;
 }
 
-A ra(A y, I t, I n) { MPROLOG; I k=SIZT(t,(yn>n?n:yn));
-    RZ(y); ASSERT(t>=yt, ERDOM);
+A ra(A y, I t, I n) { MPROLOG; RZ(y);
+    ASSERT(t>=yt, ERDOM);
     z=ga(t,yr,n,NULL);
-    MC(AV(z),AV(y),k);
+    TCPY(AV(z),AV(y),t,(yn>n?n:yn));
     R z;
 }

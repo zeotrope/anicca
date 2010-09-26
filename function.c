@@ -23,8 +23,7 @@ DDYAD(dfrk) { V *v=VAV(x);
     R ddef(CFORK,VERB,folk,folk2,x,y,self,VLR(v),VMR(v),VRR(v),0);
 }
 
-/*
-  ado: Execute a dyadic atomic function on elements of the arguments.
+/* ado: Execute a dyadic atomic function on elements of the arguments.
     input:
       b:  xr <= yr
       m:  minimum number of elements.
@@ -46,8 +45,7 @@ static VO ado(I b, I m, I n, I k, I zk, C *zv, C *xv, C *yv, SF f2) {
     else        { DO(m, yv+=k; DO(n, f2(zv+=zk, xv+=k, yv)));    }
 }
 
-/*
-  sex1: Execute monadic scalar function.
+/* sex1: Execute monadic scalar function.
     input:
       x:  left argument.
       y:  right argument.
@@ -66,8 +64,7 @@ A sex1(A y, I zt, SF f1) {
     R z;
 }
 
-/*
-  sex2: Execute dyadic scalar function.
+/* sex2: Execute dyadic scalar function.
     input:
       x:  left argument.
       y:  right argument.

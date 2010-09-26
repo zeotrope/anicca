@@ -7,12 +7,6 @@
 #include "parser.h"
 #include "verb.h"
 
-DYAD(link) { A z; R z; }
-
-MONAD(box) { A z = sbox(y); R z; }
-
-MONAD(unbox) { A z=ca(*AAV(y)); R z; }
-
 DYAD(deal) { A z; R z; }
 
 MONAD(indices) { A z; R z; }

@@ -7,11 +7,20 @@ MONAD(shape);
 DYAD(reshape);
 MONAD(ravel);
 DYAD(append);
+MONAD(itemize);
+MONAD(raze);
+DYAD(link);
+MONAD(box);
+MONAD(unbox);
 DYAD(from);
 MONAD(head);
 DYAD(take);
 MONAD(behead);
 DYAD(drop);
 MONAD(tail);
+
+VO fill(VP d, I t, I n);
+MONAD(crank);
+MONAD(cshape);
 
 #endif

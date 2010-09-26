@@ -29,11 +29,9 @@ static PT grammar[CASES]={
     {LPAR,      CAVN,      RPAR, ANY,       paren,   0, 2}  /* Paren   */
 };
 
-/*
-   parse
-   input: Array of tokens to be parsed, output of function tokens.
-   output: An array, the result of a successful parse.
-*/
+/* parse
+     input: Array of tokens to be parsed, output of function tokens.
+     output: An array, the result of a successful parse. */
 A parse(A tokens) {
     PF action;
     A *top, *stack = AAV(tokens), z;

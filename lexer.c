@@ -25,31 +25,25 @@ static ST dfa[DROW][DCOL] = {
        /* CX      CS      CA      CN      CB      C9      CD      CC      CQ   */
 };
 
-/*
-  parse_literal
-  input: (1)Length of string, (2)Pointer to string.
-  output: Array of type string with length (n-2).
-*/
+/* parse_literal
+     input:  (1)Length of string, (2)Pointer to string.
+     output: Array of type string with length (n-2). */
 static A parse_literal(I n, C *s) { A z=gstr(n-=2,++s); R z; }
 
-/*
-  parse_name
-  input: (1)Length of string, (2)Pointer to string.
-  output: Array of type name.
- */
+/* parse_name
+     input:  (1)Length of string, (2)Pointer to string.
+     output: Array of type name. */
 static A parse_name(I n, C *s) { A z=gnm(n,s); R z; }
-/*
-  token_index
-  input:  Boxed string to be lexed.
-  output: Array of size 2n (n = number of tokens), in the form:
-    [start index token 1, length token 1, start index token 2,
-    length token 2, ..., start index token n, length token n].
-*/
-static MONAD(token_index) {
+
+/* token_index
+     input:  Boxed string to be lexed.
+     output: Array of size 2n (n = number of tokens), in the form:
+       [start index token 1, length token 1, start index token 2,
+       length token 2, ..., start index token n, length token n]. */
+static MONAD(token_index) { A z; ST pr;
     C e, sn, t, s=SS, vec=0, *str=CAV(y);
     I i, jv, j=0, k=0, n=AN(y), *v;
-    ST pr;
-    A z=ga(INT,1,n+n,NULL); v=IAV(z);
+    z=ga(INT,1,2*n,NULL); v=IAV(z);
 
     DO(n, t=ctype(str[i]); pr=dfa[s][t];
        e=pr.effect; sn=pr.new;
@@ -79,18 +73,13 @@ static MONAD(token_index) {
     z=ra(z,INT,k); R z;
 }
 
-/*
-  tokens
-  input:
-    y: Boxed string to be tokenized.
-  output: Array of boxed tokens.
-*/
-MONAD(tokens) {
+/* tokens
+     input:  Boxed string to be tokenized.
+     output: Array of boxed tokens. */
+MONAD(tokens) { A x=token_index(y), v, z, *av;
     C c, vn, *str=CAV(y), *s;
-    A  x=token_index(y), z, v, *av;
     I n=AN(x)/2, *indx=IAV(x), j, ws, wl, t;
-
-    z = ga(BOX,1,n+5,NULL); av = AAV(z); *av++ = mark;
+    z=ga(BOX,1,n+5,NULL); av=AAV(z); *av++=mark;
 
     DO(n, j=i+i; ws=indx[j]; wl=indx[j+1];
        s=&str[ws]; c=*s; t=ctype(c);

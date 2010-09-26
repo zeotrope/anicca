@@ -9,10 +9,8 @@
 #include "parser.h"
 #include "util.h"
 
-I main(I argc, C *argv[]) { A y, cl;
+I main(I argc, C *argv[]) { A x, y;
     a_init();
-    y=eval("i.2 2 3");
-    println(cl=cells(y,1));
     a_repl("   ");
     a_clean();
     R 0;
