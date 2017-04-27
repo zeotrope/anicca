@@ -8,7 +8,7 @@ DYAD(amper) { V *v; A z; I xt = AT(x), yt = AT(y);
         v = VAV(xt&VERB ? x : y);
         z = CDERV(CAMPR, bond, bond2, x, y, VLR(v), VMR(v), VRR(v));
     }
-    else if (xt&VERB && yt&&VERB) {
+    else if (xt&VERB && yt&VERB) {
         v = VAV(y);
         z = CDERV(CAMPR, compose, compose2, x, y, VLR(v), VMR(v), VRR(v));
     }

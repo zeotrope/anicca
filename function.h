@@ -1,5 +1,5 @@
 #ifndef _FUNCTION_H
-#define _FUNCITON_H
+#define _FUNCTION_H
 
 typedef struct _verb {
     AF1 f1;
